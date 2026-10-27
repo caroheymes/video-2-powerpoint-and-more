@@ -448,15 +448,25 @@ def calculate_finops_cost(
 # Étape 4 : Synthèse & Structuration par API LLM (Gemini / Mistral / OpenAI)
 # ==============================================================================
 def analyze_with_llm(transcript_text: str, keyframes: List[Dict[str, Any]], api_key: str, provider: str = "gemini", target_slides: int = 10) -> Dict[str, Any]:
-    """Appelle l'API LLM pour synthétiser la vidéo et architecturer le deck avec des directives Humanizer strictes."""
-    print(f"\n[4/5] 🧠 Synthèse exécutive & modélisation de {target_slides} slides via {provider.upper()}...")
+    """Appelle l'API LLM pour synthétiser la vidéo et architecturer le deck avec des directives de fond approfondies et sans clichés IA."""
+    print(f"\n[4/5] 🧠 Synthèse exécutive & modélisation de {target_slides} slides approfondies via {provider.upper()}...")
 
     keyframes_summary = "\n".join([f"- Image {kf['index']} ({kf['filename']}) capturée à {kf['timestamp']}" for kf in keyframes])
     target_sections = max(5, min(10, target_slides // 2))
 
     system_prompt = (
-        "Tu es un consultant senior en management et stratégie d'entreprise. Tu rédiges avec un style humain, naturel, "
-        "sobre, factuel et précis, sans AUCUN tic d'écriture caractéristique des intelligences artificielles.\n\n"
+        "Tu es un consultant de direction générale et directeur de la stratégie. Tu analyses en profondeur le contenu réel de la transcription audio fournie pour produire des livrables substantiels, denses et directement exploitables en entreprise, sans AUCUNE superficialité ni raccourci simpliste.\n\n"
+        "RÈGLE FONDAMENTALE : EXCLUSION DE LA LÉGÈRETÉ ET DU MINIMALISME\n"
+        "- Interdiction formelle de produire des diapositives 'télégraphiques' ou vides avec 2 puces courtes de 5 mots.\n"
+        "- Chaque diapositive doit apporter une réelle valeur d'analyse et une compréhension approfondie du sujet traité dans la vidéo.\n"
+        f"- Pour la présentation : Produis un jeu complet d'exactement {target_slides} diapositives substantielles (Slide 1: Titre sobre, Slides 2 à {target_slides}: diapositives de contenu réparties chronologiquement et thématiquement sans t'arrêter prématurément).\n"
+        "- Pour chaque diapositive de contenu (slides 2 à {target_slides}) :\n"
+        "  1. 'title' : Titre précis, informatif et ancré dans le sujet (éviter les étiquettes vagues comme 'Contexte' ou 'Sujet 1').\n"
+        "  2. 'takeaway' : Une phrase d'analyse percutante résumant la thèse ou le levier d'action central de la diapositive.\n"
+        "  3. 'bullets' : Exactement 3 à 4 puces riches et denses (25 à 45 mots chacune). Chaque puce doit articuler le constat concret, le mécanisme sous-jacent (pourquoi/comment, concepts de l'auteur, faits précis de la vidéo) et l'impact opérationnel.\n"
+        "  4. 'kpi' : Un objet avec 'value' (ex: '8 piliers', '15 min/jour', '100%', '3 leviers', '72%') et 'label' (intitulé court de la métrique ou du concept clé).\n"
+        "  5. 'speaker_notes' : Un paragraphe complet de 3 à 5 phrases structurées à l'intention du présentateur expliquant ce qu'il doit verbaliser et commenter à l'oral en projetant cette planche.\n"
+        "  6. 'keyframe' : Attribue une image différente parmi la liste des images disponibles (slide_keyframe_01.jpg, etc.).\n\n"
         "DIRECTIVES STRICTES DE RÉDACTION 'HUMANIZER' (ANTI-JARGON IA ET ANTI-CLICHÉS) :\n"
         "1. PROSCRIPTIONS ABSOLUES (TICS IA À BANNIR TOTALEMENT) :\n"
         "   - ZÉRO formule d'ouverture clichée : Interdiction formelle de 'Dans un monde...', 'À l'ère du numérique', 'Dans notre société'.\n"
@@ -465,107 +475,56 @@ def analyze_with_llm(transcript_text: str, keyframes: List[Dict[str, Any]], api_
         "   - ZÉRO mise en forme mécanique : Ne commence JAMAIS chaque puce par un mot en gras suivi de deux-points (**Mot** : ...). Rédige des phrases directes et fluides.\n"
         "   - ZÉRO triade forcée : Ne force pas 3 points si le sujet en compte 2 ou 4.\n"
         "   - ZÉRO métadonnées résiduelles : Ne copie jamais les mots 'date', 'sujet', ou 'intervenants' dans les titres ou sous-titres.\n\n"
-        "2. EXIGENCES DE PROFONDEUR ET COUVERTURE COMPLÈTE :\n"
-        f"   - Pour la présentation : Produis un jeu complet d'exactement {target_slides} diapositives substantielles (Slide 1: Titre sobre, Slides 2 à {target_slides}: diapositives de contenu réparties chronologiquement et thématiquement sans t'arrêter prématurément).\n"
-        "   - Chaque diapositive de contenu doit aborder un point précis tiré de la vidéo, avec un titre sobre et 2 à 4 points factuels.\n"
-        "   - Attribue à chaque diapositive une image différente parmi la liste des images disponibles (ex: slide_keyframe_01.jpg, slide_keyframe_02.jpg, etc.).\n"
-        f"   - Pour l'article Word : Rédige {target_sections} sections complètes et structurées avec des constats concrets et des recommandations directement applicables en entreprise.\n\n"
-        "Structure JSON STRICTE à respecter (respecte impérativement le nombre de slides et sections requises) :\n"
+        "2. EXIGENCES POUR L'ARTICLE WORD :\n"
+        f"   - Rédige {target_sections} sections complètes et approfondies.\n"
+        "   - Chaque section doit comporter 2 à 3 paragraphes denses de développement conceptuel et méthodologique, 2 à 4 recommandations précises, et un encadré d'analyse (callout).\n\n"
+        f"Structure JSON STRICTE à respecter (respecte impérativement le nombre de {target_slides} slides et {target_sections} sections) :\n"
         "{\n"
-        '  "summary_markdown": "# Synthèse de la session\\n\\nSynthèse concise et dense en 2 ou 3 paragraphes factuels...",\n'
-        '  "article_title": "Titre Sobre et Professionnel",\n'
+        '  "summary_markdown": "# Synthèse exécutive\\n\\nSynthèse dense et chiffrée en 3 paragraphes factuels...",\n'
+        '  "article_title": "Titre Professionnel et Thématique",\n'
         '  "article_sections": [\n'
         '    {\n'
-        '      "heading": "1. Titre de section descriptif et sobre",\n'
-        '      "paragraphs": ["Paragraphe rédigé naturellement...", "Suite des explications concrètes..."],\n'
-        '      "bullets": ["Point d\'attention concret", "Autre recommandation opérationnelle"],\n'
+        '      "heading": "1. Titre de section approfondi",\n'
+        '      "paragraphs": [\n'
+        '        "Premier paragraphe de cadrage détaillé sur les constats et mécanismes abordés dans la vidéo...",\n'
+        '        "Deuxième paragraphe d\'analyse des causes et des impacts organisationnels...",\n'
+        '        "Troisième paragraphe sur les leviers d\'action et la mise en application..."\n'
+        '      ],\n'
+        '      "bullets": [\n'
+        '        "Recommandation opérationnelle détaillée expliquant la modalité de mise en œuvre",\n'
+        '        "Dispositif de gouvernance ou rituel d\'équipe recommandé",\n'
+        '        "Indicateur de suivi et critère d\'évaluation de l\'efficacité"\n'
+        '      ],\n'
         '      "keyframe": "slide_keyframe_01.jpg",\n'
-        '      "callout": "Remarque pratique issue des échanges"\n'
+        '      "callout": "Enseignement méthodologique concret tiré des retours d\'expérience"\n'
         '    }\n'
         '  ],\n'
-        '  "presentation_title": "Titre Sobre de la Présentation",\n'
-        '  "presentation_subtitle": "Sous-titre factuel (nom de la session et intervenant principal)",\n'
+        '  "presentation_title": "Titre Sobre et Percutant",\n'
+        '  "presentation_subtitle": "Sous-titre descriptif (nom de l\'intervention et intervenant)",\n'
         '  "slides": [\n'
-        "    {\n"
+        '    {\n'
         '      "slide_number": 1,\n'
         '      "type": "title",\n'
         '      "title": "Titre Principal",\n'
-        '      "subtitle": "Sous-titre Factuel"\n'
-        "    },\n"
-        "    {\n"
+        '      "subtitle": "Sous-titre Factuel",\n'
+        '      "speaker_notes": "Introduction de la présentation, cadrage du sujet et annonce des objectifs de la session."\n'
+        '    },\n'
+        '    {\n'
         '      "slide_number": 2,\n'
         '      "type": "content",\n'
-        '      "title": "Contexte et problématique centrale",\n'
-        '      "bullets": ["Constat clé 1", "Constat clé 2", "Impact sur les organisations"],\n'
-        '      "keyframe": "slide_keyframe_01.jpg",\n'
-        '      "kpi": null\n'
-        "    },\n"
-        "    {\n"
-        '      "slide_number": 3,\n'
-        '      "type": "content",\n'
-        '      "title": "Deuxième sujet clé",\n'
-        '      "bullets": ["Action concrète 1", "Action concrète 2"],\n'
-        '      "keyframe": "slide_keyframe_02.jpg",\n'
-        '      "kpi": null\n'
-        "    },\n"
-        "    {\n"
-        '      "slide_number": 4,\n'
-        '      "type": "content",\n'
-        '      "title": "Troisième sujet clé",\n'
-        '      "bullets": ["Action concrète", "Bénéfice opérationnel"],\n'
-        '      "keyframe": "slide_keyframe_03.jpg",\n'
-        '      "kpi": null\n'
-        "    },\n"
-        "    {\n"
-        '      "slide_number": 5,\n'
-        '      "type": "content",\n'
-        '      "title": "Quatrième sujet clé",\n'
-        '      "bullets": ["Point d\'attention", "Recommandation pratique"],\n'
-        '      "keyframe": "slide_keyframe_04.jpg",\n'
-        '      "kpi": null\n'
-        "    },\n"
-        "    {\n"
-        '      "slide_number": 6,\n'
-        '      "type": "content",\n'
-        '      "title": "Cinquième sujet clé",\n'
-        '      "bullets": ["Changement d\'organisation", "Gain de temps"],\n'
-        '      "keyframe": "slide_keyframe_05.jpg",\n'
-        '      "kpi": null\n'
-        "    },\n"
-        "    {\n"
-        '      "slide_number": 7,\n'
-        '      "type": "content",\n'
-        '      "title": "Sixième sujet clé",\n'
-        '      "bullets": ["Pratique managériale", "Effet mesurable"],\n'
-        '      "keyframe": "slide_keyframe_06.jpg",\n'
-        '      "kpi": null\n'
-        "    },\n"
-        "    {\n"
-        '      "slide_number": 8,\n'
-        '      "type": "content",\n'
-        '      "title": "Septième sujet clé",\n'
-        '      "bullets": ["Obstacle récurrent", "Solution terrain"],\n'
-        '      "keyframe": "slide_keyframe_07.jpg",\n'
-        '      "kpi": null\n'
-        "    },\n"
-        "    {\n"
-        '      "slide_number": 9,\n'
-        '      "type": "content",\n'
-        '      "title": "Plan d\'action et priorités immédiates",\n'
-        '      "bullets": ["Étape 1", "Étape 2", "Étape 3"],\n'
-        '      "keyframe": "slide_keyframe_08.jpg",\n'
-        '      "kpi": null\n'
-        "    },\n"
-        "    {\n"
-        '      "slide_number": 10,\n'
-        '      "type": "content",\n'
-        '      "title": "Synthèse et leviers de succès",\n'
-        '      "bullets": ["Conclusion opérationnelle", "Prochaine étape"],\n'
-        '      "keyframe": "slide_keyframe_09.jpg",\n'
-        '      "kpi": null\n'
-        "    }\n"
-        "  ]\n"
-        "}"
+        '      "title": "Titre thématique précis du premier enjeu",\n'
+        '      "takeaway": "Enseignement majeur résumant la thèse centrale de la diapositive",\n'
+        '      "bullets": [\n'
+        '        "Constat de fond: explication détaillée du phénomène observé, des mécanismes cognitifs ou organisationnels en jeu et de leur impact mesurable",\n'
+        '        "Analyse causale: démonstration de la relation de cause à effet avec références directes aux concepts ou citations de l\'intervenant",\n'
+        '        "Traduction opérationnelle: application concrète immédiate à déployer au sein des équipes pour résoudre cette difficulté"\n'
+        '      ],\n'
+        '      "kpi": {"value": "8 piliers", "label": "Modèle de référence"},\n'
+        '      "speaker_notes": "Texte complet que l\'orateur développe à l\'oral pour expliquer la diapositive, illustrer le constat et guider l\'auditoire.",\n'
+        '      "keyframe": "slide_keyframe_01.jpg"\n'
+        '    }\n'
+        '  ]\n'
+        '}'
     )
 
     user_prompt = f"### LISTE DES IMAGES DISPONIBLES :\n{keyframes_summary}\n\n### TRANSCRIPTION INTÉGRALE :\n{transcript_text[:120000]}"
@@ -584,10 +543,10 @@ def analyze_with_llm(transcript_text: str, keyframes: List[Dict[str, Any]], api_
             "generationConfig": {
                 "responseMimeType": "application/json",
                 "temperature": 0.3,
-                "maxOutputTokens": 4096
+                "maxOutputTokens": 8192
             }
         }
-        res = requests.post(url, json=payload, headers={"Content-Type": "application/json"}, timeout=120)
+        res = requests.post(url, json=payload, headers={"Content-Type": "application/json"}, timeout=180)
         if res.status_code != 200:
             raise RuntimeError(f"Erreur API Gemini ({res.status_code}): {res.text}")
         data = res.json()
@@ -611,9 +570,9 @@ def analyze_with_llm(transcript_text: str, keyframes: List[Dict[str, Any]], api_
             ],
             "response_format": {"type": "json_object"},
             "temperature": 0.3,
-            "max_tokens": 4000
+            "max_tokens": 8000
         }
-        res = requests.post(url, json=payload, headers=headers, timeout=120)
+        res = requests.post(url, json=payload, headers=headers, timeout=180)
         if res.status_code != 200:
             raise RuntimeError(f"Erreur API Mistral ({res.status_code}): {res.text}")
         data = res.json()
@@ -637,9 +596,16 @@ def analyze_with_llm(transcript_text: str, keyframes: List[Dict[str, Any]], api_
             ],
             "response_format": {"type": "json_object"},
             "temperature": 0.3,
-            "max_completion_tokens": 4000
+            "max_completion_tokens": 8000
         }
-        res = requests.post(url, json=payload, headers=headers, timeout=120)
+        res = requests.post(url, json=payload, headers=headers, timeout=180)
+        if res.status_code != 200:
+            raise RuntimeError(f"Erreur API OpenAI ({res.status_code}): {res.text}")
+        data = res.json()
+        raw_text = data["choices"][0]["message"]["content"]
+        usage = data.get("usage", {})
+        prompt_tokens = usage.get("prompt_tokens", 0)
+        completion_tokens = usage.get("completion_tokens", 0)
         if res.status_code != 200:
             raise RuntimeError(f"Erreur API OpenAI ({res.status_code}): {res.text}")
         data = res.json()
@@ -765,7 +731,7 @@ def generate_docx_guide(plan: Dict[str, Any], keyframes_dir: Path, output_docx_p
             shading = parse_xml(r'<w:shd {} w:fill="EFF6FF"/>'.format(nsdecls('w')))
             cell._tc.get_or_add_tcPr().append(shading)
             cp = cell.paragraphs[0]
-            crun = cp.add_run(f"📌 {callout_text}")
+            crun = cp.add_run(f"Note d'analyse : {callout_text}")
             crun.font.size = Pt(10)
             crun.font.italic = True
             crun.font.color.rgb = COLOR_SECONDARY
@@ -804,7 +770,6 @@ def generate_pptx(plan: Dict[str, Any], keyframes_dir: Path, output_pptx_path: P
     from pptx import Presentation
     from pptx.util import Inches, Pt
     from pptx.dml.color import RGBColor
-    from pptx.enum.text import PP_ALIGN
 
     prs = Presentation()
     # Format 16:9 widescreen (13.33 x 7.5 pouces)
@@ -818,6 +783,7 @@ def generate_pptx(plan: Dict[str, Any], keyframes_dir: Path, output_pptx_path: P
     COLOR_PRIMARY = RGBColor(56, 189, 248)  # Sky 400
     COLOR_TEXT = RGBColor(248, 250, 252)   # Slate 50
     COLOR_MUTED = RGBColor(148, 163, 184)  # Slate 400
+    COLOR_HIGHLIGHT = RGBColor(186, 230, 253) # Sky 200
 
     for slide_data in plan.get("slides", []):
         slide = prs.slides.add_slide(blank_layout)
@@ -830,44 +796,78 @@ def generate_pptx(plan: Dict[str, Any], keyframes_dir: Path, output_pptx_path: P
 
         stype = slide_data.get("type", "content")
         title_text = slide_data.get("title", "")
+        takeaway_text = slide_data.get("takeaway", "")
+        speaker_notes = slide_data.get("speaker_notes", "")
+
+        # Insertion native des notes pour l'orateur
+        if speaker_notes:
+            try:
+                slide.notes_slide.notes_text_frame.text = speaker_notes
+            except Exception:
+                pass
 
         if stype == "title":
             # Slide de titre
-            txBox = slide.shapes.add_textbox(Inches(1.5), Inches(2.2), Inches(10.33), Inches(3.0))
+            txBox = slide.shapes.add_textbox(Inches(1.2), Inches(2.0), Inches(10.9), Inches(3.5))
             tf = txBox.text_frame
             tf.word_wrap = True
 
             p = tf.paragraphs[0]
             p.text = plan.get("presentation_title", title_text)
-            p.font.size = Pt(44)
+            p.font.size = Pt(40)
             p.font.bold = True
             p.font.color.rgb = COLOR_PRIMARY
 
-            p2 = tf.add_paragraph()
-            p2.text = plan.get("presentation_subtitle", slide_data.get("subtitle", ""))
-            p2.font.size = Pt(22)
-            p2.font.color.rgb = COLOR_MUTED
-            p2.space_before = Pt(20)
+            sub = plan.get("presentation_subtitle", slide_data.get("subtitle", ""))
+            if sub:
+                p2 = tf.add_paragraph()
+                p2.text = sub
+                p2.font.size = Pt(20)
+                p2.font.color.rgb = COLOR_MUTED
+                p2.space_before = Pt(16)
+
+            if takeaway_text:
+                p3 = tf.add_paragraph()
+                p3.text = f"Thèse centrale : {takeaway_text}"
+                p3.font.size = Pt(15)
+                p3.font.italic = True
+                p3.font.color.rgb = COLOR_HIGHLIGHT
+                p3.space_before = Pt(18)
 
         else:
-            # En-tête
-            header_box = slide.shapes.add_textbox(Inches(0.8), Inches(0.5), Inches(11.7), Inches(1.0))
+            # En-tête titre
+            header_box = slide.shapes.add_textbox(Inches(0.8), Inches(0.4), Inches(11.7), Inches(0.8))
             htf = header_box.text_frame
+            htf.word_wrap = True
             hp = htf.paragraphs[0]
             hp.text = title_text
-            hp.font.size = Pt(28)
+            hp.font.size = Pt(24)
             hp.font.bold = True
             hp.font.color.rgb = COLOR_PRIMARY
+
+            current_top = 1.25
+
+            # Enseignement clé (takeaway)
+            if takeaway_text:
+                tk_box = slide.shapes.add_textbox(Inches(0.8), Inches(current_top), Inches(11.7), Inches(0.55))
+                ttf = tk_box.text_frame
+                ttf.word_wrap = True
+                tp = ttf.paragraphs[0]
+                tp.text = f"Enseignement clé : {takeaway_text}"
+                tp.font.size = Pt(13)
+                tp.font.italic = True
+                tp.font.color.rgb = COLOR_HIGHLIGHT
+                current_top += 0.55
 
             # Vérifier présence image
             kf_name = slide_data.get("keyframe")
             img_path = (keyframes_dir / kf_name) if kf_name else None
             has_img = img_path and img_path.exists()
 
-            text_width = Inches(5.8) if has_img else Inches(11.7)
+            text_width = Inches(6.0) if has_img else Inches(11.7)
 
             # Cartouche de contenu (bullets)
-            content_box = slide.shapes.add_textbox(Inches(0.8), Inches(1.8), text_width, Inches(4.8))
+            content_box = slide.shapes.add_textbox(Inches(0.8), Inches(current_top), text_width, Inches(7.1 - current_top))
             ctf = content_box.text_frame
             ctf.word_wrap = True
 
@@ -875,13 +875,39 @@ def generate_pptx(plan: Dict[str, Any], keyframes_dir: Path, output_pptx_path: P
             for i, b in enumerate(bullets):
                 p = ctf.paragraphs[0] if i == 0 else ctf.add_paragraph()
                 p.text = f"•  {b}"
-                p.font.size = Pt(17)
+                p.font.size = Pt(13.5)
                 p.font.color.rgb = COLOR_TEXT
-                p.space_after = Pt(16)
+                p.space_after = Pt(12)
 
             # Insertion de l'image si présente
             if has_img:
-                slide.shapes.add_picture(str(img_path), Inches(7.0), Inches(1.8), width=Inches(5.5))
+                slide.shapes.add_picture(str(img_path), Inches(7.1), Inches(current_top), width=Inches(5.4))
+
+            # Insertion badge / carte KPI
+            kpi = slide_data.get("kpi")
+            if kpi:
+                if isinstance(kpi, dict):
+                    kpi_val = kpi.get("value", "")
+                    kpi_lbl = kpi.get("label", "")
+                else:
+                    kpi_val = str(kpi)
+                    kpi_lbl = ""
+                if kpi_val:
+                    kpi_left = Inches(7.1) if has_img else Inches(0.8)
+                    kpi_top = Inches(5.35) if has_img else Inches(current_top + 3.0)
+                    kpi_box = slide.shapes.add_textbox(kpi_left, kpi_top, Inches(5.4), Inches(1.3))
+                    ktf = kpi_box.text_frame
+                    ktf.word_wrap = True
+                    kp1 = ktf.paragraphs[0]
+                    kp1.text = str(kpi_val)
+                    kp1.font.size = Pt(22)
+                    kp1.font.bold = True
+                    kp1.font.color.rgb = COLOR_PRIMARY
+                    if kpi_lbl:
+                        kp2 = ktf.add_paragraph()
+                        kp2.text = str(kpi_lbl)
+                        kp2.font.size = Pt(11)
+                        kp2.font.color.rgb = COLOR_MUTED
 
     prs.save(str(output_pptx_path))
     print(f" PowerPoint sauvegardé : {output_pptx_path}")
@@ -910,17 +936,27 @@ def generate_html_deck(plan: Dict[str, Any], keyframes_dir: Path, output_html_pa
                 img_b64 = f"data:image/jpeg;base64,{base64.b64encode(f.read()).decode('utf-8')}"
 
         if stype == "title":
+            takeaway_title = f'<div class="slide-takeaway"><span class="takeaway-label">Thèse :</span> {s.get("takeaway")}</div>' if s.get("takeaway") else ''
             slide_content = f"""
             <section class="slide title-slide" data-slide="{idx+1}">
                 <div class="title-content">
                     <h1 class="gradient-text">{title}</h1>
                     <p class="subtitle">{subtitle or s_title}</p>
+                    {takeaway_title}
                 </div>
             </section>
             """
         else:
             bullets_li = "".join([f"<li>{b}</li>" for b in s.get("bullets", [])])
             img_tag = f"<div class='slide-visual'><img src='{img_b64}' alt='Capture vidéo' /></div>" if img_b64 else ""
+
+            takeaway_html = ""
+            if s.get("takeaway"):
+                takeaway_html = f"<div class='slide-takeaway'><span class='takeaway-label'>Enseignement clé :</span> {s.get('takeaway')}</div>"
+
+            notes_html = ""
+            if s.get("speaker_notes"):
+                notes_html = f"<details class='speaker-notes'><summary>Notes d'orateur</summary><p>{s.get('speaker_notes')}</p></details>"
 
             kpi_html = ""
             if "kpi" in s and s["kpi"]:
@@ -930,7 +966,8 @@ def generate_html_deck(plan: Dict[str, Any], keyframes_dir: Path, output_html_pa
                 else:
                     kpi_val = str(s["kpi"])
                     kpi_lbl = ""
-                kpi_html = f"<div class='kpi-badge'><span class='kpi-val'>{kpi_val}</span><span class='kpi-lbl'>{kpi_lbl}</span></div>"
+                if kpi_val:
+                    kpi_html = f"<div class='kpi-badge'><span class='kpi-val'>{kpi_val}</span><span class='kpi-lbl'>{kpi_lbl}</span></div>"
 
             layout_class = "split-layout" if img_b64 else "full-layout"
 
@@ -941,9 +978,11 @@ def generate_html_deck(plan: Dict[str, Any], keyframes_dir: Path, output_html_pa
                     <h2>{s_title}</h2>
                     {kpi_html}
                 </div>
+                {takeaway_html}
                 <div class="slide-body {layout_class}">
                     <div class="slide-bullets">
                         <ul>{bullets_li}</ul>
+                        {notes_html}
                     </div>
                     {img_tag}
                 </div>
@@ -1064,8 +1103,50 @@ def generate_html_deck(plan: Dict[str, Any], keyframes_dir: Path, output_html_pa
             align-items: center;
             gap: 1.5rem;
             border-bottom: 1px solid var(--border);
-            padding-bottom: 1rem;
-            margin-bottom: 2rem;
+            padding-bottom: 0.8rem;
+            margin-bottom: 0.8rem;
+        }}
+
+        .slide-takeaway {{
+            background: rgba(56, 189, 248, 0.08);
+            border-left: 3px solid var(--primary);
+            padding: 0.6rem 1.2rem;
+            margin-bottom: 1.2rem;
+            border-radius: 4px;
+            font-size: 1.05rem;
+            font-style: italic;
+            color: #e2e8f0;
+            width: 100%;
+        }}
+
+        .takeaway-label {{
+            font-weight: 700;
+            font-style: normal;
+            color: var(--primary);
+            margin-right: 0.5rem;
+        }}
+
+        .speaker-notes {{
+            margin-top: 1.2rem;
+            background: rgba(15, 23, 42, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 0.6rem 1rem;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+        }}
+
+        .speaker-notes summary {{
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary);
+            outline: none;
+            user-select: none;
+        }}
+
+        .speaker-notes p {{
+            margin-top: 0.5rem;
+            line-height: 1.45;
         }}
 
         .slide-number {{
