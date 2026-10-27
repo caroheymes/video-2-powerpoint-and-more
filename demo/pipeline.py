@@ -16,6 +16,12 @@ import subprocess
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 
+# Configuration de la sortie console UTF-8 sur Windows
+if sys.platform == "win32":
+    import io
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
+
 import requests
 import imageio_ffmpeg
 
@@ -257,6 +263,27 @@ def analyze_with_llm(transcript_text: str, keyframes: List[Dict[str, Any]], api_
         res = requests.post(url, json=payload, headers=headers, timeout=120)
         if res.status_code != 200:
             raise RuntimeError(f"Erreur API Mistral ({res.status_code}): {res.text}")
+        data = res.json()
+        raw_text = data["choices"][0]["message"]["content"]
+
+    elif provider.lower() == "openai":
+        url = "https://api.openai.com/v1/chat/completions"
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json"
+        }
+        payload = {
+            "model": "gpt-4o-mini",
+            "messages": [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt}
+            ],
+            "response_format": {"type": "json_object"},
+            "temperature": 0.2
+        }
+        res = requests.post(url, json=payload, headers=headers, timeout=120)
+        if res.status_code != 200:
+            raise RuntimeError(f"Erreur API OpenAI ({res.status_code}): {res.text}")
         data = res.json()
         raw_text = data["choices"][0]["message"]["content"]
     else:
@@ -879,11 +906,11 @@ def export_pdf_headless(html_path: Path, output_pdf_path: Path):
 # Point d'Entrée Principal
 # ==============================================================================
 def main():
-    parser = argparse.ArgumentParser(description="Pipeline Automatisé Vidéo ➔ Transcription, Synthèse & Decks")
+    parser = argparse.ArgumentParser(description="Pipeline Automatise Video -> Transcription, Synthese & Decks")
     parser.add_argument("--video", required=True, help="Chemin du fichier vidéo MP4")
     parser.add_argument("--output", default="output", help="Répertoire de sortie des livrables")
     parser.add_argument("--model", default="medium", help="Modèle Whisper (tiny, base, small, medium, large-v3-turbo)")
-    parser.add_argument("--provider", default="gemini", choices=["gemini", "mistral"], help="Fournisseur LLM")
+    parser.add_argument("--provider", default="gemini", choices=["gemini", "mistral", "openai"], help="Fournisseur LLM")
     parser.add_argument("--api-key", default="", help="Clé API Gemini ou Mistral")
     parser.add_argument("--skip-transcription", action="store_true", help="Réutilise le transcript.md s'il existe déjà")
     args = parser.parse_args()
@@ -913,7 +940,7 @@ def main():
         sys.exit(1)
 
     print("=" * 60)
-    print(" DÉMARRAGE DU PIPELINE VIDÉO ➔ LIVRABLES STRATÉGIQUES")
+    print(" DÉMARRAGE DU PIPELINE VIDÉO -> LIVRABLES STRATÉGIQUES")
     print(f" Vidéo cible    : {video_path.name}")
     print(f" Destination     : {out_dir}")
     print(f" Moteur Whisper  : {args.model}")

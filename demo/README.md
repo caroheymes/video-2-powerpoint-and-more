@@ -9,17 +9,17 @@ Solution clé en main pour transformer une vidéo longue (jusqu'à 2 heures) en 
 
 ---
 
-## Démarrage Rapide (En 1 Clic / 1 Commande)
+## Démarrage Rapide (En 1 Clic / Double-Clic)
+
+Pour les utilisateurs non techniques, deux fichiers exécutables `.bat` sont fournis :
 
 ### 1. Déposez votre vidéo
-Copiez votre fichier vidéo (ex: `reunion_client.mp4`) directement dans ce dossier.
+Copiez votre fichier vidéo (ex: `reunion_client.mp4`) directement dans ce dossier `demo/`.
 
-### 2. Lancez le script
-Dans PowerShell, lancez simplement :
-```powershell
-.\run_pipeline.ps1
-```
-*Si aucune vidéo n'est précisée, le script détecte automatiquement le fichier `.mp4` présent.*
+### 2. Double-cliquez sur `LANCER_PIPELINE.bat`
+* **Zéro ligne de commande à taper** : Double-cliquez simplement sur [**`LANCER_PIPELINE.bat`**](file:///C:/Users/Admin/Desktop/smac/livrable/demo/LANCER_PIPELINE.bat).
+* Le script configure automatiquement Python, installe les dépendances nécessaires dans un environnement virtuel local (`.venv`) sans modifier votre système, et lance le traitement.
+* À la fin de l'exécution, **le dossier des livrables s'ouvre automatiquement dans l'Explorateur Windows** !
 
 ### 3. Saisie de la Clé API (au premier lancement uniquement)
 Le script vous demandera une clé d'accès LLM pour la synthèse :
@@ -27,6 +27,14 @@ Le script vous demandera une clé d'accès LLM pour la synthèse :
 - **Option 2 : Mistral AI** *(sur [console.mistral.ai](https://console.mistral.ai))*
 
 Vous pouvez choisir de sauvegarder la clé : elle sera stockée localement dans un fichier `.env` et ne vous sera plus jamais demandée.
+
+---
+
+### Pour les utilisateurs avancés (PowerShell)
+Vous pouvez également piloter le pipeline directement en ligne de commande :
+```powershell
+.\run_pipeline.ps1
+```
 
 ---
 

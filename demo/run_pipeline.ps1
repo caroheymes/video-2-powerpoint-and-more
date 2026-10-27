@@ -22,7 +22,7 @@ param(
 
     [string]$OutputDir = "output",
 
-    [ValidateSet("gemini", "mistral", "")]
+    [ValidateSet("gemini", "mistral", "openai", "")]
     [string]$Provider = "",
 
     [string]$ApiKey = "",
@@ -81,13 +81,18 @@ function Get-OrPromptApiKey {
         return @{ Provider = $prov; Key = $ArgKey }
     }
 
-    # 2. Lecture du fichier local .env si existant
-    $envFile = Join-Path $ScriptDir ".env"
-    if (Test-Path $envFile) {
-        Get-Content $envFile | ForEach-Object {
-            if ($_ -match '^\s*([A-Za-z0-9_]+)\s*=\s*(.+)\s*$') {
-                $val = $matches[2].Trim().Trim('"').Trim("'")
-                [Environment]::SetEnvironmentVariable($matches[1], $val, "Process")
+    # 2. Lecture du fichier local .env ou secrets\.env si existant
+    $candidateEnvFiles = @(
+        (Join-Path $ScriptDir ".env"),
+        "C:\Users\Admin\Desktop\secrets\.env"
+    )
+    foreach ($ef in $candidateEnvFiles) {
+        if (Test-Path $ef) {
+            Get-Content $ef | ForEach-Object {
+                if ($_ -match '^\s*([A-Za-z0-9_]+)\s*=\s*(.+)\s*$') {
+                    $val = $matches[2].Trim().Trim('"').Trim("'")
+                    [Environment]::SetEnvironmentVariable($matches[1], $val, "Process")
+                }
             }
         }
     }
@@ -101,6 +106,11 @@ function Get-OrPromptApiKey {
         Write-Host " [Auth] Clé Mistral détectée via variable d'environnement." -ForegroundColor Green
         return @{ Provider = "mistral"; Key = $env:MISTRAL_API_KEY }
     }
+    if ($env:OPENAI_API_KEY -or $env:openai_api_key) {
+        $oaKey = if ($env:OPENAI_API_KEY) { $env:OPENAI_API_KEY } else { $env:openai_api_key }
+        Write-Host " [Auth] Clé OpenAI détectée via .env !" -ForegroundColor Green
+        return @{ Provider = "openai"; Key = $oaKey }
+    }
 
     # 4. Saisie interactive conviviale
     Write-Host "`n----------------------------------------------------------------" -ForegroundColor Cyan
@@ -109,9 +119,10 @@ function Get-OrPromptApiKey {
     Write-Host "Une clé d'accès API est nécessaire pour synthétiser le transcript de 2h."
     Write-Host "  [1] Google Gemini (Recommandé, gratuit sur aistudio.google.com)"
     Write-Host "  [2] Mistral AI (console.mistral.ai)"
+    Write-Host "  [3] OpenAI (platform.openai.com)"
     
-    $choix = Read-Host "`nChoisissez votre fournisseur [1 pour Gemini, 2 pour Mistral]"
-    $prov = if ($choix -eq "2") { "mistral" } else { "gemini" }
+    $choix = Read-Host "`nChoisissez votre fournisseur [1 pour Gemini, 2 pour Mistral, 3 pour OpenAI]"
+    $prov = if ($choix -eq "2") { "mistral" } elseif ($choix -eq "3") { "openai" } else { "gemini" }
 
     Write-Host "Collez votre clé d'API $prov (clic droit ou Ctrl+V) : " -NoNewline -ForegroundColor Green
     $secure = Read-Host -AsSecureString
@@ -142,13 +153,35 @@ Write-Host "`n[Initialisation] Vérification de l'environnement Python..." -Fore
 
 # Résolution de l'exécutable uv
 $uvExe = Get-Command "uv" -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source
-if (!$uvExe -and (Test-Path "C:\Users\Admin\.local\bin\uv.exe")) {
-    $uvExe = "C:\Users\Admin\.local\bin\uv.exe"
+if (!$uvExe) {
+    $candidates = @(
+        "$HOME\.local\bin\uv.exe",
+        "$env:USERPROFILE\.local\bin\uv.exe",
+        "C:\Users\Admin\.local\bin\uv.exe",
+        "$env:LOCALAPPDATA\Microsoft\WinGet\Packages\astral-sh.uv_Microsoft.Winget.Source_8wekyb3d8bbwe\uv.exe",
+        "$HOME\.cargo\bin\uv.exe"
+    )
+    foreach ($cand in $candidates) {
+        if (Test-Path $cand) {
+            $uvExe = $cand
+            break
+        }
+    }
 }
 
-if (!$uvExe) {
-    Write-Error "L'utilitaire 'uv' est requis. Téléchargement ou installation introuvable."
-    exit 1
+if (!$uvExe -or !(Test-Path $uvExe)) {
+    Write-Host " [Installation] Téléchargement automatique de l'outil autonome 'uv' (sans droits admin)..." -ForegroundColor Yellow
+    try {
+        irm https://astral.sh/uv/install.ps1 | iex
+        $uvExe = "$HOME\.local\bin\uv.exe"
+        if (!(Test-Path $uvExe)) {
+            $uvExe = "$env:USERPROFILE\.local\bin\uv.exe"
+        }
+        Write-Host " Outil 'uv' installé avec succès dans votre profil utilisateur !" -ForegroundColor Green
+    } catch {
+        Write-Error "Impossible de télécharger 'uv' automatiquement. Vérifiez votre connexion Internet."
+        exit 1
+    }
 }
 
 $venvPath = Join-Path $ScriptDir ".venv"
