@@ -14,8 +14,9 @@ Ce projet convertit une vidéo enregistrée (réunion, conférence, cours) en pl
 
 Le dépôt est séparé en deux dossiers :
 
-- **[`demo/`](./demo/)** : Contient le pipeline fonctionnel complet. C'est le dossier à utiliser.
-- **[`scripts_historiques/`](./scripts_historiques/)** : Conserve les scripts de test et les composants d'exploration initiaux (notamment le module `frontend-slides`).
+- **`INSTALLER_WINDOWS.bat`** : Assistant d'installation graphique en un clic pour Windows.
+- **[`demo/`](./demo/)** : Contient le pipeline fonctionnel complet.
+- **[`scripts_historiques/`](./scripts_historiques/)** : Conserve les scripts de test et les composants d'exploration initiaux.
 
 ---
 
@@ -44,15 +45,24 @@ Les documents générés lors de ce test sont consultables directement dans le d
 
 Le script a été conçu pour tourner sur n'importe quel ordinateur Windows, même si Python n'est pas installé sur la machine. Les dépendances sont isolées localement sans modifier la configuration système.
 
-1. Téléchargez ou clonez ce dépôt.
-2. Ouvrez le dossier `demo/`.
-3. Double-cliquez sur `LANCER_PIPELINE.bat`.
-4. À la question *« Où se trouve la vidéo ? »* :
+### Méthode 1 : L'assistant d'installation graphique (recommandé)
+
+Double-cliquez simplement sur **`INSTALLER_WINDOWS.bat`**. Une fenêtre s'ouvre pour configurer l'outil :
+- Saisir votre clé d'API (OpenAI, Gemini ou Mistral),
+- Créer automatiquement un raccourci **« Video to PowerPoint »** sur votre Bureau,
+- Activer l'option au **clic droit dans Windows** sur les fichiers `.mp4` (*« Convertir avec Video2PowerPoint »*).
+
+Une fois installé, vous pouvez lancer une conversion soit depuis l'icône sur votre Bureau, soit en faisant un simple clic droit sur n'importe quel fichier vidéo !
+
+### Méthode 2 : Lancement direct sans installation
+
+1. Ouvrez le dossier `demo/`.
+2. Double-cliquez sur `LANCER_PIPELINE.bat`.
+3. À la question *« Où se trouve la vidéo ? »* :
    - Glissez votre fichier `.mp4` dans la fenêtre,
    - Ou tapez son chemin,
    - Ou appuyez simplement sur Entrée pour choisir le fichier via l'explorateur Windows habituel.
-5. Au premier lancement, collez votre clé d'API (OpenAI, Gemini ou Mistral). Vous pouvez l'enregistrer dans un fichier local `.env` pour ne plus avoir à la renseigner par la suite.
-6. Une fois le traitement terminé, l'explorateur de fichiers s'ouvre directement sur le dossier `output/`.
+4. Une fois le traitement terminé, l'explorateur s'ouvre directement sur le dossier `output/`.
 
 ---
 

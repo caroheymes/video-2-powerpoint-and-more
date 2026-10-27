@@ -14,7 +14,7 @@ echo  [Info] Aucune installation de Python requise (tout est géré automatiquem
 echo.
 
 :: Exécution du script PowerShell avec contournement transparent de la politique d'exécution
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0run_pipeline.ps1"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0run_pipeline.ps1" %*
 
 :: Vérification du code de sortie
 if %ERRORLEVEL% NEQ 0 (
