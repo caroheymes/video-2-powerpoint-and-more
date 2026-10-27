@@ -3,6 +3,10 @@ setlocal
 cd /d "%~dp0"
 title Video to PowerPoint
 
+:: Désactiver les alertes de sécurité Windows 'L'éditeur n'a pas pu être vérifié'
+set SEE_MASK_NOZONECHECKS=1
+powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "Get-ChildItem -Path '%~dp0' -Recurse -Force | Unblock-File -ErrorAction SilentlyContinue" >nul 2>&1
+
 rem Masquer les messages d'avertissement internes Hugging Face / Windows symlinks
 set HF_HUB_DISABLE_SYMLINKS_WARNING=1
 set PYTHONWARNINGS=ignore

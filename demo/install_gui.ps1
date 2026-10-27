@@ -217,6 +217,7 @@ $btnInstall.Add_Click({
                 $shortcut.IconLocation = "$icoPath,0"
             }
             $shortcut.Save()
+            Unblock-File -Path (Join-Path $desktopDir "Video to PowerPoint.lnk") -ErrorAction SilentlyContinue
         }
 
         # 5. Ajout au menu Clic Droit de Windows (.mp4) dans HKCU (sans droits admin)
@@ -231,9 +232,12 @@ $btnInstall.Add_Click({
             $cmdKey = "$regKey\Command"
             New-Item -Path $cmdKey -Force | Out-Null
             $batPath = Join-Path $ScriptDir "LANCER_PIPELINE.bat"
-            $cmdVal = "`"$batPath`" `"%1`""
+            $cmdVal = "cmd.exe /c `"set SEE_MASK_NOZONECHECKS=1 && `"$batPath`" `"%1`"`""
             Set-ItemProperty -Path $cmdKey -Name "(Default)" -Value $cmdVal
         }
+
+        # Débloquer automatiquement tous les fichiers du dossier pour supprimer toute alerte de sécurité Windows
+        Get-ChildItem -Path $ScriptDir -Recurse -Force | Unblock-File -ErrorAction SilentlyContinue
 
         $lblStatus.ForeColor = [System.Drawing.Color]::FromArgb(22, 101, 52)
         $lblStatus.Text = "Installation terminée avec succès ! Raccourci créé sur votre Bureau."

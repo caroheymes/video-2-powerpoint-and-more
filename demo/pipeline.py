@@ -107,6 +107,11 @@ def download_video_if_url(video_target: str, destination_dir: Path) -> Path:
                         pbar.update(len(chunk))
 
         print(f" Vidéo téléchargée et prête : {output_file.name}")
+        if sys.platform == "win32":
+            try:
+                subprocess.run(["powershell", "-NoProfile", "-Command", f'Unblock-File -LiteralPath "{output_file}"'], check=False, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            except Exception:
+                pass
         return output_file
 
     elif video_target.startswith("http://") or video_target.startswith("https://"):
@@ -123,6 +128,11 @@ def download_video_if_url(video_target: str, destination_dir: Path) -> Path:
                         f.write(chunk)
                         pbar.update(len(chunk))
         print(f" Vidéo téléchargée : {output_file.name}")
+        if sys.platform == "win32":
+            try:
+                subprocess.run(["powershell", "-NoProfile", "-Command", f'Unblock-File -LiteralPath "{output_file}"'], check=False, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            except Exception:
+                pass
         return output_file
 
     else:

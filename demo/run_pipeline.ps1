@@ -33,7 +33,8 @@ param(
 $ErrorActionPreference = "Stop"
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
-# Masquer les avertissements techniques parasites Hugging Face / Symlinks sur Windows
+# Masquer les alertes de sécurité Windows et avertissements techniques Hugging Face / Symlinks
+$env:SEE_MASK_NOZONECHECKS = "1"
 $env:HF_HUB_DISABLE_SYMLINKS_WARNING = "1"
 $env:PYTHONWARNINGS = "ignore"
 $env:TOKENIZERS_PARALLELISM = "false"
@@ -158,9 +159,13 @@ if ([string]::IsNullOrWhiteSpace($VideoPath)) {
 }
 
 $isUrl = $VideoPath.StartsWith("http://") -or $VideoPath.StartsWith("https://") -or ($VideoPath -match "drive\.google\.com")
-if (!$isUrl -and !(Test-Path $VideoPath)) {
-    Write-Error "Le fichier vidéo '$VideoPath' est introuvable."
-    exit 1
+if (!$isUrl) {
+    if (!(Test-Path $VideoPath)) {
+        Write-Error "Le fichier vidéo '$VideoPath' est introuvable."
+        exit 1
+    }
+    # Supprimer le tag de sécurité de téléchargement web sur la vidéo
+    Unblock-File -LiteralPath (Resolve-Path $VideoPath).Path -ErrorAction SilentlyContinue
 }
 
 # ------------------------------------------------------------------------------
