@@ -81,10 +81,10 @@ function Get-OrPromptApiKey {
         return @{ Provider = $prov; Key = $ArgKey }
     }
 
-    # 2. Lecture du fichier local .env ou secrets\.env si existant
+    # 2. Lecture des variables : d'abord le dossier secrets global, puis le .env local (prioritaire)
     $candidateEnvFiles = @(
-        (Join-Path $ScriptDir ".env"),
-        "C:\Users\Admin\Desktop\secrets\.env"
+        "C:\Users\Admin\Desktop\secrets\.env",
+        (Join-Path $ScriptDir ".env")
     )
     foreach ($ef in $candidateEnvFiles) {
         if (Test-Path $ef) {
@@ -218,6 +218,10 @@ if ($SkipTranscription) {
 $sw = [System.Diagnostics.Stopwatch]::StartNew()
 
 & $venvPython @pipelineArgs
+if ($LASTEXITCODE -ne 0) {
+    Write-Error "Une erreur s'est produite lors de l'exécution du pipeline Python (code d'erreur $LASTEXITCODE)."
+    exit $LASTEXITCODE
+}
 
 $sw.Stop()
 $elapsed = [string]::Format("{0:d2}m {1:d2}s", $sw.Elapsed.Minutes, $sw.Elapsed.Seconds)

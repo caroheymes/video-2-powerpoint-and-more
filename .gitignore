@@ -1,0 +1,21 @@
+# Secrets & Variables d'environnement
+.env
+*.env
+secrets/
+
+# Environnements virtuels Python & Bytecode
+.venv/
+venv/
+ENV/
+__pycache__/
+*.pyc
+
+# Fichiers vidéo et audio lourds (limite GitHub 100 Mo)
+*.mp4
+*.mkv
+*.wav
+*.avi
+
+# Caches & Logs
+.cache/
+*.log

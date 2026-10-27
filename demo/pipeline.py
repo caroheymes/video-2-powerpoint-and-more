@@ -69,14 +69,33 @@ def transcribe_audio(audio_path: Path, output_transcript_path: Path, model_size:
     print(f"\n[2/5] 🎙 Transcription locale Whisper (modèle: {model_size})...")
     from faster_whisper import WhisperModel
 
-    # Détection GPU CUDA vs CPU int8
-    import torch
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    compute_type = "float16" if device == "cuda" else "int8"
-    print(f" Matériel détecté : {device.upper()} (calcul: {compute_type})")
+    # Détection GPU CUDA vs CPU int8 avec repli transparent sur CPU si librairies CUDA absentes
+    model = None
+    segments = None
+    info = None
 
-    model = WhisperModel(model_size, device=device, compute_type=compute_type)
-    segments, info = model.transcribe(str(audio_path), language="fr", beam_size=5)
+    try:
+        import ctranslate2
+        if "cuda" in ctranslate2.get_supported_compute_types("cuda"):
+            print(" Tentative d'initialisation sur GPU CUDA...")
+            model = WhisperModel(model_size, device="cuda", compute_type="float16")
+            segments_gen, info = model.transcribe(str(audio_path), beam_size=5)
+            # Vérification du premier segment pour déclencher le chargement des DLLs CUDA
+            first_seg = next(segments_gen, None)
+            if first_seg:
+                import itertools
+                segments = itertools.chain([first_seg], segments_gen)
+            else:
+                segments = []
+            print(" Exécution sur GPU CUDA active.")
+    except Exception as cuda_err:
+        print(f" GPU CUDA non disponible ou DLLs manquantes ({cuda_err}). Bascule sur CPU int8.")
+        model = None
+
+    if model is None:
+        print(" Exécution sur CPU (calcul: int8 optimisé)...")
+        model = WhisperModel(model_size, device="cpu", compute_type="int8")
+        segments, info = model.transcribe(str(audio_path), beam_size=5)
 
     print(f" Langue détectée : {info.language} (confiance: {info.language_probability:.2f})")
     print(f" Durée audio : {format_timestamp(info.duration)}")
@@ -134,8 +153,14 @@ def extract_scenes(video_path: Path, output_keyframes_dir: Path, max_scenes: int
     selected_scenes = scenes[::stride][:max_scenes]
 
     for idx, scene in enumerate(selected_scenes):
-        start_sec = scene[0].get_seconds()
-        mid_sec = start_sec + (scene[1].get_seconds() - start_sec) / 2.0
+        s0_sec = getattr(scene[0], 'seconds', None)
+        if s0_sec is None:
+            s0_sec = scene[0].get_seconds()
+        s1_sec = getattr(scene[1], 'seconds', None)
+        if s1_sec is None:
+            s1_sec = scene[1].get_seconds()
+        start_sec = s0_sec
+        mid_sec = start_sec + (s1_sec - start_sec) / 2.0
         frame_idx = int(mid_sec * fps)
 
         cap.set(cv2.CAP_PROP_POS_FRAMES, frame_idx)
