@@ -33,6 +33,11 @@ param(
 $ErrorActionPreference = "Stop"
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
+# Masquer les avertissements techniques parasites Hugging Face / Symlinks sur Windows
+$env:HF_HUB_DISABLE_SYMLINKS_WARNING = "1"
+$env:PYTHONWARNINGS = "ignore"
+$env:TOKENIZERS_PARALLELISM = "false"
+
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 Set-Location $ScriptDir
 

@@ -13,8 +13,14 @@ import json
 import base64
 import argparse
 import subprocess
+import warnings
 from pathlib import Path
 from typing import List, Dict, Any, Optional
+
+# Masquage des avertissements techniques Hugging Face / Windows symlinks
+os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+warnings.filterwarnings("ignore")
 
 # Configuration de la sortie console UTF-8 sur Windows
 if sys.platform == "win32":
