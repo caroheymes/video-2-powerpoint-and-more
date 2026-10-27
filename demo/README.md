@@ -42,7 +42,9 @@ demo/
    Un raccourci est déposé sur votre Bureau et une commande est ajoutée au menu clic droit de Windows.
 
 2. **Traitement d'une vidéo** :
-   - Soit par un **clic droit sur votre fichier vidéo (`.mp4`)** -> **« Convertir avec Video2PowerPoint (IA) »**.
+   - Soit par un **clic droit sur votre fichier vidéo (`.mp4`)** :
+     - Sur **Windows 11** : faites un clic droit, cliquez sur **« Afficher d'autres options »** (ou `Maj + F10`), puis choisissez **« Convertir avec Video2PowerPoint (IA) »**.
+     - Sur **Windows 10** : choisissez directement **« Convertir avec Video2PowerPoint (IA) »**.
    - Soit en double-cliquant sur **`LANCER_PIPELINE.bat`** (ou l'icône sur votre Bureau) :
      - Appuyez sur **Entrée** pour télécharger et tester la vidéo d'exemple Google Drive (7 minutes).
      - Ou tapez **2** pour choisir un fichier sur votre ordinateur via l'explorateur Windows.

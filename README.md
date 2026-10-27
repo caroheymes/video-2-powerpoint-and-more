@@ -39,7 +39,10 @@ L'assistant configure tout de manière autonome :
 Deux méthodes simples :
 
 - **Au clic droit (le plus rapide)** :  
-  Faites un clic droit sur n'importe quel fichier vidéo (`.mp4`) sur votre machine et choisissez **« Convertir avec Video2PowerPoint (IA) »**. La conversion démarre aussitôt.
+  Faites un clic droit sur n'importe quel fichier vidéo (`.mp4`) sur votre ordinateur :
+  - **Sur Windows 11** : dans le premier menu simplifié, cliquez sur **« Afficher d'autres options »** (ou utilisez le raccourci clavier `Maj + F10`), puis sélectionnez **« Convertir avec Video2PowerPoint (IA) »**.
+  - **Sur Windows 10** : l'option **« Convertir avec Video2PowerPoint (IA) »** apparaît directement dans le menu du clic droit.  
+  La conversion démarre aussitôt de façon entièrement autonome.
 
 - **Depuis l'icône sur le Bureau (ou `LANCER_PIPELINE.bat`)** :  
   Double-cliquez dessus. La console vous laisse le choix :
