@@ -1,24 +1,24 @@
 # Module de traitement vidéo (`demo/`)
 
-Ce dossier regroupe le script d'automatisation et les fichiers nécessaires pour transformer un fichier vidéo en plusieurs documents de restitution.
+Ce dossier regroupe le script d'automatisation et les fichiers nécessaires pour transformer un enregistrement vidéo en plusieurs documents de travail prêts à l'emploi.
 
 ---
 
-## Contenu du dossier
+## Organisation du dossier
 
 ```text
 demo/
-├── output/                    # Dossier recevant les livrables générés
+├── output/                    # Dossier recevant les livrables finaux
 │   ├── transcript.md          # Transcription intégrale horodatée
-│   ├── summary.md             # Synthèse textuelle courte
+│   ├── summary.md             # Synthèse textuelle
 │   ├── article_mode_d_emploi.docx # Note de synthèse Word illustrée
 │   ├── presentation.pptx      # Support PowerPoint 16:9
 │   ├── presentation.html      # Présentation HTML autonome
 │   ├── presentation.pdf       # Export PDF 16:9
 │   ├── deck_structure.json    # Données intermédiaires des diapositives
-│   └── keyframes/             # Images extraites de la vidéo
+│   └── keyframes/             # Images stables extraites de la vidéo
 ├── LANCER_PIPELINE.bat        # Fichier à double-cliquer pour démarrer
-├── INSTALLER.bat              # Script optionnel de pré-installation
+├── INSTALLER_WINDOWS.bat      # Assistant de configuration graphique
 ├── pipeline.py                # Script Python principal
 ├── run_pipeline.ps1           # Script PowerShell orchestrateur
 ├── requirements.txt           # Liste des dépendances Python
@@ -26,6 +26,20 @@ demo/
 ├── addendum.md                # Choix d'architecture technique
 └── README.md                  # Ce document
 ```
+
+---
+
+## Que doit faire un utilisateur non technique ?
+
+Aucune commande complexe ni installation manuelle de Python n'est nécessaire.
+
+1. **Première fois** : double-cliquez sur `INSTALLER_WINDOWS.bat`, saisissez votre clé d'accès (OpenAI, Gemini ou Mistral), puis cliquez sur **« Installer & Configurer »**.
+2. **Pour traiter une vidéo** :
+   - Soit par un clic droit sur votre fichier vidéo (`.mp4`) : choisissez **« Convertir avec Video2PowerPoint (IA) »**.
+   - Soit en double-cliquant sur **`LANCER_PIPELINE.bat`** : appuyez sur la touche Entrée pour choisir votre vidéo dans l'explorateur de fichiers.
+3. Dès que le traitement est terminé, le dossier **`output/`** s'ouvre automatiquement avec tous vos documents prêts.
+
+*Note : si un avertissement technique apparaît dans la console (par exemple au sujet des symlinks Windows de Hugging Face), vous n'avez rien à faire : ce n'est pas une erreur et cela n'empêche aucunement la génération des documents.*
 
 ---
 
@@ -38,26 +52,9 @@ Les fichiers issus de cette vidéo sont déjà présents dans le dossier [`outpu
 
 ---
 
-## Utilisation
+## Options avancées en ligne de commande (PowerShell)
 
-Aucune installation préalable de Python n'est nécessaire sur l'ordinateur hôte.
-
-### 1. Installation en un clic (recommandé)
-Double-cliquez sur `INSTALLER_WINDOWS.bat` pour configurer l'outil :
-- Renseignez votre clé d'accès (OpenAI, Gemini ou Mistral),
-- Activez le raccourci sur le Bureau et l'option Clic Droit Windows sur les vidéos.
-
-### 2. Traitement d'une vidéo
-- **Par Clic Droit** : Clic droit sur n'importe quel fichier `.mp4` -> *« Convertir avec Video2PowerPoint (IA) »*.
-- **Ou via `LANCER_PIPELINE.bat`** : Double-cliquez dessus. Si aucune vidéo n'est présente dans le dossier, appuyez sur Entrée pour la sélectionner dans l'explorateur Windows habituel.
-
-Le dossier `output/` s'ouvre automatiquement dès que les fichiers sont prêts.
-
----
-
-## Paramètres avancés (PowerShell)
-
-Pour les utilisateurs qui souhaitent intégrer ce traitement dans un script ou l'exécuter depuis un terminal :
+Pour intégrer ce traitement dans un script ou l'exécuter depuis un terminal :
 
 ```powershell
 # Traitement direct d'un fichier avec le modèle Whisper medium

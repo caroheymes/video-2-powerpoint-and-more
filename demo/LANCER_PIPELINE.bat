@@ -3,6 +3,11 @@ setlocal
 cd /d "%~dp0"
 title Video to PowerPoint
 
+rem Masquer les messages d'avertissement internes Hugging Face / Windows symlinks
+set HF_HUB_DISABLE_SYMLINKS_WARNING=1
+set PYTHONWARNINGS=ignore
+set TOKENIZERS_PARALLELISM=false
+
 echo ================================================================
 echo   Video to PowerPoint - Traitement Automatique
 echo ================================================================
