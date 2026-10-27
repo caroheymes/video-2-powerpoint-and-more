@@ -17,21 +17,43 @@ $form.FormBorderStyle = "FixedDialog"
 $form.MaximizeBox = $false
 $form.BackColor = [System.Drawing.Color]::FromArgb(248, 250, 252)
 
+# Définition de l'icône de l'application
+$icoPath = Join-Path $ScriptDir "assets\app_icon.ico"
+$pngPath = Join-Path $ScriptDir "assets\app_icon.png"
+if (!(Test-Path $icoPath)) { $icoPath = Join-Path $ScriptDir "app_icon.ico" }
+if (!(Test-Path $pngPath)) { $pngPath = Join-Path $ScriptDir "app_icon.png" }
+
+if (Test-Path $icoPath) {
+    try {
+        $form.Icon = New-Object System.Drawing.Icon($icoPath)
+    } catch {}
+}
+
+# Logo dans l'en-tête
+if (Test-Path $pngPath) {
+    $picLogo = New-Object System.Windows.Forms.PictureBox
+    $picLogo.Image = [System.Drawing.Image]::FromFile($pngPath)
+    $picLogo.SizeMode = [System.Windows.Forms.PictureBoxSizeMode]::Zoom
+    $picLogo.Size = New-Object System.Drawing.Size(46, 46)
+    $picLogo.Location = New-Object System.Drawing.Point(28, 18)
+    $form.Controls.Add($picLogo)
+}
+
 # Titre
 $lblTitle = New-Object System.Windows.Forms.Label
 $lblTitle.Text = "Video to PowerPoint & More"
 $lblTitle.Font = New-Object System.Drawing.Font("Segoe UI", 16, [System.Drawing.FontStyle]::Bold)
 $lblTitle.ForeColor = [System.Drawing.Color]::FromArgb(15, 23, 42)
-$lblTitle.Location = New-Object System.Drawing.Point(30, 20)
-$lblTitle.Size = New-Object System.Drawing.Size(500, 35)
+$lblTitle.Location = New-Object System.Drawing.Point(85, 18)
+$lblTitle.Size = New-Object System.Drawing.Size(440, 32)
 $form.Controls.Add($lblTitle)
 
 $lblDesc = New-Object System.Windows.Forms.Label
 $lblDesc.Text = "Assistant d'installation et de configuration automatique pour Windows."
 $lblDesc.Font = New-Object System.Drawing.Font("Segoe UI", 9.5)
 $lblDesc.ForeColor = [System.Drawing.Color]::FromArgb(100, 116, 139)
-$lblDesc.Location = New-Object System.Drawing.Point(32, 55)
-$lblDesc.Size = New-Object System.Drawing.Size(480, 25)
+$lblDesc.Location = New-Object System.Drawing.Point(87, 50)
+$lblDesc.Size = New-Object System.Drawing.Size(440, 22)
 $form.Controls.Add($lblDesc)
 
 # Séparateur
@@ -191,6 +213,9 @@ $btnInstall.Add_Click({
             $shortcut.TargetPath = Join-Path $ScriptDir "LANCER_PIPELINE.bat"
             $shortcut.WorkingDirectory = $ScriptDir
             $shortcut.Description = "Convertir des vidéos en PowerPoint, Word et résumés avec l'IA"
+            if (Test-Path $icoPath) {
+                $shortcut.IconLocation = "$icoPath,0"
+            }
             $shortcut.Save()
         }
 
@@ -199,6 +224,9 @@ $btnInstall.Add_Click({
             $regKey = "HKCU:\Software\Classes\SystemFileAssociations\.mp4\Shell\Video2PPTX"
             New-Item -Path $regKey -Force | Out-Null
             Set-ItemProperty -Path $regKey -Name "(Default)" -Value "Convertir avec Video2PowerPoint (IA)"
+            if (Test-Path $icoPath) {
+                Set-ItemProperty -Path $regKey -Name "Icon" -Value "$icoPath,0"
+            }
             
             $cmdKey = "$regKey\Command"
             New-Item -Path $cmdKey -Force | Out-Null
