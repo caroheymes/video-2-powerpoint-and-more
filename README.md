@@ -8,6 +8,8 @@ Ce projet transforme n'importe quel enregistrement vidéo (réunion, formation, 
 - Un diaporama PowerPoint 16:9 (`.pptx`) prêt à projeter.
 - Une version web plein écran (`.html`) et son export imprimable (`.pdf`).
 
+> **Note d'avancement :** Le pipeline automatisé, les scripts d'export, le module d'installation Windows et les intégrations système sont opérationnels. L'UI reste à mettre en place !
+
 ---
 
 ## Démarrage en 3 clics (sans compétences techniques)

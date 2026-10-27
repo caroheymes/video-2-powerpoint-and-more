@@ -2,6 +2,8 @@
 
 Ce dossier rassemble l'ensemble des scripts nécessaires pour transformer un enregistrement vidéo en documents de travail complets et prêts à l'emploi.
 
+> **Note :** Le pipeline automatisé et les flux d'export sont fonctionnels. L'UI reste à mettre en place !
+
 ---
 
 ## Contenu du dossier
