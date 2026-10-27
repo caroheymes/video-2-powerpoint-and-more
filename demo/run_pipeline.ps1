@@ -50,47 +50,103 @@ Write-Host ""
 # ------------------------------------------------------------------------------
 # 1. Sélection ou Détection du Fichier Vidéo
 # ------------------------------------------------------------------------------
-if ([string]::IsNullOrWhiteSpace($VideoPath)) {
-    $mp4Files = Get-ChildItem -Path $ScriptDir -Filter "*.mp4"
-    if ($mp4Files.Count -eq 1) {
-        $VideoPath = $mp4Files[0].FullName
-        Write-Host " [Auto-détection] Fichier vidéo trouvé : $($mp4Files[0].Name)" -ForegroundColor Green
-    } elseif ($mp4Files.Count -gt 1) {
-        Write-Host "Plusieurs fichiers MP4 trouvés dans le dossier :" -ForegroundColor Yellow
-        for ($i = 0; $i -lt $mp4Files.Count; $i++) {
-            Write-Host "  [$($i+1)] $($mp4Files[$i].Name)"
-        }
-        $sel = Read-Host "`nSélectionnez le numéro de la vidéo à traiter"
-        $idx = [int]$sel - 1
-        $VideoPath = $mp4Files[$idx].FullName
-    } else {
-        Write-Host "----------------------------------------------------------------" -ForegroundColor Cyan
-        Write-Host "  SÉLECTION DU FICHIER VIDÉO" -ForegroundColor Yellow
-        Write-Host "----------------------------------------------------------------" -ForegroundColor Cyan
-        Write-Host "Aucune vidéo n'est présente dans le dossier actuel."
-        Write-Host "Vous pouvez :"
-        Write-Host "  • Glisser-déposer votre vidéo (.mp4, .mkv, .mov) dans cette fenêtre,"
-        Write-Host "  • Ou taper/coller le chemin de votre fichier,"
-        Write-Host "  • Ou appuyer directement sur [Entrée] pour ouvrir l'explorateur de fichiers."
-        Write-Host ""
-        $inputVal = (Read-Host "Où se trouve la vidéo ?").Trim('"').Trim("'")
+function Open-VideoFilePicker {
+    Add-Type -AssemblyName System.Windows.Forms
+    $dialog = New-Object System.Windows.Forms.OpenFileDialog
+    $dialog.Filter = "Fichiers Vidéo (*.mp4;*.mkv;*.mov)|*.mp4;*.mkv;*.mov|Tous les fichiers (*.*)|*.*"
+    $dialog.Title = "Sélectionnez le fichier vidéo à traiter"
+    $dialog.InitialDirectory = [Environment]::GetFolderPath("Desktop")
+    if ($dialog.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
+        return $dialog.FileName
+    }
+    return $null
+}
 
-        if ([string]::IsNullOrWhiteSpace($inputVal)) {
-            Write-Host "Ouverture de la fenêtre de sélection de fichier..." -ForegroundColor Yellow
-            Add-Type -AssemblyName System.Windows.Forms
-            $dialog = New-Object System.Windows.Forms.OpenFileDialog
-            $dialog.Filter = "Fichiers Vidéo (*.mp4;*.mkv;*.mov)|*.mp4;*.mkv;*.mov|Tous les fichiers (*.*)|*.*"
-            $dialog.Title = "Sélectionnez la vidéo à traiter"
-            $dialog.InitialDirectory = [Environment]::GetFolderPath("MyVideos")
-            if ($dialog.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
-                $VideoPath = $dialog.FileName
+if ([string]::IsNullOrWhiteSpace($VideoPath)) {
+    $mp4Files = @(Get-ChildItem -Path $ScriptDir -Filter "*.mp4")
+    
+    Write-Host "----------------------------------------------------------------" -ForegroundColor Cyan
+    Write-Host "  CHOIX DE LA VIDÉO À TRAITER" -ForegroundColor Yellow
+    Write-Host "----------------------------------------------------------------" -ForegroundColor Cyan
+    
+    if ($mp4Files.Count -eq 1) {
+        $defaultVideo = $mp4Files[0]
+        Write-Host "Vidéo d'exemple détectée dans le dossier :" -ForegroundColor Gray
+        Write-Host "  [1] $($defaultVideo.Name) (par défaut)" -ForegroundColor Green
+        Write-Host "  [2] Parcourir mes dossiers pour choisir une autre vidéo" -ForegroundColor Yellow
+        Write-Host ""
+        Write-Host "Astuce : vous pouvez aussi glisser-déposer directement un fichier vidéo dans cette fenêtre." -ForegroundColor Gray
+        Write-Host ""
+        $rep = (Read-Host "Votre choix (Entrée ou 1 = vidéo par défaut, 2 = parcourir)").Trim('"').Trim("'")
+        
+        if ([string]::IsNullOrWhiteSpace($rep) -or $rep -eq "1") {
+            $VideoPath = $defaultVideo.FullName
+            Write-Host "`n [Sélection] Utilisation de la vidéo par défaut : $($defaultVideo.Name)" -ForegroundColor Green
+        } elseif ($rep -eq "2") {
+            Write-Host "`nOuverture de l'explorateur de fichiers..." -ForegroundColor Yellow
+            $chosen = Open-VideoFilePicker
+            if ($chosen) {
+                $VideoPath = $chosen
                 Write-Host " [Sélection] Vidéo choisie : $VideoPath" -ForegroundColor Green
             } else {
                 Write-Error "Opération annulée : aucun fichier sélectionné."
                 exit 1
             }
+        } elseif (Test-Path $rep) {
+            $VideoPath = $rep
+            Write-Host " [Sélection] Vidéo choisie : $VideoPath" -ForegroundColor Green
         } else {
-            $VideoPath = $inputVal
+            Write-Error "Choix ou fichier non reconnu : '$rep'"
+            exit 1
+        }
+    } elseif ($mp4Files.Count -gt 1) {
+        Write-Host "Plusieurs vidéos trouvées dans le dossier :" -ForegroundColor Yellow
+        for ($i = 0; $i -lt $mp4Files.Count; $i++) {
+            Write-Host "  [$($i+1)] $($mp4Files[$i].Name)"
+        }
+        Write-Host "  [P] Parcourir mes dossiers pour choisir une autre vidéo" -ForegroundColor Cyan
+        Write-Host ""
+        $rep = (Read-Host "Votre choix (1-$($mp4Files.Count), ou P pour parcourir)").Trim('"').Trim("'")
+        if ($rep -match '^[0-9]+$' -and [int]$rep -ge 1 -and [int]$rep -le $mp4Files.Count) {
+            $VideoPath = $mp4Files[[int]$rep - 1].FullName
+            Write-Host " [Sélection] Vidéo choisie : $($VideoPath)" -ForegroundColor Green
+        } elseif ($rep -eq "P" -or $rep -eq "p" -or [string]::IsNullOrWhiteSpace($rep)) {
+            $chosen = Open-VideoFilePicker
+            if ($chosen) {
+                $VideoPath = $chosen
+                Write-Host " [Sélection] Vidéo choisie : $VideoPath" -ForegroundColor Green
+            } else {
+                exit 1
+            }
+        } elseif (Test-Path $rep) {
+            $VideoPath = $rep
+            Write-Host " [Sélection] Vidéo choisie : $VideoPath" -ForegroundColor Green
+        } else {
+            Write-Error "Choix invalide."
+            exit 1
+        }
+    } else {
+        Write-Host "Aucune vidéo n'est présente dans le dossier actuel."
+        Write-Host "  • Appuyez sur [Entrée] pour parcourir vos dossiers et choisir une vidéo,"
+        Write-Host "  • Ou glissez-déposez votre vidéo (.mp4, .mkv, .mov) dans cette fenêtre."
+        Write-Host ""
+        $rep = (Read-Host "Où se trouve la vidéo ?").Trim('"').Trim("'")
+        if ([string]::IsNullOrWhiteSpace($rep)) {
+            Write-Host "Ouverture de l'explorateur de fichiers..." -ForegroundColor Yellow
+            $chosen = Open-VideoFilePicker
+            if ($chosen) {
+                $VideoPath = $chosen
+                Write-Host " [Sélection] Vidéo choisie : $VideoPath" -ForegroundColor Green
+            } else {
+                Write-Error "Opération annulée : aucun fichier sélectionné."
+                exit 1
+            }
+        } elseif (Test-Path $rep) {
+            $VideoPath = $rep
+            Write-Host " [Sélection] Vidéo choisie : $VideoPath" -ForegroundColor Green
+        } else {
+            Write-Error "Le fichier vidéo '$rep' est introuvable."
+            exit 1
         }
     }
 }
