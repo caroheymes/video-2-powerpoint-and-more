@@ -1,12 +1,3 @@
-# Synthèse Stratégique
+# Synthèse de la session
 
-## Objectif
-Cette présentation vise à explorer des stratégies pour libérer le potentiel créatif des individus, en s'appuyant sur les enseignements du livre *Too Fast to Think* de Chris Lewis.
-
-## Points Clés
-1. **Trouver le Silence** : L'importance de moments de calme pour stimuler la créativité.
-2. **Exploiter le Pouvoir des Rêves** : Encourager la pensée libre et imaginative.
-3. **Lâcher Prise** : Accepter l'imperfection et prioriser le bien-être pour favoriser la créativité.
-
-## Conclusion
-Ces stratégies permettent de créer un environnement propice à l'innovation et à la créativité, essentiel dans un monde hyper-connecté.
+Zoe Hames a présenté des stratégies pour libérer le potentiel créatif, s'appuyant sur le livre de Chris Lewis, *Too Fast to Think*. Elle a mis en avant trois approches essentielles : trouver le calme dans le tumulte, exploiter la puissance des rêves et comprendre l'importance de lâcher prise. La première stratégie souligne l'importance de moments de silence pour favoriser l'inspiration. La deuxième encourage à retrouver l'énergie imaginative de l'enfance, en permettant à l'esprit de vagabonder sans contraintes. Enfin, la dernière stratégie insiste sur la nécessité de se libérer du besoin de contrôle pour laisser place à la créativité. Ces méthodes visent à créer un environnement propice à l'épanouissement de la créativité, en mettant l'accent sur le bien-être personnel et l'exploration sans limites.

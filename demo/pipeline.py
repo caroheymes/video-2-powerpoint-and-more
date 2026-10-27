@@ -196,42 +196,37 @@ def analyze_with_llm(transcript_text: str, keyframes: List[Dict[str, Any]], api_
     keyframes_summary = "\n".join([f"- Image {kf['index']} ({kf['filename']}) capturée à {kf['timestamp']}" for kf in keyframes])
 
     system_prompt = (
-        "Tu es un directeur de cabinet de conseil de premier plan, expert en synthèse stratégique, "
-        "en pédagogie opérationnelle et en conception de présentations pour directions générales (C-Level). "
-        "À partir de la transcription complète d'une vidéo et des captures d'écrans extraites, "
-        "tu dois produire en FRANÇAIS :\n"
-        "1. Une synthèse exécutive structurée (au format Markdown).\n"
-        "2. Un article de fond / mode d'emploi opérationnel complet rédigé pour les équipes (sections, étapes, conseils pratiques).\n"
-        "3. Un plan de présentation de 12 à 16 diapositives avec bullet points percutants et visuels associés.\n\n"
-        "RÉPONDS STRICTEMENT AU FORMAT JSON avec la structure exacte suivante :\n"
+        "Tu es un rédacteur et consultant senior expérimenté. Tu rédiges avec un style humain, naturel, "
+        "précis et professionnel, sans AUCUN tic d'écriture caractéristique des intelligences artificielles.\n\n"
+        "DIRECTIVES STRICTES DE RÉDACTION 'HUMANIZER' (ANTI-IA) :\n"
+        "- BANNIR LE JARGON IA : Proscription absolue de clichés comme 'dans un monde en constante évolution', "
+        "'dans un monde hyper-connecté', 'il est crucial de', 'il convient de noter', 'véritable catalyseur', "
+        "'pierre angulaire', 'au cœur de', 'levier incontournable', 'en somme', 'en définitive'.\n"
+        "- BANNIR LES FAUSSES ANTITHÈSES : Pas de constructions artificielles du type 'Ce n'est pas seulement X, c'est Y' "
+        "ou 'Non seulement X, mais également Y'. Énonce directement le fait réel.\n"
+        "- BANNIR LA MISE EN FORME MÉCANIQUE : Évite de préfixer chaque puce par un label en gras suivi de deux-points "
+        "(ex: interdiction du schéma '**Mot-clé** : Explication monotone'). Rédige des phrases directes et variées.\n"
+        "- VARIATION DE RYTHME : Alterne phrases courtes et phrases explicatives. Ne force pas de triades (ne cherche pas "
+        "artificiellement 3 points partout ; si le sujet comporte 2 ou 4 points, écris 2 ou 4 points).\n"
+        "- TITRES SOBRES ET CONCRETS : Des titres fonctionnels et réels, comme dans une note de travail interne, "
+        "pas des slogans publicitaires ou de conférences pompeuses.\n"
+        "- PONCTUATION NATURELLE : Zéro tiret cadratin excessif, zéro point d'exclamation marketing, pas de points entre les mots.\n"
+        "- ANCRAGE RÉEL : Cite des exemples précis et des situations réelles mentionnées dans la vidéo.\n\n"
+        "Tu dois produire en FRANÇAIS un résultat STRICTEMENT AU FORMAT JSON avec cette structure :\n"
         "{\n"
-        '  "summary_markdown": "# Synthèse Stratégique...",\n'
-        '  "article_title": "Guide Pratique & Mode d\'Emploi : ...",\n'
+        '  "summary_markdown": "# Synthèse de la session\\n\\nTexte naturel en quelques paragraphes denses et concrets sans clichés...",\n'
+        '  "article_title": "Titre clair et sobre pour le document Word",\n'
         '  "article_sections": [\n'
         '    {\n'
-        '      "heading": "1. Contexte & Enjeux Stratégiques",\n'
-        '      "paragraphs": ["...", "..."],\n'
-        '      "bullets": ["...", "..."],\n'
+        '      "heading": "Titre de section descriptif et sobre",\n'
+        '      "paragraphs": ["Paragraphe rédigé naturellement...", "Suite des explications concrètes..."],\n'
+        '      "bullets": ["Point d\'attention concret sans gras systématique", "Autre recommandation opérationnelle"],\n'
         '      "keyframe": "slide_keyframe_01.jpg",\n'
-        '      "callout": "Point de vigilance : ..."\n'
-        '    },\n'
-        '    {\n'
-        '      "heading": "2. Mode d\'Emploi & Démarche Pas-à-Pas",\n'
-        '      "paragraphs": ["...", "..."],\n'
-        '      "bullets": ["Étape 1 : ...", "Étape 2 : ..."],\n'
-        '      "keyframe": "slide_keyframe_02.jpg",\n'
-        '      "callout": "Bonne pratique : ..."\n'
-        '    },\n'
-        '    {\n'
-        '      "heading": "3. Décisions Clés & Plan d\'Action",\n'
-        '      "paragraphs": ["..."],\n'
-        '      "bullets": ["Action 1 : ...", "Action 2 : ..."],\n'
-        '      "keyframe": null,\n'
-        '      "callout": null\n'
+        '      "callout": "Remarque pratique issue des échanges"\n'
         '    }\n'
         '  ],\n'
-        '  "presentation_title": "Titre Exécutif du Deck",\n'
-        '  "presentation_subtitle": "Sous-titre / Date / Client",\n'
+        '  "presentation_title": "Titre Sobre de la Présentation",\n'
+        '  "presentation_subtitle": "Sous-titre factuel (Sujet, date, intervenants)",\n'
         '  "slides": [\n'
         "    {\n"
         '      "slide_number": 1,\n'
@@ -242,10 +237,10 @@ def analyze_with_llm(transcript_text: str, keyframes: List[Dict[str, Any]], api_
         "    {\n"
         '      "slide_number": 2,\n'
         '      "type": "content",\n'
-        '      "title": "...",\n'
-        '      "bullets": ["...", "...", "..."],\n'
-        '      "keyframe": "slide_keyframe_01.jpg",\n'
-        '      "kpi": {"value": "+35%", "label": "Gains d\'efficacité"}\n'
+        '      "title": "Titre direct de la diapositive",\n'
+        '      "bullets": ["Action ou constat 1 rédigé naturellement", "Action ou constat 2"],\n'
+        '      "keyframe": "slide_keyframe_02.jpg",\n'
+        '      "kpi": null\n'
         "    }\n"
         "  ]\n"
         "}"
@@ -353,38 +348,23 @@ def generate_docx_guide(plan: Dict[str, Any], keyframes_dir: Path, output_docx_p
     COLOR_MUTED = RGBColor(100, 116, 139)    # #64748B Gray Text
 
     # Titre du document
-    article_title = plan.get("article_title") or f"Guide & Mode d'Emploi : {plan.get('presentation_title', 'Restitution Stratégique')}"
+    article_title = plan.get("article_title") or plan.get('presentation_title', 'Note de Synthèse')
     title_p = doc.add_paragraph()
     title_run = title_p.add_run(article_title)
-    title_run.font.size = Pt(24)
+    title_run.font.size = Pt(22)
     title_run.font.bold = True
     title_run.font.color.rgb = COLOR_PRIMARY
-    title_p.paragraph_format.space_after = Pt(6)
+    title_p.paragraph_format.space_after = Pt(4)
 
-    # Sous-titre / Métadonnées
-    meta_p = doc.add_paragraph()
-    meta_run = meta_p.add_run(f"Document de Synthèse Opérationnelle & Pratique | {plan.get('presentation_subtitle', 'Restitution Exécutive')}")
-    meta_run.font.size = Pt(11)
-    meta_run.font.italic = True
-    meta_run.font.color.rgb = COLOR_MUTED
-    meta_p.paragraph_format.space_after = Pt(20)
-
-    # Table de cartouche métadonnées
-    meta_table = doc.add_table(rows=1, cols=3)
-    meta_table.alignment = WD_TABLE_ALIGNMENT.CENTER
-    meta_table.autofit = True
-    hdr_cells = meta_table.rows[0].cells
-    hdr_cells[0].text = "Format : Guide Opérationnel"
-    hdr_cells[1].text = "Usage : Équipes & Direction"
-    hdr_cells[2].text = "Origine : Restitution Vidéo"
-    for c in hdr_cells:
-        shading = parse_xml(r'<w:shd {} w:fill="F1F5F9"/>'.format(nsdecls('w')))
-        c._tc.get_or_add_tcPr().append(shading)
-        for p in c.paragraphs:
-            p.runs[0].font.size = Pt(9.5)
-            p.runs[0].font.color.rgb = COLOR_MUTED
-
-    doc.add_paragraph().paragraph_format.space_after = Pt(14)
+    # Sous-titre sobre
+    sub = plan.get('presentation_subtitle', '')
+    if sub:
+        meta_p = doc.add_paragraph()
+        meta_run = meta_p.add_run(sub)
+        meta_run.font.size = Pt(11)
+        meta_run.font.italic = True
+        meta_run.font.color.rgb = COLOR_MUTED
+        meta_p.paragraph_format.space_after = Pt(16)
 
     # Sections de l'article
     sections = plan.get("article_sections", [])
@@ -584,19 +564,13 @@ def generate_html_deck(plan: Dict[str, Any], keyframes_dir: Path, output_html_pa
             slide_content = f"""
             <section class="slide title-slide" data-slide="{idx+1}">
                 <div class="title-content">
-                    <span class="badge">RESTITUTION VIDÉO EXÉCUTIVE</span>
                     <h1 class="gradient-text">{title}</h1>
                     <p class="subtitle">{subtitle or s_title}</p>
-                    <div class="meta-footer">
-                        <span>🗓 Synthèse Automatisée</span>
-                        <span>⏱ Modèle 16:9 Viewport</span>
-                        <span>🚀 Direction & Partenaires</span>
-                    </div>
                 </div>
             </section>
             """
         else:
-            bullets_li = "".join([f"<li><span class='bullet-icon'>▸</span> {b}</li>" for b in s.get("bullets", [])])
+            bullets_li = "".join([f"<li>{b}</li>" for b in s.get("bullets", [])])
             img_tag = f"<div class='slide-visual'><img src='{img_b64}' alt='Capture vidéo' /></div>" if img_b64 else ""
 
             kpi_html = ""

@@ -1,122 +1,66 @@
 {
-  "summary_markdown": "# Synthèse Stratégique\n\n## Objectif\nCette présentation vise à explorer des stratégies pour libérer le potentiel créatif des individus, en s'appuyant sur les enseignements du livre *Too Fast to Think* de Chris Lewis.\n\n## Points Clés\n1. **Trouver le Silence** : L'importance de moments de calme pour stimuler la créativité.\n2. **Exploiter le Pouvoir des Rêves** : Encourager la pensée libre et imaginative.\n3. **Lâcher Prise** : Accepter l'imperfection et prioriser le bien-être pour favoriser la créativité.\n\n## Conclusion\nCes stratégies permettent de créer un environnement propice à l'innovation et à la créativité, essentiel dans un monde hyper-connecté.",
-  "article_title": "Guide Pratique & Mode d'Emploi : Libérer Votre Potentiel Créatif",
+  "summary_markdown": "# Synthèse de la session\n\nZoe Hames a présenté des stratégies pour libérer le potentiel créatif, s'appuyant sur le livre de Chris Lewis, *Too Fast to Think*. Elle a mis en avant trois approches essentielles : trouver le calme dans le tumulte, exploiter la puissance des rêves et comprendre l'importance de lâcher prise. La première stratégie souligne l'importance de moments de silence pour favoriser l'inspiration. La deuxième encourage à retrouver l'énergie imaginative de l'enfance, en permettant à l'esprit de vagabonder sans contraintes. Enfin, la dernière stratégie insiste sur la nécessité de se libérer du besoin de contrôle pour laisser place à la créativité. Ces méthodes visent à créer un environnement propice à l'épanouissement de la créativité, en mettant l'accent sur le bien-être personnel et l'exploration sans limites.",
+  "article_title": "Stratégies pour Libérer le Potentiel Créatif",
   "article_sections": [
     {
-      "heading": "1. Contexte & Enjeux Stratégiques",
+      "heading": "Trouver le Calme dans le Tumulte",
       "paragraphs": [
-        "Dans un monde où l'information circule à une vitesse fulgurante, il est crucial de trouver des moyens de stimuler notre créativité.",
-        "Chris Lewis, dans son livre *Too Fast to Think*, met en lumière les défis que pose cette hyper-connectivité sur notre capacité à innover."
+        "Dans un monde bruyant, il est essentiel de créer des moments de silence. Ces instants permettent à l'inspiration de se manifester. Chris Lewis souligne que la surcharge de stimuli nous empêche d'écouter nos propres sens.",
+        "Pour intégrer le calme dans notre quotidien, il est recommandé de dédier quelques minutes chaque jour à la déconnexion. Cela peut passer par une simple marche en nature ou un moment de méditation."
       ],
       "bullets": [
-        "L'importance de la créativité dans un environnement professionnel compétitif.",
-        "Les effets néfastes du stress et de la surcharge d'informations sur la pensée créative."
+        "Prendre du temps chaque jour pour se déconnecter et se recentrer.",
+        "Créer un espace propice à la réflexion loin des distractions numériques."
       ],
       "keyframe": "slide_keyframe_01.jpg",
-      "callout": "Point de vigilance : Ne pas négliger le temps de déconnexion."
+      "callout": "L'importance de la tranquillité pour favoriser la créativité."
     },
     {
-      "heading": "2. Mode d'Emploi & Démarche Pas-à-Pas",
+      "heading": "Exploiter la Puissance des Rêves",
       "paragraphs": [
-        "Pour libérer votre créativité, suivez ces trois stratégies clés :",
-        "1. **Trouver le Silence** : Accordez-vous des moments de calme pour réfléchir et laisser votre esprit vagabonder.",
-        "2. **Exploiter le Pouvoir des Rêves** : Laissez libre cours à votre imagination sans jugement.",
-        "3. **Lâcher Prise** : Acceptez l'imperfection et priorisez votre bien-être."
+        "Zoe Hames évoque l'importance de retrouver l'énergie imaginative de l'enfance. Cette approche consiste à laisser libre cours à son imagination, sans autocensure. Les idées les plus folles peuvent souvent mener à des innovations significatives.",
+        "Pour accéder à cet état créatif, il est conseillé de se donner la permission de jouer et d'explorer sans limites."
       ],
       "bullets": [
-        "Étape 1 : Créez des moments de silence dans votre journée.",
-        "Étape 2 : Pratiquez des activités créatives sans contraintes.",
-        "Étape 3 : Établissez des limites pour préserver votre énergie."
+        "Encourager le jeu et l'exploration d'idées sans jugement.",
+        "Noter toutes les pensées, même celles qui semblent irréalistes."
       ],
       "keyframe": "slide_keyframe_02.jpg",
-      "callout": "Bonne pratique : Intégrez des pauses créatives dans votre emploi du temps."
+      "callout": "Les rêves peuvent offrir des insights précieux sur nos désirs et nos peurs."
     },
     {
-      "heading": "3. Décisions Clés & Plan d'Action",
+      "heading": "L'Art de Lâcher Prise",
       "paragraphs": [
-        "Pour mettre en œuvre ces stratégies, il est essentiel de prendre des décisions conscientes sur votre emploi du temps et vos priorités.",
-        "Établissez un plan d'action qui inclut des moments de déconnexion, des activités créatives et des pratiques de bien-être."
+        "La dernière stratégie aborde la nécessité de lâcher prise sur le besoin de contrôle. Zoe souligne que la créativité prospère dans un espace de confiance et de flexibilité. Il est crucial de prioriser ses besoins fondamentaux pour éviter l'épuisement.",
+        "Accepter de ne pas tout maîtriser permet de se concentrer sur ce qui nourrit notre créativité."
       ],
       "bullets": [
-        "Action 1 : Planifiez des pauses régulières dans votre journée.",
-        "Action 2 : Engagez-vous dans des activités qui nourrissent votre créativité."
+        "Établir des limites et dire non aux engagements qui drainent notre énergie.",
+        "Prendre soin de soi pour permettre à la créativité de s'épanouir."
       ],
-      "keyframe": null,
-      "callout": null
+      "keyframe": "slide_keyframe_03.jpg",
+      "callout": "Le bien-être personnel est essentiel pour favoriser la créativité."
     }
   ],
-  "presentation_title": "Libérer Votre Potentiel Créatif",
-  "presentation_subtitle": "Stratégies pour Innover dans un Monde Hyper-Connecté / Date / Client",
+  "presentation_title": "Débloquer le Potentiel Créatif",
+  "presentation_subtitle": "Stratégies de créativité, 2023, Zoe Hames",
   "slides": [
     {
       "slide_number": 1,
       "type": "title",
-      "title": "Libérer Votre Potentiel Créatif",
-      "subtitle": "Stratégies pour Innover dans un Monde Hyper-Connecté"
+      "title": "Débloquer le Potentiel Créatif",
+      "subtitle": "Stratégies de créativité, 2023, Zoe Hames"
     },
     {
       "slide_number": 2,
       "type": "content",
-      "title": "Contexte & Enjeux",
+      "title": "Trouver le Calme dans le Tumulte",
       "bullets": [
-        "L'importance de la créativité dans un environnement professionnel.",
-        "Les effets du stress sur la pensée créative."
+        "Créer des moments de silence pour favoriser l'inspiration.",
+        "Se déconnecter des distractions numériques."
       ],
-      "keyframe": "slide_keyframe_01.jpg",
-      "kpi": {
-        "value": "+35%",
-        "label": "Gains d'efficacité"
-      }
-    },
-    {
-      "slide_number": 3,
-      "type": "content",
-      "title": "Stratégie 1 : Trouver le Silence",
-      "bullets": [
-        "Accordez-vous des moments de calme.",
-        "Évitez les distractions numériques."
-      ],
-      "keyframe": "slide_keyframe_02.jpg"
-    },
-    {
-      "slide_number": 4,
-      "type": "content",
-      "title": "Stratégie 2 : Exploiter le Pouvoir des Rêves",
-      "bullets": [
-        "Laissez libre cours à votre imagination.",
-        "Pratiquez des activités créatives sans contraintes."
-      ],
-      "keyframe": "slide_keyframe_03.jpg"
-    },
-    {
-      "slide_number": 5,
-      "type": "content",
-      "title": "Stratégie 3 : Lâcher Prise",
-      "bullets": [
-        "Acceptez l'imperfection.",
-        "Priorisez votre bien-être."
-      ],
-      "keyframe": "slide_keyframe_04.jpg"
-    },
-    {
-      "slide_number": 6,
-      "type": "content",
-      "title": "Plan d'Action",
-      "bullets": [
-        "Planifiez des pauses régulières.",
-        "Engagez-vous dans des activités créatives."
-      ],
-      "keyframe": "slide_keyframe_05.jpg"
-    },
-    {
-      "slide_number": 7,
-      "type": "content",
-      "title": "Conclusion",
-      "bullets": [
-        "La créativité est un voyage, pas une destination.",
-        "Expérimentez et laissez votre imagination s'exprimer."
-      ],
-      "keyframe": "slide_keyframe_06.jpg"
+      "keyframe": "slide_keyframe_02.jpg",
+      "kpi": null
     }
   ]
 }
