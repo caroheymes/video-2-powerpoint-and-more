@@ -1,0 +1,1 @@
+On me communique une vidéo de 2 heures. Je dois avoir un transcript markdown de cette vidéo, faire un powerpoint de présentation avec les points clés et les images pertinentes, et créer un résumé concis de la vidéo en français au format markdown. Bien évidemment je dois fournir un script powershell qui automatisera ces tâches. 
