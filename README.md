@@ -1,130 +1,117 @@
 # Video to PowerPoint & More
 
-Ce projet transforme n'importe quel enregistrement vidéo (réunion, formation, atelier, conférence) en documents de travail complets et prêts à l'emploi :
+Ce projet convertit un enregistrement video (reunion, formation, atelier ou conference) en documents de travail complets:
 
-- La transcription intégrale horodatée, générée sur votre ordinateur avec Whisper.
-- Une synthèse claire des messages clés et des décisions.
-- Une note de cadrage Word (`.docx`) illustrée par les diapositives de la vidéo.
-- Un diaporama PowerPoint 16:9 (`.pptx`) prêt à projeter.
-- Une version web plein écran (`.html`) et son export imprimable (`.pdf`).
+- Transcription integrale horodatee, calculee en local avec Whisper.
+- Synthese factuelle des constats et decisions.
+- Note de cadrage Word (.docx) illustree par les captures de la video.
+- Diaporama PowerPoint 16:9 (.pptx).
+- Version web autonome (.html) et export imprimable (.pdf).
 
-> **Note d'avancement :** Le pipeline automatisé, les scripts d'export, le module d'installation Windows et les intégrations système sont opérationnels. L'UI reste à mettre en place !
-
----
-
-## Démarrage en 3 clics (sans compétences techniques)
-
-Vous n'avez pas besoin d'installer Python, ni Git, ni aucun logiciel de développement.
-
-1. **Téléchargez le projet** :  
-   [Cliquez ici pour télécharger le dossier complet (.zip)](https://github.com/caroheymes/video-2-powerpoint-and-more/archive/refs/heads/master.zip) *(ou sur GitHub via le bouton vert `Code` puis `Download ZIP`)*.
-2. **Dézippez le dossier** :  
-   Faites un clic droit sur le fichier `.zip` téléchargé et choisissez **« Extraire tout »**, puis validez.
-3. **Lancez l'installation** :  
-   Dans le dossier extrait, double-cliquez sur le fichier **`INSTALLER_WINDOWS.bat`**.
-
-Une petite fenêtre s'affiche :
-- Choisissez votre moteur d'IA (OpenAI, Google Gemini ou Mistral),
-- Collez votre clé d'accès dans le champ prévu,
-- Cliquez sur le bouton **« Installer & Configurer »**.
-
-L'assistant configure tout de manière autonome :
-- Une icône **Video to PowerPoint** est déposée sur votre Bureau.
-- Une commande **« Convertir avec Video2PowerPoint (IA) »** s'ajoute au menu clic droit de vos fichiers vidéo dans Windows.
+> **Note d'avancement :** Le pipeline automatise, les scripts d'export, le module d'installation Windows et les integrations systeme sont operationnels. L'UI reste a mettre en place!
 
 ---
 
-## Convertir une vidéo au quotidien
+## Installation sous Windows
 
-Deux méthodes simples :
+L'assistant configure l'environnement sans installation prealable de Python ou de Git:
 
-- **Au clic droit (le plus rapide)** :  
-  Faites un clic droit sur n'importe quel fichier vidéo (`.mp4`) sur votre ordinateur :
-  - **Sur Windows 11** : dans le premier menu simplifié, cliquez sur **« Afficher d'autres options »** (ou utilisez le raccourci clavier `Maj + F10`), puis sélectionnez **« Convertir avec Video2PowerPoint (IA) »**.
-  - **Sur Windows 10** : l'option **« Convertir avec Video2PowerPoint (IA) »** apparaît directement dans le menu du clic droit.  
-  La conversion démarre aussitôt de façon entièrement autonome.
+1. Telechargement du depot:
+   Recuperez l'archive via le lien: [video-2-powerpoint-and-more.zip](https://github.com/caroheymes/video-2-powerpoint-and-more/archive/refs/heads/master.zip).
+2. Decompression de l'archive:
+   Faites un clic droit sur le fichier zip et choisissez "Extraire tout".
+3. Execution de l'installeur:
+   Dans le dossier dezippe, double-cliquez sur `INSTALLER_WINDOWS.bat`.
 
-- **Depuis l'icône sur le Bureau (ou `LANCER_PIPELINE.bat`)** :  
-  Double-cliquez dessus. La console vous laisse le choix :
-  - **Appuyez sur Entrée** : si vous n'avez pas encore de fichier sous la main, le programme télécharge automatiquement la vidéo de démonstration depuis Google Drive (atelier de 7 minutes) et lance le traitement. Si elle est déjà sur votre disque, il l'utilise directement.
-  - **Tapez 2** : pour parcourir vos dossiers et désigner un fichier vidéo sur votre ordinateur (Bureau, Téléchargements, etc.).
-  - **Tapez 3** : pour coller un lien Google Drive ou une adresse de vidéo en ligne.
-  - Vous pouvez aussi faire glisser votre fichier vidéo directement dans la console.
+Dans la fenetre de configuration:
+- Choisissez le fournisseur d'IA (OpenAI, Google Gemini ou Mistral).
+- Renseignez votre cle d'API.
+- Cliquez sur "Installer & Configurer".
 
-### Suivi en temps réel & Progression
-- **Barre de progression dans la console** : Pendant la transcription Whisper, une barre visuelle dynamique affiche en continu le pourcentage d'avancement, la durée traitée et la vitesse d'exécution (`🎙 Transcription Whisper: [=========> ] 75% 00:52:10 / 01:09:48`).
-- **Écriture au fil de l'eau** : Le fichier `transcript.md` est créé dès le début du traitement et complété segment par segment. Vous pouvez l'ouvrir à tout moment pour lire les échanges au fur et à mesure de leur transcription.
-- **Nombre de diapositives adaptatif** : Le nombre de slides s'ajuste automatiquement à la durée de la vidéo (10 slides pour < 10 min, jusqu'à 25-35 slides pour les réunions de plus d'une heure) afin d'assurer une couverture complète sans perte d'information. Vous pouvez aussi fixer librement ce nombre via l'option `--slides`.
-
-### Où sont enregistrés vos documents ?
-- **Pour une vidéo personnelle** (au clic droit ou via le sélecteur) : un dossier nommé **`<NomDeLaVidéo>_livrables`** est automatiquement créé **au même endroit que votre fichier vidéo** (sur votre Bureau, dans vos Téléchargements, etc.).
-- **Pour la vidéo d'exemple intégrée** : les fichiers sont placés dans le sous-dossier [`demo/output/`](./demo/output/).
-- **À la fin du traitement** : l'Explorateur Windows s'ouvre automatiquement sur le dossier final, accompagné d'une boîte de dialogue vous confirmant l'emplacement exact de tous vos livrables.
-
-### Que faire face aux messages de la console ?
-Rien de particulier. Certains avertissements de bibliothèque (comme les remarques de Hugging Face signalant que Windows gère le cache sans liens symboliques) sont de simples indications informatives internes. Ils ne bloquent pas le calcul et ne modifient en rien le résultat final.
+L'assistant cree les raccourcis systeme:
+- Une icone "Video to PowerPoint" sur le Bureau.
+- Une action "Convertir avec Video2PowerPoint (IA)" dans le menu contextuel Windows des fichiers video.
 
 ---
 
-## Exemple concret (vidéo de test)
+## Utilisation au Quotidien
 
-Le pipeline a été validé sur un atelier de 7 minutes (intervention de Zoe Hames autour du livre *Too Fast to Think* de Chris Lewis).
+Deux modes d'execution sont disponibles:
 
-- Fichier source : [Lien de téléchargement Google Drive](https://drive.google.com/file/d/1pbT3kRivzOONa3B1bRP1nIhbFdkt3ef2/view?usp=sharing)
-- Temps de calcul constaté : 1 minute et 11 secondes sur un ordinateur de bureau standard.
+### 1. Par le menu contextuel (clic droit)
+Sur tout fichier video (.mp4):
+- Sous Windows 11: faites un clic droit, selectionnez "Afficher d'autres options" (ou utilisez le raccourci `Maj + F10`), puis cliquez sur "Convertir avec Video2PowerPoint (IA)".
+- Sous Windows 10: faites un clic droit puis cliquez directement sur "Convertir avec Video2PowerPoint (IA)".
 
-Les documents issus de ce test sont consultables directement dans le dossier [`demo/output/`](./demo/output/) :
+### 2. Par le lanceur ou l'icone Bureau
+Double-cliquez sur `LANCER_PIPELINE.bat` (ou le raccourci Bureau):
+- Touche Entree: telecharge et traite la video de demonstration (7 minutes).
+- Option 2: ouvre l'explorateur pour selectionner un fichier video local.
+- Option 3: permet de renseigner un lien Google Drive.
+- Le glisser-deposer d'un fichier video dans la fenetre de console est egalement pris en charge.
 
-| Document | Fichier généré | Contenu |
+### Suivi d'execution et volumetrie adaptative
+- Progression console: la transcription Whisper affiche une barre dynamique indiquant le temps ecoule, le pourcentage et l'estimation de fin.
+- Ecriture continue: le fichier `transcript.md` est cree des le lancement et alimente au fur et a mesure du decodage audio.
+- Diaporama calibre selon la duree: le nombre de diapositives s'adapte automatiquement (10 pour moins de 10 minutes, 18 pour 30 minutes, 25 a 35 pour les enregistrements superieurs a une heure). L'argument `--slides` permet de forcer une valeur fixe.
+
+### Emplacement des livrables
+- Pour une video locale: les fichiers sont crees dans un dossier `<NomDeLaVideo>_livrables` place a cote de la video source.
+- Pour la video d'essai: les fichiers sont stockes dans `demo/output/`.
+- En fin de traitement, l'explorateur s'ouvre sur le dossier des livrables avec une notification de confirmation.
+
+---
+
+## Resultats sur la Video de Demonstration
+
+Le pipeline a ete verifie sur un enregistrement de 7 minutes (intervention de Zoe Hames sur l'ouvrage Too Fast to Think):
+- Source: [Lien Google Drive](https://drive.google.com/file/d/1pbT3kRivzOONa3B1bRP1nIhbFdkt3ef2/view?usp=sharing)
+- Temps de traitement: 1 minute 11 secondes sur configuration de bureau standard.
+
+Livrables disponibles dans [`demo/output/`](./demo/output/):
+
+| Document | Fichier genere | Contenu |
 | :--- | :--- | :--- |
-| Note de synthèse | [`article_mode_d_emploi.docx`](./demo/output/article_mode_d_emploi.docx) | Document Word structuré en 5 sections opérationnelles avec constats, recommandations et visuels associés. |
-| Présentation PowerPoint | [`presentation.pptx`](./demo/output/presentation.pptx) | Diaporama 16:9 complet de 10 diapositives denses, sobres et professionnelles (sans jargon ni clichés IA). |
-| Version imprimable | [`presentation.pdf`](./demo/output/presentation.pdf) | Rendu PDF paysage page à page, sans coupure de diapositive. |
-| Présentation interactive | [`presentation.html`](./demo/output/presentation.html) | Fichier web autonome navigable au clavier (les visuels sont intégrés, fonctionne hors-ligne). |
-| Synthèse rapide | [`summary.md`](./demo/output/summary.md) | Synthèse textuelle incisive des messages essentiels et des conclusions. |
-| Bilan FinOps | [`finops_report.json`](./demo/output/finops_report.json) | Rapport structuré des coûts d'API, consommation de tokens et économies d'infrastructure réalisées. |
-| Transcription brute | [`transcript.md`](./demo/output/transcript.md) | Retranscription intégrale horodatée seconde par seconde avec Whisper. |
-| Visuels extraits | [`keyframes/`](./demo/output/keyframes/) | 18 captures des moments stables de la vidéo. |
+| Note de cadrage | [`article_mode_d_emploi.docx`](./demo/output/article_mode_d_emploi.docx) | Document Word en 5 sections operationnelles avec captures et constats. |
+| Diaporama PowerPoint | [`presentation.pptx`](./demo/output/presentation.pptx) | Presentation 16:9 de 10 diapositives sans verbiage d'IA. |
+| Version imprimable | [`presentation.pdf`](./demo/output/presentation.pdf) | Rendu PDF paysage page a page. |
+| Presentation web | [`presentation.html`](./demo/output/presentation.html) | Fichier web autonome lisible hors-ligne avec navigation clavier. |
+| Synthese executive | [`summary.md`](./demo/output/summary.md) | Synthese factuelle des constats et decisions. |
+| Bilan FinOps | [`finops_report.json`](./demo/output/finops_report.json) | Rapport comptable des jetons, des couts d'API et des gains du calcul local. |
+| Transcription brute | [`transcript.md`](./demo/output/transcript.md) | Retranscription integrale horodatee via Whisper. |
+| Captures video | [`keyframes/`](./demo/output/keyframes/) | 18 images des plans stables de la video. |
 
 ---
 
-## 📊 Maîtrise des Coûts & Démarche FinOps
+## Evaluation FinOps et Maîtrise des Depenses
 
-L'architecture du projet a été conçue pour minimiser drastiquement les coûts d'infrastructure et d'intelligence artificielle :
+L'architecture reduit les couts d'infrastructure et d'API:
 
-- **Traitement lourd 100% local (0,00 €)** : L'extraction audio (`ffmpeg`), la transcription intégrale de la parole (`faster-whisper`), la détection de scènes (`scenedetect`) et la génération de tous les documents finaux (Word, PowerPoint, HTML, PDF) tournent exclusivement sur votre ordinateur, sans aucun abonnement cloud.
-- **Économie directe constatée** : L'exécution locale de Whisper évite la facturation des API de transcription cloud (facturées 0,006 $/minute, soit plus de 0,42 $ d'économies directes par heure de vidéo).
-- **Consommation LLM ultra-maîtrisée** : Seule l'étape de synthèse stratégique sollicite l'API de votre choix (OpenAI `gpt-4o-mini`, Google Gemini ou Mistral), avec un coût moyen inférieur à **0,002 € par vidéo de 10 minutes** et moins de **0,05 € pour une réunion d'une heure**.
-- **Traçabilité financière** : À chaque exécution, un rapport détaillé `finops_report.json` est enregistré à côté de vos livrables et intégré dans votre synthèse, détaillant le nombre exact de tokens en entrée/sortie et le coût en dollars et en euros.
-
----
+- Traitement lourd en local (0,00 €): l'extraction audio (`ffmpeg`), la transcription (`faster-whisper`), la detection des scenes (`scenedetect`) et la generation des documents (Word, PowerPoint, HTML, PDF) s'executent sur la machine de l'utilisateur sans service tiers.
+- Gain de calcul local constate: l'inference locale Whisper evite la facturation des services cloud audio (base standard de 0.006 $ par minute, soit 0.42 $ de gain direct par heure traitee).
+- Depenses LLM mesurees: seule la structuration editoriale sollicite l'API externe (OpenAI `gpt-4o-mini`, Google Gemini ou Mistral), avec un cout inferieur a 0.002 € pour 10 minutes et moins de 0.05 € pour une reunion d'une heure.
+- Tracabilite financiere: un fichier `finops_report.json` consigne a chaque run le decompte des jetons et la valorisation en devises (dollars et euros).
 
 ---
 
-## Organisation des dossiers
+## Organisation du Depot
 
-- **`INSTALLER_WINDOWS.bat`** : Assistant d'installation graphique pour Windows (à la racine).
-- **`LANCER_PIPELINE.bat`** : Lanceur direct du traitement (à la racine).
-- **`LANCER_TESTS.bat`** : Banc d'essai automatisé (23 tests unitaires, générateurs et d'intégration).
-- **[`demo/`](./demo/)** : Pipeline complet avec code Python, environnement virtuel, tests et dossier de sortie.
-- **[`scripts_historiques/`](./scripts_historiques/)** : Scripts d'exploration et de validation initiaux.
-
----
-
-## Banc de tests & Validation (Harness)
-
-Une suite de 23 tests automatisés avec `pytest` garantit la fiabilité de chaque composant du pipeline :
-- **Intégrité de l'environnement** : présence effective de `ffmpeg` autonome et des bibliothèques (`faster-whisper`, `scenedetect`, `python-docx`, `python-pptx`, `Pillow`).
-- **Générateurs de documents** : conformité des fichiers Word (`.docx`), du format 16:9 widescreen PowerPoint (`.pptx`), du deck web HTML autonome (`.html`) et de l'export PDF.
-- **Banc d'essai de bout en bout (Harness E2E)** : simulation complète du cycle de vie du pipeline avec vérification de la production des 7 livrables.
-- **Règles rédactionnelles Humanizer** : contrôle de l'application stricte des directives anti-jargon IA et du filtrage programmatique des clichés.
-- **Calculateur FinOps** : validation des calculs de coûts multi-fournisseurs (OpenAI, Gemini, Mistral) et des économies locales.
-
-Pour lancer tous les tests en un clic :  
-Double-cliquez sur **`LANCER_TESTS.bat`** (à la racine ou dans `demo/`).
+- `INSTALLER_WINDOWS.bat`: assistant d'installation pour Windows (racine).
+- `LANCER_PIPELINE.bat`: lanceur principal du pipeline (racine).
+- `LANCER_TESTS.bat`: banc de test automatise de 23 tests (racine).
+- `demo/`: code source, dependances virtuelles, tests et sorties.
+- `scripts_historiques/`: scripts d'exploration initiaux.
 
 ---
 
-Pour adapter ou inspecter le fonctionnement technique :
-- [`demo/pipeline.py`](./demo/pipeline.py) regroupe l'extraction audio ffmpeg, le téléchargement automatique Google Drive, la transcription locale Whisper, la détection visuelle de plans, l'analyse LLM et les moteurs d'export Word, PowerPoint, HTML et PDF.
-- [`demo/run_pipeline.ps1`](./demo/run_pipeline.ps1) gère l'installation autonome de l'environnement virtuel (`uv`) et la sélection interactive des fichiers.
+## Validation et Tests Automatises
+
+Une suite de 23 tests automatises `pytest` verifie chaque composant:
+- Environnement: disponibilite du binaire `ffmpeg` et import des modules (`faster-whisper`, `scenedetect`, `python-docx`, `python-pptx`, `Pillow`).
+- Formats documentaires: validation de la structure Word (`.docx`), du format 16:9 PowerPoint (`.pptx`), du fichier HTML autonome et de l'export PDF.
+- Integration continue (Harness E2E): validation de l'enchainement complet et generation conjointe des 7 livrables.
+- Cadrage editorial: controle des filtres anti-cliches et de l'epuration lexicale.
+- Module FinOps: validation des calculs de couts d'API et des economies Whisper.
+
+Pour executer la suite de tests:
+Double-cliquez sur `LANCER_TESTS.bat` ou lancez `.\.venv\Scripts\python.exe -m pytest tests -s -v` depuis `demo/`.
