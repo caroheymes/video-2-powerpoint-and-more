@@ -2,19 +2,19 @@
   "provider": "openai",
   "model": "gpt-4o-mini",
   "tokens": {
-    "prompt_tokens": 4441,
-    "completion_tokens": 1680,
-    "total_tokens": 6121
+    "prompt_tokens": 4512,
+    "completion_tokens": 4015,
+    "total_tokens": 8527
   },
   "rates_per_million_usd": {
     "input": 0.15,
     "output": 0.6
   },
   "costs": {
-    "input_cost_usd": 0.000666,
-    "output_cost_usd": 0.001008,
-    "total_llm_cost_usd": 0.001674,
-    "total_llm_cost_eur": 0.00154,
+    "input_cost_usd": 0.000677,
+    "output_cost_usd": 0.002409,
+    "total_llm_cost_usd": 0.003086,
+    "total_llm_cost_eur": 0.002839,
     "currency_rate_eur_usd": 0.92
   },
   "local_compute_savings": {
@@ -22,5 +22,5 @@
     "whisper_cloud_avoided_cost_usd": 0.0435,
     "whisper_cloud_avoided_cost_eur": 0.04
   },
-  "finops_summary": "0.0017 $ (~ 0.0015 €) | Économie locale Whisper : 0.0435 $"
+  "finops_summary": "0.0031 $ (~ 0.0028 €) | Économie locale Whisper : 0.0435 $"
 }

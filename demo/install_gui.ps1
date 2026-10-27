@@ -1,4 +1,4 @@
-﻿# Configuration et Installeur Graphique Windows (WinForms)
+# Configuration et Installeur Graphique Windows (WinForms)
 # Zéro dépendance externe : fonctionne nativement sur tous les Windows 10/11 sans Python préalable.
 
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
@@ -237,7 +237,7 @@ $btnInstall.Add_Click({
             $cmdKey = "$regKey\Command"
             New-Item -Path $cmdKey -Force | Out-Null
             $batPath = Join-Path $ScriptDir "LANCER_PIPELINE.bat"
-            $cmdVal = "cmd.exe /c `"set SEE_MASK_NOZONECHECKS=1 && `"$batPath`" `"%1`"`""
+            $cmdVal = "`"$batPath`" `"%1`""
             Set-ItemProperty -Path $cmdKey -Name "(Default)" -Value $cmdVal
         }
 

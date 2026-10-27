@@ -30,6 +30,7 @@ if sys.platform == "win32":
 
 import requests
 import imageio_ffmpeg
+from tqdm import tqdm
 
 
 def format_timestamp(seconds: float) -> str:
