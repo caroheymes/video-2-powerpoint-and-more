@@ -77,3 +77,13 @@ demo/
 ├── addendum.md                # Addendum technique d'architecture
 └── README.md                  # Documentation détaillée du module
 ```
+
+### 📂 Liens Directs vers les Livrables de Démo :
+
+- 📘 [**`output/article_mode_d_emploi.docx`**](./output/article_mode_d_emploi.docx) : Mode d'emploi Word complet.
+- 📊 [**`output/presentation.pptx`**](./output/presentation.pptx) : Support PowerPoint 16:9.
+- 📑 [**`output/presentation.pdf`**](./output/presentation.pdf) : Présentation PDF haute définition.
+- 🌐 [**`output/presentation.html`**](./output/presentation.html) : Deck web interactif plein écran.
+- 📌 [**`output/summary.md`**](./output/summary.md) : Synthèse exécutive en Markdown.
+- 📝 [**`output/transcript.md`**](./output/transcript.md) : Transcription horodatée intégrale.
+- 🖼 [**`output/keyframes/`**](./output/keyframes/) : Galerie des 18 captures extraites.

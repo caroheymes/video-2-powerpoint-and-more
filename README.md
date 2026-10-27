@@ -59,12 +59,19 @@ demo/
 └── README.md                  # Documentation détaillée du module
 ```
 
-1. 📝 **`transcript.md`** : Transcription intégrale horodatée `[HH:MM:SS]` via **Whisper local** (CTranslate2, aucune fuite de données).
-2. 📌 **`summary.md`** : Synthèse exécutive structurée en français (Contexte, Enjeux, Décisions, Plan d'action).
-3. 📘 **`article_mode_d_emploi.docx`** : Document Word complet comprenant un guide pratique pas-à-pas, des encadrés de bonnes pratiques et les captures de scènes illustrées.
-4. 📊 **`presentation.pptx`** : Support de présentation PowerPoint natif au format 16:9 widescreen avec visuels et points clés.
-5. 🌐 **`presentation.html`** : Deck web interactif conforme aux standards ECC `frontend-slides` (autonome, images en Base64).
-6. 📑 **`presentation.pdf`** : Version PDF 16:9 haute définition imprimée via Chromium headless.
+### 📂 Accès Direct aux Livrables de Démo Générés (`demo/output/`)
+
+Vous pouvez directement inspecter les fichiers générés lors de la dernière exécution :
+
+| Livrable | Lien direct vers le fichier | Format | Description |
+| :--- | :--- | :--- | :--- |
+| 📘 **Article & Mode d'Emploi** | [**`article_mode_d_emploi.docx`**](./demo/output/article_mode_d_emploi.docx) | Word `.docx` | Guide opérationnel complet, encadrés de bonnes pratiques et visuels intégrés. |
+| 📊 **Support de Présentation** | [**`presentation.pptx`**](./demo/output/presentation.pptx) | PowerPoint `.pptx` | Deck 16:9 widescreen avec titres percutants, puces argumentées et diapositives. |
+| 📑 **Export PDF Imprimable** | [**`presentation.pdf`**](./demo/output/presentation.pdf) | PDF 16:9 | Version vectorielle haute résolution sans rupture de page. |
+| 🌐 **Deck Web Interactif** | [**`presentation.html`**](./demo/output/presentation.html) | HTML Autonome | Rendu plein écran ECC `frontend-slides` avec images Base64 et navigation fluide. |
+| 📌 **Synthèse Exécutive** | [**`summary.md`**](./demo/output/summary.md) | Markdown | Synthèse stratégique des points clés, enjeux et conclusions. |
+| 📝 **Transcription Intégrale** | [**`transcript.md`**](./demo/output/transcript.md) | Markdown | Transcription complète horodatée `[HH:MM:SS]` (Whisper local). |
+| 🖼 **Galerie des Diapositives** | [**`keyframes/`**](./demo/output/keyframes/) | Dossier Images | 18 captures clés extraites automatiquement de la vidéo. |
 
 ---
 
