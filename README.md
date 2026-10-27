@@ -69,12 +69,12 @@ Les documents issus de ce test sont consultables directement dans le dossier [`d
 
 | Document | Fichier généré | Contenu |
 | :--- | :--- | :--- |
-| Note de synthèse | [`article_mode_d_emploi.docx`](./demo/output/article_mode_d_emploi.docx) | Document Word structuré avec les idées maîtresses et les visuels associés. |
-| Présentation PowerPoint | [`presentation.pptx`](./demo/output/presentation.pptx) | Diaporama 16:9 reprenant les messages clés et les captures stables. |
+| Note de synthèse | [`article_mode_d_emploi.docx`](./demo/output/article_mode_d_emploi.docx) | Document Word structuré en 5 sections opérationnelles avec constats, recommandations et visuels associés. |
+| Présentation PowerPoint | [`presentation.pptx`](./demo/output/presentation.pptx) | Diaporama 16:9 complet de 10 diapositives denses, sobres et professionnelles (sans jargon ni clichés IA). |
 | Version imprimable | [`presentation.pdf`](./demo/output/presentation.pdf) | Rendu PDF paysage page à page, sans coupure de diapositive. |
-| Présentation interactive | [`presentation.html`](./demo/output/presentation.html) | Fichier web autonome (les visuels sont intégrés, fonctionne hors-ligne). |
-| Synthèse rapide | [`summary.md`](./demo/output/summary.md) | Synthèse textuelle courte des messages essentiels et des conclusions. |
-| Transcription brute | [`transcript.md`](./demo/output/transcript.md) | Retranscription intégrale horodatée seconde par seconde. |
+| Présentation interactive | [`presentation.html`](./demo/output/presentation.html) | Fichier web autonome navigable au clavier (les visuels sont intégrés, fonctionne hors-ligne). |
+| Synthèse rapide | [`summary.md`](./demo/output/summary.md) | Synthèse textuelle incisive des messages essentiels et des conclusions. |
+| Transcription brute | [`transcript.md`](./demo/output/transcript.md) | Retranscription intégrale horodatée seconde par seconde avec Whisper. |
 | Visuels extraits | [`keyframes/`](./demo/output/keyframes/) | 18 captures des moments stables de la vidéo. |
 
 ---
@@ -83,7 +83,7 @@ Les documents issus de ce test sont consultables directement dans le dossier [`d
 
 - **`INSTALLER_WINDOWS.bat`** : Assistant d'installation graphique pour Windows (à la racine).
 - **`LANCER_PIPELINE.bat`** : Lanceur direct du traitement (à la racine).
-- **`LANCER_TESTS.bat`** : Banc d'essai automatisé (20 tests unitaires et d'intégration).
+- **`LANCER_TESTS.bat`** : Banc d'essai automatisé (21 tests unitaires et d'intégration).
 - **[`demo/`](./demo/)** : Pipeline complet avec code Python, environnement virtuel, tests et dossier de sortie.
 - **[`scripts_historiques/`](./scripts_historiques/)** : Scripts d'exploration et de validation initiaux.
 
