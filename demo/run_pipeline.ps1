@@ -59,8 +59,34 @@ if ([string]::IsNullOrWhiteSpace($VideoPath)) {
         $idx = [int]$sel - 1
         $VideoPath = $mp4Files[$idx].FullName
     } else {
-        Write-Host "Veuillez entrer le chemin ou glisser-déposer le fichier vidéo MP4 :" -ForegroundColor Yellow
-        $VideoPath = (Read-Host "Chemin vidéo").Trim('"').Trim("'")
+        Write-Host "----------------------------------------------------------------" -ForegroundColor Cyan
+        Write-Host "  SÉLECTION DU FICHIER VIDÉO" -ForegroundColor Yellow
+        Write-Host "----------------------------------------------------------------" -ForegroundColor Cyan
+        Write-Host "Aucune vidéo n'est présente dans le dossier actuel."
+        Write-Host "Vous pouvez :"
+        Write-Host "  • Glisser-déposer votre vidéo (.mp4, .mkv, .mov) dans cette fenêtre,"
+        Write-Host "  • Ou taper/coller le chemin de votre fichier,"
+        Write-Host "  • Ou appuyer directement sur [Entrée] pour ouvrir l'explorateur de fichiers."
+        Write-Host ""
+        $inputVal = (Read-Host "Où se trouve la vidéo ?").Trim('"').Trim("'")
+
+        if ([string]::IsNullOrWhiteSpace($inputVal)) {
+            Write-Host "Ouverture de la fenêtre de sélection de fichier..." -ForegroundColor Yellow
+            Add-Type -AssemblyName System.Windows.Forms
+            $dialog = New-Object System.Windows.Forms.OpenFileDialog
+            $dialog.Filter = "Fichiers Vidéo (*.mp4;*.mkv;*.mov)|*.mp4;*.mkv;*.mov|Tous les fichiers (*.*)|*.*"
+            $dialog.Title = "Sélectionnez la vidéo à traiter"
+            $dialog.InitialDirectory = [Environment]::GetFolderPath("MyVideos")
+            if ($dialog.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
+                $VideoPath = $dialog.FileName
+                Write-Host " [Sélection] Vidéo choisie : $VideoPath" -ForegroundColor Green
+            } else {
+                Write-Error "Opération annulée : aucun fichier sélectionné."
+                exit 1
+            }
+        } else {
+            $VideoPath = $inputVal
+        }
     }
 }
 

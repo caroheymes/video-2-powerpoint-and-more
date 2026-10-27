@@ -1,89 +1,58 @@
-# Pipeline Vidéo ➔ Transcription, Synthèse & Decks Stratégiques
+# Module Demo : Pipeline Automatisé de Restitution Vidéo
 
-Solution clé en main pour transformer une vidéo longue (jusqu'à 2 heures) en un pack de livrables professionnels de niveau cabinet de conseil :
-1. **Transcription complète horodatée** (`transcript.md`) via Whisper Local.
-2. **Synthèse exécutive en français** (`summary.md`) via API Gemini ou Mistral.
-3. **Article de fond & Mode d'emploi pratique** (`article_mode_d_emploi.docx`) sous Microsoft Word avec captures et encadrés.
-4. **Deck PowerPoint 16:9** (`presentation.pptx`) avec texte & captures vidéo intégrées.
-5. **Deck Web interactif & PDF 16:9** (`presentation.html` & `presentation.pdf`) conforme aux standards ECC `frontend-slides`.
+Ce dossier contient la **solution complète et opérationnelle** permettant de convertir n'importe quelle vidéo longue en 6 livrables stratégiques professionnels.
 
 ---
 
-## Démarrage Rapide (En 1 Clic / Double-Clic)
+## 🎬 Vidéo de Démonstration (Cas d'École)
 
-Pour les utilisateurs non techniques, deux fichiers exécutables `.bat` sont fournis :
-
-### 1. Déposez votre vidéo
-Copiez votre fichier vidéo (ex: `reunion_client.mp4`) directement dans ce dossier `demo/`.
-
-### 2. Double-cliquez sur `LANCER_PIPELINE.bat`
-* **Zéro ligne de commande à taper** : Double-cliquez simplement sur [**`LANCER_PIPELINE.bat`**](file:///C:/Users/Admin/Desktop/smac/livrable/demo/LANCER_PIPELINE.bat).
-* Le script configure automatiquement Python, installe les dépendances nécessaires dans un environnement virtuel local (`.venv`) sans modifier votre système, et lance le traitement.
-* À la fin de l'exécution, **le dossier des livrables s'ouvre automatiquement dans l'Explorateur Windows** !
-
-### 3. Saisie de la Clé API (au premier lancement uniquement)
-Le script vous demandera une clé d'accès LLM pour la synthèse :
-- **Option 1 : Google Gemini** *(Recommandé, gratuit sur [aistudio.google.com](https://aistudio.google.com))*
-- **Option 2 : Mistral AI** *(sur [console.mistral.ai](https://console.mistral.ai))*
-
-Vous pouvez choisir de sauvegarder la clé : elle sera stockée localement dans un fichier `.env` et ne vous sera plus jamais demandée.
+Une vidéo test de 7 minutes (*Unlock Your Creativity with These 3 Strategies*) a été utilisée pour valider le pipeline :
+* 👉 [**Télécharger / Visionner la vidéo sur Google Drive**](https://drive.google.com/file/d/1pbT3kRivzOONa3B1bRP1nIhbFdkt3ef2/view?usp=sharing)
 
 ---
 
-### Pour les utilisateurs avancés (PowerShell)
-Vous pouvez également piloter le pipeline directement en ligne de commande :
+## 🚀 Utilisation en 1 Clic (Zéro Python Requis)
+
+> **Important** : Aucune compétence technique n'est requise. Vous n'avez **pas besoin d'avoir Python installé** sur votre ordinateur. Le fichier `.bat` gère automatiquement l'ensemble de la configuration sans impacter votre système.
+
+### 1. Lancez le script
+Double-cliquez simplement sur :
+👉 [**`LANCER_PIPELINE.bat`**](./LANCER_PIPELINE.bat)
+
+### 2. Répondez à la question : *« Où se trouve la vidéo ? »*
+Si aucun fichier vidéo n'est déposé dans ce dossier, le script vous propose :
+* **Option A** : Glisser-déposer votre vidéo `.mp4` directement dans la fenêtre.
+* **Option B** : Copier-coller le chemin de votre vidéo.
+* **Option C (Le plus simple)** : **Appuyez sur [Entrée]** pour ouvrir la fenêtre de sélection standard de l'Explorateur Windows et choisir votre fichier en un clic !
+
+### 3. Récupérez vos livrables
+À la fin du traitement (environ 1 minute pour une vidéo courte, ~20 min pour 2 heures), **le dossier `output/` s'ouvre automatiquement sous vos yeux**.
+
+---
+
+## 📦 Où se trouvent les Livrables Générés ?
+
+Tous les livrables sont générés et stockés dans le sous-dossier [**`output/`**](./output/) :
+
+| Livrable | Fichier | Description |
+| :--- | :--- | :--- |
+| 📘 **Article & Mode d'Emploi** | [**`output/article_mode_d_emploi.docx`**](./output/article_mode_d_emploi.docx) | Document Word complet rédigé avec démarche opérationnelle, encadrés et illustrations. |
+| 📊 **Support de Présentation** | [**`output/presentation.pptx`**](./output/presentation.pptx) | Diapositives PowerPoint 16:9 widescreen prêtes pour la soutenance. |
+| 📑 **Présentation Imprimable** | [**`output/presentation.pdf`**](./output/presentation.pdf) | Rendu PDF vectoriel 16:9 haute définition via Chromium headless. |
+| 🌐 **Deck Web Interactif** | [**`output/presentation.html`**](./output/presentation.html) | Présentation plein écran autonome (normes ECC `frontend-slides`). |
+| 📌 **Synthèse Exécutive** | [**`output/summary.md`**](./output/summary.md) | Synthèse de direction en style direct et humain (anti-clichés IA). |
+| 📝 **Transcription Intégrale** | [**`output/transcript.md`**](./output/transcript.md) | Retranscription mot à mot horodatée `[HH:MM:SS]` (Whisper local souverain). |
+| 🖼 **Galerie des Diapositives** | [**`output/keyframes/`**](./output/keyframes/) | 18 captures clés extraites de la vidéo. |
+
+---
+
+## ⚙️ Options Ligne de Commande (Pour Développeurs)
+
+Pour les utilisateurs souhaitant automatiser via PowerShell :
 ```powershell
-.\run_pipeline.ps1
-```
+# Traiter une vidéo avec reprise automatique
+.\run_pipeline.ps1 -VideoPath "C:\Chemin\MaVideo.mp4" -ModelSize "medium"
 
----
-
-## Options Avancées
-
-Vous pouvez personnaliser l'exécution avec des paramètres :
-
-```powershell
-# Traiter une vidéo spécifique avec le modèle Whisper large
-.\run_pipeline.ps1 -VideoPath "C:\Chemin\MaVideo.mp4" -ModelSize "large-v3-turbo"
-
-# Forcer l'utilisation de Mistral
-.\run_pipeline.ps1 -Provider mistral
-
-# Reprendre sans recalculer la transcription si transcript.md existe déjà
+# Reprendre sans recalculer la transcription
 .\run_pipeline.ps1 -SkipTranscription
 ```
-
----
-
-## Structure des Livrables Générés (`output/`)
-
-```text
-demo/
-├── output/
-│   ├── transcript.md              # Transcription intégrale horodatée [HH:MM:SS]
-│   ├── summary.md                 # Synthèse exécutive en français
-│   ├── article_mode_d_emploi.docx # Article & Mode d'emploi Word complet illustré
-│   ├── presentation.pptx          # Support de présentation PowerPoint 16:9
-│   ├── presentation.html          # Deck web interactif autonome (Base64 embedded)
-│   ├── presentation.pdf           # Version imprimable PDF 16:9
-│   ├── deck_structure.json        # Modèle de données JSON des slides
-│   └── keyframes/                 # Images clés extraites intelligemment de la vidéo
-├── LANCER_PIPELINE.bat        # Lanceur double-clic (zéro ligne de commande)
-├── INSTALLER.bat              # Script d'installation optionnel
-├── pipeline.py                # Moteur Python de traitement média & IA
-├── run_pipeline.ps1           # Orchestrateur PowerShell avec auto-bootstrap
-├── requirements.txt           # Dépendances Python isolées
-├── prd.md                     # Cahier des charges produit (PRD BMad)
-├── addendum.md                # Addendum technique d'architecture
-└── README.md                  # Documentation détaillée du module
-```
-
-### 📂 Liens Directs vers les Livrables de Démo :
-
-- 📘 [**`output/article_mode_d_emploi.docx`**](./output/article_mode_d_emploi.docx) : Mode d'emploi Word complet.
-- 📊 [**`output/presentation.pptx`**](./output/presentation.pptx) : Support PowerPoint 16:9.
-- 📑 [**`output/presentation.pdf`**](./output/presentation.pdf) : Présentation PDF haute définition.
-- 🌐 [**`output/presentation.html`**](./output/presentation.html) : Deck web interactif plein écran.
-- 📌 [**`output/summary.md`**](./output/summary.md) : Synthèse exécutive en Markdown.
-- 📝 [**`output/transcript.md`**](./output/transcript.md) : Transcription horodatée intégrale.
-- 🖼 [**`output/keyframes/`**](./output/keyframes/) : Galerie des 18 captures extraites.

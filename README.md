@@ -1,83 +1,81 @@
-# Video to PowerPoint & More (Pipeline Automatisé IA)
+# Video to PowerPoint & More : Le Pipeline Automatisé IA
 
-> **Solution clé en main** pour transformer une vidéo longue (jusqu'à 2h) en un pack complet de livrables professionnels : **Transcription horodatée**, **Synthèse exécutive**, **Article & Mode d'emploi Word (.docx)**, **Présentation PowerPoint 16:9 (.pptx)** et **Deck Web interactif & PDF 16:9**.
+> **Cas d'école complet** : transformer n'importe quelle vidéo longue (réunion, webinaire, formation de 5 min à 2h) en un pack professionnel complet de livrables opérationnels en un seul double-clic : **Transcription intégrale**, **Synthèse exécutive**, **Article & Mode d'emploi Word (.docx)**, **Support PowerPoint 16:9 (.pptx)** et **Deck Web interactif & PDF**.
 
 ---
 
 ## 🎯 Où se trouve la solution ?
 
-Ce dépôt GitHub est structuré en deux parties distinctes :
-
-| Dossier | Description & Rôle |
+| Emplacement | Usage |
 | :--- | :--- |
-| 🚀 [**`demo/`**](./demo/) | **LA SOLUTION COMPLÈTE & OPÉRATIONNELLE.** C'est dans ce dossier que se trouve l'ensemble du pipeline automatisé, prêt à l'emploi (script double-clic `.bat`, orchestrateur PowerShell, moteur Python, cahier des charges PRD). |
-| 📚 [**`scripts_historiques/`**](./scripts_historiques/) | **Archives & briques techniques de référence.** Ce dossier contient les scripts historiques et compétences ECC (notamment le skill `frontend-slides` et les scripts d'export) qui ont servi de socle de travail lors des premières expérimentations. **Ce n'est pas ce dossier qu'il faut exécuter.** |
+| 🚀 [**`demo/`**](./demo/) | **LA SOLUTION OPÉRATIONNELLE.** Contient le lanceur double-clic Windows, l'orchestrateur, le moteur Python humanisé et le dossier des livrables générés. **C'est ce dossier qu'il faut utiliser.** |
+| 📚 [**`scripts_historiques/`**](./scripts_historiques/) | **Archives & recherche.** Conserve les briques exploratoires d'origine et le skill ECC `frontend-slides`. Ne pas exécuter directement. |
 
 ---
 
-## 🚀 Démarrage Rapide (Dossier `demo/`)
+## 🎓 Cas d'École : Démonstration Réelle
 
-Toutes les opérations se déroulent exclusivement dans le dossier [**`demo/`**](./demo/) :
+Pour illustrer concrètement la valeur ajoutée du pipeline, nous avons traité une vidéo réelle :
 
-### 1. Cloner et déposer la vidéo
-Placez votre fichier vidéo au format `.mp4` directement dans le dossier `demo/`.
+* **Sujet** : Conférence & retour d'expérience sur les stratégies de créativité (*Too Fast to Think* de Chris Lewis).
+* **Durée** : 7 minutes et 15 secondes.
+* **Lien de la vidéo source (Google Drive)** : 
+  👉 [**Télécharger / Visionner la vidéo sur Google Drive**](https://drive.google.com/file/d/1pbT3kRivzOONa3B1bRP1nIhbFdkt3ef2/view?usp=sharing)
+* **Temps de traitement total** : **1 minute et 11 secondes** sur un ordinateur standard.
 
-### 2. Lancer le traitement (zéro installation requise)
-Sous Windows, double-cliquez simplement sur :
-```text
-demo\LANCER_PIPELINE.bat
-```
-*Le script configure automatiquement un environnement Python virtuel isolé (`.venv`) via `uv`, installe les dépendances nécessaires et lance le traitement sans exiger de droits administrateur.*
+### 📦 Où se trouvent les livrables générés ?
+Les résultats sont directement consultables et téléchargeables dans le dossier [**`demo/output/`**](./demo/output/) :
 
-### 3. Clé d'api IA
-Au premier lancement, le script vous invite à renseigner une clé d'API pour la synthèse (compatible **Google Gemini**, **Mistral AI** ou **OpenAI**). La clé peut être mémorisée localement dans un fichier `.env` pour les exécutions futures.
-
----
-
-## 📦 Les Livrables Générés dans `demo/output/`
-
-À partir du fichier vidéo, le pipeline génère automatiquement dans `demo/` :
-
-```text
-demo/
-├── output/
-│   ├── transcript.md              # Transcription intégrale horodatée [HH:MM:SS]
-│   ├── summary.md                 # Synthèse exécutive en français
-│   ├── article_mode_d_emploi.docx # Article & Mode d'emploi Word complet illustré
-│   ├── presentation.pptx          # Support de présentation PowerPoint 16:9
-│   ├── presentation.html          # Deck web interactif autonome (Base64 embedded)
-│   ├── presentation.pdf           # Version imprimable PDF 16:9
-│   ├── deck_structure.json        # Modèle de données JSON des slides
-│   └── keyframes/                 # Images clés extraites intelligemment de la vidéo
-├── LANCER_PIPELINE.bat        # Lanceur double-clic Windows (zéro commande)
-├── INSTALLER.bat              # Script d'installation & vérification
-├── pipeline.py                # Moteur Python de traitement média & IA
-├── run_pipeline.ps1           # Orchestrateur PowerShell avec auto-bootstrap
-├── requirements.txt           # Dépendances Python isolées
-├── prd.md                     # Cahier des charges produit (PRD BMad)
-├── addendum.md                # Addendum technique d'architecture
-└── README.md                  # Documentation détaillée du module
-```
-
-### 📂 Accès Direct aux Livrables de Démo Générés (`demo/output/`)
-
-Vous pouvez directement inspecter les fichiers générés lors de la dernière exécution :
-
-| Livrable | Lien direct vers le fichier | Format | Description |
+| Livrable | Accès direct au fichier | Format | Contenu & Valeur Ajoutée |
 | :--- | :--- | :--- | :--- |
-| 📘 **Article & Mode d'Emploi** | [**`article_mode_d_emploi.docx`**](./demo/output/article_mode_d_emploi.docx) | Word `.docx` | Guide opérationnel complet, encadrés de bonnes pratiques et visuels intégrés. |
-| 📊 **Support de Présentation** | [**`presentation.pptx`**](./demo/output/presentation.pptx) | PowerPoint `.pptx` | Deck 16:9 widescreen avec titres percutants, puces argumentées et diapositives. |
-| 📑 **Export PDF Imprimable** | [**`presentation.pdf`**](./demo/output/presentation.pdf) | PDF 16:9 | Version vectorielle haute résolution sans rupture de page. |
-| 🌐 **Deck Web Interactif** | [**`presentation.html`**](./demo/output/presentation.html) | HTML Autonome | Rendu plein écran ECC `frontend-slides` avec images Base64 et navigation fluide. |
-| 📌 **Synthèse Exécutive** | [**`summary.md`**](./demo/output/summary.md) | Markdown | Synthèse stratégique des points clés, enjeux et conclusions. |
-| 📝 **Transcription Intégrale** | [**`transcript.md`**](./demo/output/transcript.md) | Markdown | Transcription complète horodatée `[HH:MM:SS]` (Whisper local). |
-| 🖼 **Galerie des Diapositives** | [**`keyframes/`**](./demo/output/keyframes/) | Dossier Images | 18 captures clés extraites automatiquement de la vidéo. |
+| 📘 **Article & Mode d'Emploi** | [**`article_mode_d_emploi.docx`**](./demo/output/article_mode_d_emploi.docx) | Word `.docx` | Guide opérationnel structuré pour les équipes : démarches pas-à-pas, encadrés de bonnes pratiques et captures insérées. |
+| 📊 **Support de Présentation** | [**`presentation.pptx`**](./demo/output/presentation.pptx) | PowerPoint `.pptx` | Diapositives 16:9 widescreen élégantes avec puces argumentées et visuels extraits. |
+| 📑 **Export Imprimable** | [**`presentation.pdf`**](./demo/output/presentation.pdf) | PDF 16:9 | Version vectorielle haute définition prête à projeter ou imprimer sans saut de page. |
+| 🌐 **Deck Web Interactif** | [**`presentation.html`**](./demo/output/presentation.html) | HTML Autonome | Rendu plein écran ECC `frontend-slides` avec images Base64 (zéro serveur, zéro dépendance). |
+| 📌 **Synthèse Exécutive** | [**`summary.md`**](./demo/output/summary.md) | Markdown | Synthèse de direction en style direct et humain (sans clichés IA). |
+| 📝 **Transcription Intégrale** | [**`transcript.md`**](./demo/output/transcript.md) | Markdown | Retranscription mot à mot horodatée `[HH:MM:SS]` via Whisper local souverain. |
+| 🖼 **Galerie des Diapositives** | [**`keyframes/`**](./demo/output/keyframes/) | Dossier JPG | 18 captures clés nettes extraites aux points de stabilité de la vidéo. |
 
 ---
 
-## 📖 Documentation détaillée
+## 👤 Guide Utilisateur : Accessible à Tous (Zéro Compétence Technique)
 
-Pour consulter les spécifications complètes et le cahier des charges produit :
-* 📄 [**Cahier des charges produit (PRD)**](./demo/prd.md)
-* 🛠 [**Addendum technique d'architecture**](./demo/addendum.md)
-* 💡 [**Guide d'utilisation détaillé de `demo/`**](./demo/README.md)
+> **Point clé** : **Vous n'avez PAS besoin d'avoir Python installé sur votre machine.**  
+> Le script est 100% autonome. Il gère lui-même son environnement virtuel dans un coin isolé sans jamais modifier votre système.
+
+### Étape 1 : Télécharger ou Cloner le dépôt
+Récupérez ce dépôt sur votre machine Windows.
+
+### Étape 2 : Double-cliquer sur `LANCER_PIPELINE.bat`
+Rendez-vous dans le dossier `demo/` et double-cliquez simplement sur :
+👉 [**`demo\LANCER_PIPELINE.bat`**](./demo/LANCER_PIPELINE.bat)
+
+### Étape 3 : Indiquer votre vidéo
+Le script vous accueille et vous demande :
+> *« Où se trouve la vidéo ? »*
+
+Trois options ultra-simples s'offrent à vous :
+1. **Glisser-déposer** votre fichier vidéo directement dans la fenêtre noire de la console.
+2. **Coller le chemin** de votre fichier (ex : `D:\MesVideos\formation.mp4`).
+3. **Appuyer sur [Entrée] sans rien taper** : la fenêtre standard de l'Explorateur Windows s'ouvre pour vous permettre de cliquer sur votre fichier vidéo !
+
+### Étape 4 : Consultation immédiate
+Dès la fin du traitement, **le dossier des livrables s'ouvre automatiquement sous vos yeux dans l'Explorateur Windows**.
+
+---
+
+## 🧠 Rédaction Humanisée (Anti-Clichés IA)
+
+Le moteur intègre les directives éditoriales du framework **Humanizer** :
+* **Zéro formulation robotique** : Aucun cliché du type *"dans un monde hyper-connecté"*, *"véritable catalyseur"*, *"pierre angulaire"*.
+* **Typographie naturelle** : Fin des labels en gras mécaniques suivis de deux-points sur chaque puce.
+* **Style direct de praticien** : Des phrases fluides, concrètes, citant les personnes et situations réelles de la vidéo.
+
+---
+
+## 🛠 Spécifications & Architecture
+
+Pour les développeurs et chefs de projet souhaitant inspecter la conception technique :
+* 📄 [**Cahier des charges produit (PRD BMad)**](./demo/prd.md)
+* 📐 [**Addendum d'architecture & dimensionnement**](./demo/addendum.md)
+* 💻 [**Script Python principal (`pipeline.py`)**](./demo/pipeline.py)
