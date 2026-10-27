@@ -34,9 +34,31 @@ Au premier lancement, le script vous invite à renseigner une clé d'API pour la
 
 ---
 
-## 📦 Les 6 livrables générés dans `demo/output/`
+## 📦 Les Livrables Générés dans `demo/output/`
 
-À partir du fichier vidéo, le pipeline génère automatiquement :
+À partir du fichier vidéo, le pipeline génère automatiquement dans `demo/` :
+
+```text
+demo/
+├── output/
+│   ├── transcript.md              # Transcription intégrale horodatée [HH:MM:SS]
+│   ├── summary.md                 # Synthèse exécutive en français
+│   ├── article_mode_d_emploi.docx # Article & Mode d'emploi Word complet illustré
+│   ├── presentation.pptx          # Support de présentation PowerPoint 16:9
+│   ├── presentation.html          # Deck web interactif autonome (Base64 embedded)
+│   ├── presentation.pdf           # Version imprimable PDF 16:9
+│   ├── deck_structure.json        # Modèle de données JSON des slides
+│   └── keyframes/                 # Images clés extraites intelligemment de la vidéo
+├── LANCER_PIPELINE.bat        # Lanceur double-clic Windows (zéro commande)
+├── INSTALLER.bat              # Script d'installation & vérification
+├── pipeline.py                # Moteur Python de traitement média & IA
+├── run_pipeline.ps1           # Orchestrateur PowerShell avec auto-bootstrap
+├── requirements.txt           # Dépendances Python isolées
+├── prd.md                     # Cahier des charges produit (PRD BMad)
+├── addendum.md                # Addendum technique d'architecture
+└── README.md                  # Documentation détaillée du module
+```
+
 1. 📝 **`transcript.md`** : Transcription intégrale horodatée `[HH:MM:SS]` via **Whisper local** (CTranslate2, aucune fuite de données).
 2. 📌 **`summary.md`** : Synthèse exécutive structurée en français (Contexte, Enjeux, Décisions, Plan d'action).
 3. 📘 **`article_mode_d_emploi.docx`** : Document Word complet comprenant un guide pratique pas-à-pas, des encadrés de bonnes pratiques et les captures de scènes illustrées.

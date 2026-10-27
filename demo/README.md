@@ -68,9 +68,12 @@ demo/
 │   ├── presentation.pdf           # Version imprimable PDF 16:9
 │   ├── deck_structure.json        # Modèle de données JSON des slides
 │   └── keyframes/                 # Images clés extraites intelligemment de la vidéo
+├── LANCER_PIPELINE.bat        # Lanceur double-clic (zéro ligne de commande)
+├── INSTALLER.bat              # Script d'installation optionnel
 ├── pipeline.py                # Moteur Python de traitement média & IA
 ├── run_pipeline.ps1           # Orchestrateur PowerShell avec auto-bootstrap
 ├── requirements.txt           # Dépendances Python isolées
 ├── prd.md                     # Cahier des charges produit (PRD BMad)
-└── addendum.md                # Addendum technique d'architecture
+├── addendum.md                # Addendum technique d'architecture
+└── README.md                  # Documentation détaillée du module
 ```
