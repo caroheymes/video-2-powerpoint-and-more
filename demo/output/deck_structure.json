@@ -1,64 +1,64 @@
 {
-  "summary_markdown": "# Synthèse de la session\n\nZoe Hames a présenté des stratégies pour libérer le potentiel créatif, s'appuyant sur les idées de Chris Lewis dans son livre *Too Fast to Think*. Elle a mis en avant trois approches essentielles : trouver le calme dans le chaos, exploiter la puissance des rêves et comprendre l'importance de lâcher prise. La première stratégie souligne la nécessité de moments de silence pour favoriser l'inspiration, en se déconnectant des distractions quotidiennes. La deuxième encourage à retrouver l'énergie imaginative de l'enfance, en permettant à l'esprit de vagabonder sans jugement. Enfin, la dernière stratégie insiste sur le fait que lâcher prise et prioriser son bien-être sont essentiels pour nourrir la créativité. Ces méthodes visent à créer un environnement propice à l'épanouissement créatif.",
-  "article_title": "Stratégies pour Libérer le Potentiel Créatif",
+  "summary_markdown": "# Synthèse de la session\n\nZoe Hames a présenté des stratégies pour libérer le potentiel créatif, s'appuyant sur les idées de Chris Lewis dans son livre *Too Fast to Think*. Elle a mis en avant trois approches essentielles : trouver le calme, exploiter la puissance des rêves et apprendre à lâcher prise. La première stratégie souligne l'importance de moments de silence pour favoriser l'inspiration. La deuxième encourage à retrouver l'énergie imaginative de l'enfance, en permettant à l'esprit de vagabonder sans contraintes. Enfin, la dernière stratégie insiste sur la nécessité de se défaire du besoin de tout contrôler, afin de laisser la créativité s'épanouir. Ces conseils visent à créer un environnement propice à l'innovation et à l'expression personnelle.",
+  "article_title": "Stratégies pour Développer la Créativité",
   "article_sections": [
     {
-      "heading": "Trouver le Calme dans le Chaos",
+      "heading": "Trouver le Calme",
       "paragraphs": [
-        "Zoe Hames évoque l'importance de moments de silence pour stimuler la créativité. Dans un monde bruyant, il est essentiel de se déconnecter des distractions pour permettre à l'esprit de s'épanouir.",
-        "Elle fait référence à Gamora, qui a besoin de concentration pour maîtriser son art. De même, la créativité nécessite un espace pour respirer, loin des bruits incessants."
+        "Dans un monde où le bruit est omniprésent, il est essentiel de créer des moments de silence. Ces instants permettent à l'esprit de se recentrer et d'accueillir l'inspiration.",
+        "Zoe évoque l'exemple de Gamora, qui a dû se concentrer intensément pour maîtriser son art. De même, la créativité nécessite un espace pour se développer, loin des distractions."
       ],
       "bullets": [
-        "Prendre quelques minutes chaque jour pour se déconnecter et se recentrer.",
-        "Se promener dans la nature ou méditer pour favoriser la réflexion."
+        "Consacrer quelques minutes chaque jour à la déconnexion.",
+        "Prendre des pauses en pleine nature pour se reconnecter à soi-même."
       ],
       "keyframe": "slide_keyframe_01.jpg",
-      "callout": "L'importance de créer des moments de silence pour favoriser l'inspiration."
+      "callout": "L'importance de la tranquillité pour stimuler la créativité."
     },
     {
       "heading": "Exploiter la Puissance des Rêves",
       "paragraphs": [
-        "La deuxième stratégie consiste à libérer l'imagination en se reconnectant à l'énergie créative de l'enfance. Zoe encourage à laisser libre cours à ses pensées sans autocensure.",
-        "Chris Lewis souligne que les idées les plus innovantes peuvent émerger de pensées jugées absurdes. Il est donc crucial d'explorer ces pistes."
+        "Zoe souligne l'importance de retrouver l'énergie imaginative de l'enfance. Elle encourage à laisser libre cours à l'imagination, sans jugement ni limites.",
+        "Les rêves, qu'ils soient nocturnes ou éveillés, peuvent offrir des aperçus précieux sur nos désirs et nos peurs, alimentant ainsi notre créativité."
       ],
       "bullets": [
-        "Doodle et écrire sans se soucier de la logique ou de la perfection.",
-        "Accorder de l'importance aux rêves, qui peuvent révéler des désirs cachés."
+        "Accorder du temps à des activités ludiques et créatives.",
+        "Écrire librement sans se soucier de la cohérence."
       ],
       "keyframe": "slide_keyframe_02.jpg",
-      "callout": "Encourager le jeu et l'exploration des idées sans limites."
+      "callout": "Les rêves comme source d'inspiration et d'innovation."
     },
     {
-      "heading": "L'Art de Lâcher Prise",
+      "heading": "Apprendre à Lâcher Prise",
       "paragraphs": [
-        "Zoe aborde ensuite la nécessité de lâcher prise pour favoriser la créativité. Elle explique que la pression de la perfection peut étouffer l'innovation.",
-        "Chris Lewis insiste sur l'importance de prendre soin de soi pour maintenir un esprit créatif. Lorsque nous sommes épuisés, notre créativité en souffre."
+        "Zoe aborde la nécessité de se libérer du besoin de tout contrôler. Elle explique que la créativité prospère dans l'acceptation et la flexibilité.",
+        "Il est crucial de prioriser son bien-être pour nourrir sa créativité, en évitant de s'épuiser dans la quête de la perfection."
       ],
       "bullets": [
-        "Établir des limites et apprendre à dire non aux engagements qui drainent l'énergie.",
-        "Faire des activités qui apportent de la joie et permettent de se ressourcer."
+        "Établir des limites pour préserver son énergie.",
+        "Accorder du temps à des activités qui apportent de la joie."
       ],
       "keyframe": "slide_keyframe_03.jpg",
-      "callout": "Prioriser le bien-être pour nourrir la créativité."
+      "callout": "Lâcher prise comme clé pour libérer la créativité."
     }
   ],
   "presentation_title": "Débloquer le Potentiel Créatif",
-  "presentation_subtitle": "Stratégies de créativité, 2023, Zoe Hames et Chris Lewis",
+  "presentation_subtitle": "Stratégies de créativité, 2023, Zoe Hames",
   "slides": [
     {
       "slide_number": 1,
       "type": "title",
-      "title": "Débloquer votre Créativité",
+      "title": "Débloquer votre créativité",
       "subtitle": "Zoe Hames"
     },
     {
       "slide_number": 2,
       "type": "content",
-      "title": "Stratégies pour Libérer la Créativité",
+      "title": "Stratégies pour libérer votre potentiel",
       "bullets": [
-        "Trouver le calme pour favoriser l'inspiration.",
+        "Trouver des moments de calme pour favoriser l'inspiration.",
         "Exploiter l'énergie imaginative de l'enfance.",
-        "Lâcher prise pour permettre à la créativité de s'épanouir."
+        "Apprendre à lâcher prise pour laisser place à la créativité."
       ],
       "keyframe": "slide_keyframe_02.jpg",
       "kpi": null

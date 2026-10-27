@@ -1,78 +1,73 @@
 # Video to PowerPoint & More
 
-Ce projet convertit une vidéo enregistrée (réunion, conférence, cours, atelier) en plusieurs documents de travail directement exploitables :
+Ce projet convertit un enregistrement vidéo (réunion d'équipe, atelier, conférence, cours) en un ensemble complet de documents directement exploitables :
 
-- Une transcription texte intégrale et horodatée via Whisper en local.
-- Une synthèse claire des échanges et des conclusions.
-- Une note de synthèse au format Word (`.docx`) avec les captures d'écran des diapositives.
-- Un diaporama PowerPoint 16:9 (`.pptx`) prêt à être projeté ou partagé.
-- Une version web plein écran (`.html`) et son export imprimable (`.pdf`).
-
----
-
-## Organisation du dépôt
-
-- **`INSTALLER_WINDOWS.bat`** : Assistant d'installation graphique en un clic pour Windows.
-- **[`demo/`](./demo/)** : Le pipeline fonctionnel complet et prêt à l'emploi.
-- **[`scripts_historiques/`](./scripts_historiques/)** : Scripts de test et composants d'exploration initiaux.
+- La transcription intégrale horodatée, réalisée sur votre machine avec Whisper.
+- Une synthèse claire des échanges et des décisions.
+- Une note de cadrage au format Word (`.docx`) enrichie des captures d'écran des diapositives.
+- Un diaporama PowerPoint 16:9 (`.pptx`) prêt à projeter.
+- Une version web plein écran (`.html`) avec son export imprimable (`.pdf`).
 
 ---
 
-## Que doit faire un utilisateur non technique ?
+## Prise en main rapide
 
-Aucune connaissance informatique ni installation préalable de Python n'est requise.
+Vous n'avez pas besoin d'installer Python ni de taper de ligne de commande.
 
-### Étape 1 : Première installation (à faire une seule fois)
+### 1. Première installation
 
-1. Double-cliquez sur le fichier **`INSTALLER_WINDOWS.bat`**.
-2. Une petite fenêtre s'ouvre :
-   - Choisissez votre fournisseur d'IA (OpenAI, Google Gemini ou Mistral),
-   - Collez votre clé d'accès dans le champ prévu,
-   - Cliquez sur le bouton **« Installer & Configurer »**.
-3. L'assistant prépare tout en quelques secondes sans modifier votre système, ajoute une icône **« Video to PowerPoint »** sur votre Bureau et intègre une commande dans le menu clic droit de Windows.
+1. Double-cliquez sur `INSTALLER_WINDOWS.bat`.
+2. Une fenêtre s'affiche pour vous permettre de :
+   - Choisir votre moteur d'IA (OpenAI, Google Gemini ou Mistral),
+   - Renseigner votre clé d'accès,
+   - Cliquer sur **Installer & Configurer**.
+3. L'assistant prépare tout en autonomie, dépose un raccourci **Video to PowerPoint** sur votre Bureau et ajoute l'option dans le menu clic droit de Windows.
 
-### Étape 2 : Traiter une vidéo au quotidien
+### 2. Traitement d'une vidéo
 
-Deux méthodes au choix :
+Deux façons simples de lancer une conversion :
 
-- **Méthode 1 (la plus rapide)** : Faites un clic droit sur n'importe quel fichier vidéo (`.mp4`) sur votre ordinateur, puis choisissez **« Convertir avec Video2PowerPoint (IA) »**.
-- **Méthode 2** : Double-cliquez sur l'icône **« Video to PowerPoint »** sur votre Bureau, puis appuyez sur la touche Entrée pour choisir votre vidéo dans l'explorateur Windows habituel.
+- **Le clic droit dans vos dossiers** : faites un clic droit sur n'importe quel fichier `.mp4` et choisissez **Convertir avec Video2PowerPoint (IA)**. Le traitement commence aussitôt sur cette vidéo.
+- **Le raccourci sur le Bureau** : double-cliquez sur l'icône **Video to PowerPoint**. La fenêtre vous propose alors un choix direct :
+  - Appuyez sur **Entrée** pour tester la vidéo d'exemple déjà incluse.
+  - Tapez **2** pour ouvrir l'explorateur Windows et sélectionner un autre fichier vidéo.
+  - Vous pouvez aussi faire glisser votre fichier vidéo directement dans la fenêtre.
 
-Le traitement démarre dans une fenêtre console. Une fois le travail terminé, le dossier contenant vos documents finaux s'ouvre automatiquement sous vos yeux.
+Dès que le calcul s'achève, le dossier contenant tous vos documents finaux s'ouvre automatiquement.
 
-### Que faire si un message en jaune ou un avertissement apparaît ?
+### Que faire si des messages d'avertissement s'affichent ?
 
-- **Absolument rien.** Certains messages informatifs (comme les avertissements de Hugging Face concernant les « symlinks » sur Windows ou l'absence de jeton de cache) sont de simples indications techniques internes.
-- Ce ne sont **pas des erreurs** : ils n'empêchent en rien le programme de fonctionner normalement et de produire tous vos documents.
-- Le lanceur configure désormais automatiquement les réglages nécessaires pour masquer ces messages parasites.
+Rien du tout. Certains avertissements de bibliothèque (par exemple les messages de Hugging Face signalant que Windows ne gère pas nativement les liens symboliques en mode standard) sont de simples indications techniques internes. Ils n'interrompent pas le calcul et ne dégradent en rien vos documents.
 
 ---
 
 ## Exemple concret (vidéo de test)
 
-Le pipeline a été testé et validé sur un enregistrement de 7 minutes (intervention de Zoe Hames autour du livre *Too Fast to Think* de Chris Lewis).
+Le fonctionnement a été validé sur un atelier de 7 minutes (intervention de Zoe Hames sur l'ouvrage *Too Fast to Think* de Chris Lewis).
 
-- Fichier vidéo source : [Lien de téléchargement Google Drive](https://drive.google.com/file/d/1pbT3kRivzOONa3B1bRP1nIhbFdkt3ef2/view?usp=sharing)
-- Temps de calcul constaté : 1 min 11 s sur un ordinateur de bureau standard.
+- Fichier source : [Télécharger la vidéo sur Google Drive](https://drive.google.com/file/d/1pbT3kRivzOONa3B1bRP1nIhbFdkt3ef2/view?usp=sharing)
+- Temps de traitement mesuré : 1 minute et 11 secondes sur un ordinateur de bureau standard.
 
-Tous les fichiers issus de ce test sont directement consultables dans le dossier [`demo/output/`](./demo/output/) :
+Les documents générés lors de ce test sont consultables directement dans le dossier [`demo/output/`](./demo/output/) :
 
-| Document | Fichier | Description |
+| Document | Fichier généré | Contenu |
 | :--- | :--- | :--- |
-| Note de synthèse | [`article_mode_d_emploi.docx`](./demo/output/article_mode_d_emploi.docx) | Document Word reprenant le fil conducteur, les points clés et les visuels de la vidéo. |
-| Présentation PowerPoint | [`presentation.pptx`](./demo/output/presentation.pptx) | Diaporama 16:9 avec les idées maîtresses et les captures d'écran associées. |
-| Présentation PDF | [`presentation.pdf`](./demo/output/presentation.pdf) | Rendu PDF paysage page par page, sans coupure. |
-| Version web interactive | [`presentation.html`](./demo/output/presentation.html) | Fichier HTML autonome (les images sont embarquées, consultation hors-ligne). |
-| Synthèse rapide | [`summary.md`](./demo/output/summary.md) | Synthèse textuelle des messages essentiels et des conclusions. |
-| Transcription brute | [`transcript.md`](./demo/output/transcript.md) | Retranscription intégrale horodatée seconde par seconde. |
+| Note de synthèse | [`article_mode_d_emploi.docx`](./demo/output/article_mode_d_emploi.docx) | Document Word structuré avec les idées directrices et les captures associées. |
+| Présentation PowerPoint | [`presentation.pptx`](./demo/output/presentation.pptx) | Diapositives 16:9 avec les messages clés et les visuels de la vidéo. |
+| Version imprimable | [`presentation.pdf`](./demo/output/presentation.pdf) | Rendu PDF paysage page à page, sans coupure. |
+| Présentation interactive | [`presentation.html`](./demo/output/presentation.html) | Fichier web autonome (les visuels sont intégrés, fonctionne hors-ligne). |
+| Synthèse rapide | [`summary.md`](./demo/output/summary.md) | Synthèse concise des points clés et des conclusions. |
+| Transcription brute | [`transcript.md`](./demo/output/transcript.md) | Texte intégral horodaté seconde par seconde. |
 | Visuels extraits | [`keyframes/`](./demo/output/keyframes/) | 18 captures des moments stables de la vidéo. |
 
 ---
 
-## Notes pour les profils techniques
+## Structure du projet
 
-Pour adapter ou inspecter le fonctionnement interne du pipeline :
+- **`INSTALLER_WINDOWS.bat`** : Assistant d'installation graphique pour Windows.
+- **[`demo/`](./demo/)** : Pipeline prêt à l'emploi avec scripts d'exécution et dossier de sortie.
+- **[`scripts_historiques/`](./scripts_historiques/)** : Scripts d'exploration et de validation initiaux.
 
-- [`demo/pipeline.py`](./demo/pipeline.py) : Script Python articulant l'extraction audio via ffmpeg, la transcription locale avec `faster-whisper`, la détection des changements de plan avec `scenedetect`, l'appel au modèle de langage pour la structuration, puis l'assemblage des fichiers Word, PowerPoint, HTML et PDF.
-- [`demo/run_pipeline.ps1`](./demo/run_pipeline.ps1) : Script PowerShell appelé par le fichier `.bat`. Il installe l'exécutable `uv` si nécessaire, crée l'environnement virtuel `.venv` et lance le traitement.
-- [`demo/prd.md`](./demo/prd.md) : Cahier des charges initial et critères d'acceptation du projet.
+Pour adapter ou auditer le code interne :
+- [`demo/pipeline.py`](./demo/pipeline.py) regroupe l'extraction audio ffmpeg, la transcription locale Whisper, la détection visuelle de plans, les requêtes d'analyse LLM et les moteurs d'export Word, PowerPoint, HTML et PDF.
+- [`demo/run_pipeline.ps1`](./demo/run_pipeline.ps1) gère la sélection interactive du fichier et l'environnement virtuel.
