@@ -20,7 +20,10 @@ demo/
 │   ├── deck_structure.json    # Données intermédiaires des diapositives
 │   └── keyframes/             # Images stables extraites de la vidéo
 ├── LANCER_PIPELINE.bat        # Fichier à double-cliquer pour démarrer
+├── LANCER_TESTS.bat           # Lanceur du banc d'essai et tests automatisés
 ├── INSTALLER_WINDOWS.bat      # Assistant de configuration graphique
+├── tests/                     # Suite de tests automatisés (20 tests pytest)
+├── pytest.ini                 # Configuration du banc de test
 ├── pipeline.py                # Moteur Python (Whisper, Google Drive, LLM, exports)
 ├── run_pipeline.ps1           # Script PowerShell orchestrateur
 ├── requirements.txt           # Dépendances Python requises

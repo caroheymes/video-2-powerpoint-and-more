@@ -80,8 +80,24 @@ Les documents issus de ce test sont consultables directement dans le dossier [`d
 
 - **`INSTALLER_WINDOWS.bat`** : Assistant d'installation graphique pour Windows (à la racine).
 - **`LANCER_PIPELINE.bat`** : Lanceur direct du traitement (à la racine).
-- **[`demo/`](./demo/)** : Pipeline complet avec code Python, environnement virtuel et dossier de sortie.
+- **`LANCER_TESTS.bat`** : Banc d'essai automatisé (20 tests unitaires et d'intégration).
+- **[`demo/`](./demo/)** : Pipeline complet avec code Python, environnement virtuel, tests et dossier de sortie.
 - **[`scripts_historiques/`](./scripts_historiques/)** : Scripts d'exploration et de validation initiaux.
+
+---
+
+## Banc de tests & Validation (Harness)
+
+Une suite de 20 tests automatisés avec `pytest` garantit la fiabilité de chaque composant du pipeline :
+- **Intégrité de l'environnement** : présence effective de `ffmpeg` autonome et des bibliothèques (`faster-whisper`, `scenedetect`, `python-docx`, `python-pptx`, `Pillow`).
+- **Générateurs de documents** : conformité des fichiers Word (`.docx`), du format 16:9 widescreen PowerPoint (`.pptx`), et du deck web HTML autonome (`.html`).
+- **Banc d'essai de bout en bout (Harness E2E)** : simulation complète du cycle de vie du pipeline avec vérification de la production des 7 livrables.
+- **Règles rédactionnelles Humanizer** : contrôle de l'application stricte des directives anti-jargon IA.
+
+Pour lancer tous les tests en un clic :  
+Double-cliquez sur **`LANCER_TESTS.bat`** (à la racine ou dans `demo/`).
+
+---
 
 Pour adapter ou inspecter le fonctionnement technique :
 - [`demo/pipeline.py`](./demo/pipeline.py) regroupe l'extraction audio ffmpeg, le téléchargement automatique Google Drive, la transcription locale Whisper, la détection visuelle de plans, l'analyse LLM et les moteurs d'export Word, PowerPoint, HTML et PDF.

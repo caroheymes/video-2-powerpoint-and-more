@@ -670,8 +670,12 @@ def generate_html_deck(plan: Dict[str, Any], keyframes_dir: Path, output_html_pa
 
             kpi_html = ""
             if "kpi" in s and s["kpi"]:
-                kpi_val = s["kpi"].get("value", "")
-                kpi_lbl = s["kpi"].get("label", "")
+                if isinstance(s["kpi"], dict):
+                    kpi_val = s["kpi"].get("value", "")
+                    kpi_lbl = s["kpi"].get("label", "")
+                else:
+                    kpi_val = str(s["kpi"])
+                    kpi_lbl = ""
                 kpi_html = f"<div class='kpi-badge'><span class='kpi-val'>{kpi_val}</span><span class='kpi-lbl'>{kpi_lbl}</span></div>"
 
             layout_class = "split-layout" if img_b64 else "full-layout"
