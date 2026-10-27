@@ -282,59 +282,180 @@ def extract_scenes(video_path: Path, output_keyframes_dir: Path, max_scenes: int
 
 
 # ==============================================================================
-# Étape 4 : Synthèse & Structuration par API LLM (Gemini / Mistral)
+# Filtre Humanizer Anti-Clichés IA
+# ==============================================================================
+def clean_humanizer_text(text: str) -> str:
+    """Nettoie impitoyablement les tics d'écriture et clichés résiduels des LLM."""
+    if not isinstance(text, str):
+        return text
+    import re
+
+    # 1. Clichés d'ouverture et mondes connectés bannis
+    text = re.sub(r'(?i)\bdans un monde (qui|en|où|hyper[ -]?connecté|moderne|bruyant|complexe)[^,.;]*[,.]?\s*', '', text)
+    text = re.sub(r'(?i)\bà l[\'’]ère du numérique[^,.;]*[,.]?\s*', '', text)
+    text = re.sub(r'(?i)\bdans notre société (actuelle|moderne)[^,.;]*[,.]?\s*', '', text)
+    text = re.sub(r'(?i)\bdans un environnement saturé[^,.;]*[,.]?\s*', '', text)
+
+    # 2. Métaphores lyriques & tics de langage IA
+    text = re.sub(r'(?i)\bnourrissent? l[\'’]âme\b', "renouvellent l'énergie", text)
+    text = re.sub(r'(?i)\btrésors? cachés?\b', "solutions concrètes", text)
+    text = re.sub(r'(?i)\b(débloquer|libérer) (le|votre|leur) potentiel créatif\b', "stimuler la créativité", text)
+    text = re.sub(r'(?i)\blibérer la créativité\b', "stimuler la créativité", text)
+    text = re.sub(r'(?i)\bactivités qui apportent de la joie\b', "initiatives stimulantes", text)
+    text = re.sub(r'(?i)\bterrain fertile pour l[\'’]imagination\b', "cadre propice à la réflexion", text)
+    text = re.sub(r'(?i)\bpermettent à l[\'’]esprit de se recentrer\b', "favorisent la prise de hauteur", text)
+    text = re.sub(r'(?i)\bvéritable catalyseur\b', "moteur", text)
+    text = re.sub(r'(?i)\bpierre angulaire\b', "pilier", text)
+    text = re.sub(r'(?i)\bau cœur de\b', "dans", text)
+    text = re.sub(r'(?i)\bil est (crucial|essentiel|primordial) de\b', "il importe de", text)
+    text = re.sub(r'(?i)\bil convient de (noter|souligner)\b', "notons", text)
+    text = re.sub(r'(?i)\bde manière holistique\b', "globalement", text)
+    text = re.sub(r'(?i)\bGamora\b', "un artisan ou un sportif", text)
+    text = re.sub(r'(?i)\bgalaxies? et constellations?\b', "horizons de travail", text)
+    text = re.sub(r'(?i)\bunivers à explorer\b', "champ d'expérimentation", text)
+    text = re.sub(r'(?i)\bterritoires inexplorés\b', "perspectives nouvelles", text)
+
+    # 3. Élimination des labels "date", "sujet" copiés des templates de prompt
+    text = re.sub(r'(?i),\s*date\b', '', text)
+    text = re.sub(r'(?i)\bdate,\s*', '', text)
+    text = re.sub(r'(?i)\bdate\b', '', text)
+
+    # 4. Ponctuation artificielle
+    text = text.replace(" — ", ", ")
+    text = text.replace("—", ", ")
+    text = text.replace(" !", ".")
+    text = re.sub(r'\s{2,}', ' ', text).strip()
+    return text
+
+
+def apply_humanizer_filter(data: Any) -> Any:
+    """Applique récursivement le filtre Humanizer sur l'ensemble de la structure de données."""
+    if isinstance(data, str):
+        return clean_humanizer_text(data)
+    elif isinstance(data, list):
+        return [apply_humanizer_filter(item) for item in data]
+    elif isinstance(data, dict):
+        return {k: apply_humanizer_filter(v) for k, v in data.items()}
+    return data
+
+
+# ==============================================================================
+# Étape 4 : Synthèse & Structuration par API LLM (Gemini / Mistral / OpenAI)
 # ==============================================================================
 def analyze_with_llm(transcript_text: str, keyframes: List[Dict[str, Any]], api_key: str, provider: str = "gemini") -> Dict[str, Any]:
-    """Appelle l'API Gemini ou Mistral pour synthétiser la vidéo et architecturer le deck."""
+    """Appelle l'API LLM pour synthétiser la vidéo et architecturer le deck avec des directives Humanizer strictes."""
     print(f"\n[4/5] 🧠 Synthèse exécutive & modélisation des slides via {provider.upper()}...")
 
     keyframes_summary = "\n".join([f"- Image {kf['index']} ({kf['filename']}) capturée à {kf['timestamp']}" for kf in keyframes])
 
     system_prompt = (
-        "Tu es un rédacteur et consultant senior expérimenté. Tu rédiges avec un style humain, naturel, "
-        "précis et professionnel, sans AUCUN tic d'écriture caractéristique des intelligences artificielles.\n\n"
-        "DIRECTIVES STRICTES DE RÉDACTION 'HUMANIZER' (ANTI-IA) :\n"
-        "- BANNIR LE JARGON IA : Proscription absolue de clichés comme 'dans un monde en constante évolution', "
-        "'dans un monde hyper-connecté', 'il est crucial de', 'il convient de noter', 'véritable catalyseur', "
-        "'pierre angulaire', 'au cœur de', 'levier incontournable', 'en somme', 'en définitive'.\n"
-        "- BANNIR LES FAUSSES ANTITHÈSES : Pas de constructions artificielles du type 'Ce n'est pas seulement X, c'est Y' "
-        "ou 'Non seulement X, mais également Y'. Énonce directement le fait réel.\n"
-        "- BANNIR LA MISE EN FORME MÉCANIQUE : Évite de préfixer chaque puce par un label en gras suivi de deux-points "
-        "(ex: interdiction du schéma '**Mot-clé** : Explication monotone'). Rédige des phrases directes et variées.\n"
-        "- VARIATION DE RYTHME : Alterne phrases courtes et phrases explicatives. Ne force pas de triades (ne cherche pas "
-        "artificiellement 3 points partout ; si le sujet comporte 2 ou 4 points, écris 2 ou 4 points).\n"
-        "- TITRES SOBRES ET CONCRETS : Des titres fonctionnels et réels, comme dans une note de travail interne, "
-        "pas des slogans publicitaires ou de conférences pompeuses.\n"
-        "- PONCTUATION NATURELLE : Zéro tiret cadratin excessif, zéro point d'exclamation marketing, pas de points entre les mots.\n"
-        "- ANCRAGE RÉEL : Cite des exemples précis et des situations réelles mentionnées dans la vidéo.\n\n"
-        "Tu dois produire en FRANÇAIS un résultat STRICTEMENT AU FORMAT JSON avec cette structure :\n"
+        "Tu es un consultant senior en management et stratégie d'entreprise. Tu rédiges avec un style humain, naturel, "
+        "sobre, factuel et précis, sans AUCUN tic d'écriture caractéristique des intelligences artificielles.\n\n"
+        "DIRECTIVES STRICTES DE RÉDACTION 'HUMANIZER' (ANTI-JARGON IA ET ANTI-CLICHÉS) :\n"
+        "1. PROSCRIPTIONS ABSOLUES (TICS IA À BANNIR TOTALEMENT) :\n"
+        "   - ZÉRO formule d'ouverture clichée : Interdiction formelle de 'Dans un monde...', 'À l'ère du numérique', 'Dans notre société'.\n"
+        "   - ZÉRO métaphores lyriques : Interdiction de 'nourrir l'âme', 'trésors cachés', 'galaxie', 'étoiles', 'Gamora', 'libérer le potentiel', 'catalyseur', 'pierre angulaire', 'au cœur de'.\n"
+        "   - ZÉRO fausse antithèse : Interdiction de 'Ce n'est pas seulement X, c'est Y' ou 'Non seulement X, mais aussi Y'. Énonce directement le fait réel.\n"
+        "   - ZÉRO mise en forme mécanique : Ne commence JAMAIS chaque puce par un mot en gras suivi de deux-points (**Mot** : ...). Rédige des phrases directes et fluides.\n"
+        "   - ZÉRO triade forcée : Ne force pas 3 points si le sujet en compte 2 ou 4.\n"
+        "   - ZÉRO métadonnées résiduelles : Ne copie jamais les mots 'date', 'sujet', ou 'intervenants' dans les titres ou sous-titres.\n\n"
+        "2. EXIGENCES DE PROFONDEUR ET COUVERTURE COMPLÈTE :\n"
+        "   - Pour la présentation : Produis EXACTEMENT entre 8 et 12 diapositives complètes (Slide 1: Titre sobre, Slides 2 à 10+: diapositives de contenu substantielles, sans t'arrêter à 3 ou 4).\n"
+        "   - Chaque diapositive de contenu doit aborder un point précis tiré de la vidéo, avec un titre sobre et 2 à 4 points factuels.\n"
+        "   - Attribue à chaque diapositive une image différente parmi la liste des images disponibles (ex: slide_keyframe_01.jpg, slide_keyframe_02.jpg, etc.).\n"
+        "   - Pour l'article Word : Rédige 5 sections complètes et structurées avec des constats concrets et des recommandations directement applicables en entreprise.\n\n"
+        "Structure JSON STRICTE à respecter (respecte impérativement le nombre de slides et sections requises) :\n"
         "{\n"
-        '  "summary_markdown": "# Synthèse de la session\\n\\nTexte naturel en quelques paragraphes denses et concrets sans clichés...",\n'
-        '  "article_title": "Titre clair et sobre pour le document Word",\n'
+        '  "summary_markdown": "# Synthèse de la session\\n\\nSynthèse concise et dense en 2 ou 3 paragraphes factuels...",\n'
+        '  "article_title": "Titre Sobre et Professionnel",\n'
         '  "article_sections": [\n'
         '    {\n'
-        '      "heading": "Titre de section descriptif et sobre",\n'
+        '      "heading": "1. Titre de section descriptif et sobre",\n'
         '      "paragraphs": ["Paragraphe rédigé naturellement...", "Suite des explications concrètes..."],\n'
-        '      "bullets": ["Point d\'attention concret sans gras systématique", "Autre recommandation opérationnelle"],\n'
+        '      "bullets": ["Point d\'attention concret", "Autre recommandation opérationnelle"],\n'
         '      "keyframe": "slide_keyframe_01.jpg",\n'
         '      "callout": "Remarque pratique issue des échanges"\n'
         '    }\n'
         '  ],\n'
         '  "presentation_title": "Titre Sobre de la Présentation",\n'
-        '  "presentation_subtitle": "Sous-titre factuel (Sujet, date, intervenants)",\n'
+        '  "presentation_subtitle": "Sous-titre factuel (nom de la session et intervenant principal)",\n'
         '  "slides": [\n'
         "    {\n"
         '      "slide_number": 1,\n'
         '      "type": "title",\n'
-        '      "title": "...",\n'
-        '      "subtitle": "..."\n'
+        '      "title": "Titre Principal",\n'
+        '      "subtitle": "Sous-titre Factuel"\n'
         "    },\n"
         "    {\n"
         '      "slide_number": 2,\n'
         '      "type": "content",\n'
-        '      "title": "Titre direct de la diapositive",\n'
-        '      "bullets": ["Action ou constat 1 rédigé naturellement", "Action ou constat 2"],\n'
+        '      "title": "Contexte et problématique centrale",\n'
+        '      "bullets": ["Constat clé 1", "Constat clé 2", "Impact sur les organisations"],\n'
+        '      "keyframe": "slide_keyframe_01.jpg",\n'
+        '      "kpi": null\n'
+        "    },\n"
+        "    {\n"
+        '      "slide_number": 3,\n'
+        '      "type": "content",\n'
+        '      "title": "Deuxième sujet clé",\n'
+        '      "bullets": ["Action concrète 1", "Action concrète 2"],\n'
         '      "keyframe": "slide_keyframe_02.jpg",\n'
+        '      "kpi": null\n'
+        "    },\n"
+        "    {\n"
+        '      "slide_number": 4,\n'
+        '      "type": "content",\n'
+        '      "title": "Troisième sujet clé",\n'
+        '      "bullets": ["Action concrète", "Bénéfice opérationnel"],\n'
+        '      "keyframe": "slide_keyframe_03.jpg",\n'
+        '      "kpi": null\n'
+        "    },\n"
+        "    {\n"
+        '      "slide_number": 5,\n'
+        '      "type": "content",\n'
+        '      "title": "Quatrième sujet clé",\n'
+        '      "bullets": ["Point d\'attention", "Recommandation pratique"],\n'
+        '      "keyframe": "slide_keyframe_04.jpg",\n'
+        '      "kpi": null\n'
+        "    },\n"
+        "    {\n"
+        '      "slide_number": 6,\n'
+        '      "type": "content",\n'
+        '      "title": "Cinquième sujet clé",\n'
+        '      "bullets": ["Changement d\'organisation", "Gain de temps"],\n'
+        '      "keyframe": "slide_keyframe_05.jpg",\n'
+        '      "kpi": null\n'
+        "    },\n"
+        "    {\n"
+        '      "slide_number": 7,\n'
+        '      "type": "content",\n'
+        '      "title": "Sixième sujet clé",\n'
+        '      "bullets": ["Pratique managériale", "Effet mesurable"],\n'
+        '      "keyframe": "slide_keyframe_06.jpg",\n'
+        '      "kpi": null\n'
+        "    },\n"
+        "    {\n"
+        '      "slide_number": 8,\n'
+        '      "type": "content",\n'
+        '      "title": "Septième sujet clé",\n'
+        '      "bullets": ["Obstacle récurrent", "Solution terrain"],\n'
+        '      "keyframe": "slide_keyframe_07.jpg",\n'
+        '      "kpi": null\n'
+        "    },\n"
+        "    {\n"
+        '      "slide_number": 9,\n'
+        '      "type": "content",\n'
+        '      "title": "Plan d\'action et priorités immédiates",\n'
+        '      "bullets": ["Étape 1", "Étape 2", "Étape 3"],\n'
+        '      "keyframe": "slide_keyframe_08.jpg",\n'
+        '      "kpi": null\n'
+        "    },\n"
+        "    {\n"
+        '      "slide_number": 10,\n'
+        '      "type": "content",\n'
+        '      "title": "Synthèse et leviers de succès",\n'
+        '      "bullets": ["Conclusion opérationnelle", "Prochaine étape"],\n'
+        '      "keyframe": "slide_keyframe_09.jpg",\n'
         '      "kpi": null\n'
         "    }\n"
         "  ]\n"
@@ -351,7 +472,8 @@ def analyze_with_llm(transcript_text: str, keyframes: List[Dict[str, Any]], api_
             ],
             "generationConfig": {
                 "responseMimeType": "application/json",
-                "temperature": 0.2
+                "temperature": 0.3,
+                "maxOutputTokens": 4096
             }
         }
         res = requests.post(url, json=payload, headers={"Content-Type": "application/json"}, timeout=120)
@@ -373,7 +495,8 @@ def analyze_with_llm(transcript_text: str, keyframes: List[Dict[str, Any]], api_
                 {"role": "user", "content": user_prompt}
             ],
             "response_format": {"type": "json_object"},
-            "temperature": 0.2
+            "temperature": 0.3,
+            "max_tokens": 4000
         }
         res = requests.post(url, json=payload, headers=headers, timeout=120)
         if res.status_code != 200:
@@ -394,7 +517,8 @@ def analyze_with_llm(transcript_text: str, keyframes: List[Dict[str, Any]], api_
                 {"role": "user", "content": user_prompt}
             ],
             "response_format": {"type": "json_object"},
-            "temperature": 0.2
+            "temperature": 0.3,
+            "max_completion_tokens": 4000
         }
         res = requests.post(url, json=payload, headers=headers, timeout=120)
         if res.status_code != 200:
@@ -411,7 +535,8 @@ def analyze_with_llm(transcript_text: str, keyframes: List[Dict[str, Any]], api_
     if clean_json.endswith("```"):
         clean_json = clean_json[:-3]
 
-    return json.loads(clean_json)
+    parsed = json.loads(clean_json)
+    return apply_humanizer_filter(parsed)
 
 
 # ==============================================================================
@@ -1037,9 +1162,30 @@ def main():
     pdf_path = out_dir / "presentation.pdf"
 
     # Récupérer la clé API
-    api_key = args.api_key or os.getenv("GEMINI_API_KEY") or os.getenv("MISTRAL_API_KEY")
+    if not args.api_key:
+        env_candidates = [Path(".env"), Path(__file__).parent / ".env", out_dir.parent / ".env"]
+        for ec in env_candidates:
+            if ec.exists():
+                for line in ec.read_text(encoding="utf-8").splitlines():
+                    line = line.strip()
+                    if line and not line.startswith("#") and "=" in line:
+                        k, v = line.split("=", 1)
+                        k, v = k.strip(), v.strip().strip("'\"")
+                        if k not in os.environ:
+                            os.environ[k] = v
+
+    if args.provider.lower() == "openai":
+        api_key = args.api_key or os.getenv("OPENAI_API_KEY")
+    elif args.provider.lower() == "mistral":
+        api_key = args.api_key or os.getenv("MISTRAL_API_KEY")
+    else:
+        api_key = args.api_key or os.getenv("GEMINI_API_KEY")
+
     if not api_key:
-        print("Erreur : Clé d'accès LLM requise (--api-key ou variable d'environnement).")
+        api_key = args.api_key or os.getenv("GEMINI_API_KEY") or os.getenv("MISTRAL_API_KEY") or os.getenv("OPENAI_API_KEY")
+
+    if not api_key:
+        print("Erreur : Clé d'accès LLM requise (--api-key ou variable d'environnement GEMINI_API_KEY / MISTRAL_API_KEY / OPENAI_API_KEY).")
         sys.exit(1)
 
     print("=" * 60)
@@ -1073,16 +1219,19 @@ def main():
     generate_html_deck(plan_data, keyframes_dir, html_path)
     export_pdf_headless(html_path, pdf_path)
 
-    print("\n" + "=" * 60)
-    print(" TRAITEMENT FINALISÉ AVEC SUCCÈS !")
+    print("\n" + "=" * 70)
+    print(" 🎉 TRAITEMENT FINALISÉ AVEC SUCCÈS !")
+    print("=" * 70)
+    print(f" 📂 DOSSIER COMPLET DES LIVRABLES :")
+    print(f"    >>> {out_dir} <<<\n")
     print(" Livrables disponibles :")
-    print(f"   • Transcription : {transcript_path}")
-    print(f"   • Synthèse      : {summary_path}")
-    print(f"   • Article Word  : {docx_path}")
-    print(f"   • PowerPoint    : {pptx_path}")
-    print(f"   • Deck HTML     : {html_path}")
-    print(f"   • Deck PDF 16:9 : {pdf_path}")
-    print("=" * 60)
+    print(f"   • Diapositives PowerPoint : {pptx_path}")
+    print(f"   • Mode d'emploi Word      : {docx_path}")
+    print(f"   • Présentation Web HTML   : {html_path}")
+    print(f"   • Export PDF 16:9         : {pdf_path}")
+    print(f"   • Synthèse Exécutive      : {summary_path}")
+    print(f"   • Transcription Intégrale : {transcript_path}")
+    print("=" * 70)
 
 
 if __name__ == "__main__":

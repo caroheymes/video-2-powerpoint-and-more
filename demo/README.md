@@ -22,7 +22,7 @@ demo/
 ├── LANCER_PIPELINE.bat        # Fichier à double-cliquer pour démarrer
 ├── LANCER_TESTS.bat           # Lanceur du banc d'essai et tests automatisés
 ├── INSTALLER_WINDOWS.bat      # Assistant de configuration graphique
-├── tests/                     # Suite de tests automatisés (20 tests pytest)
+├── tests/                     # Suite de tests automatisés (21 tests pytest)
 ├── pytest.ini                 # Configuration du banc de test
 ├── pipeline.py                # Moteur Python (Whisper, Google Drive, LLM, exports)
 ├── run_pipeline.ps1           # Script PowerShell orchestrateur
@@ -48,7 +48,10 @@ demo/
      - Ou tapez **3** pour coller un lien Google Drive / URL de vidéo.
      - Ou glissez-déposez votre vidéo dans la console.
 
-Dès que le calcul est terminé, le dossier **`output/`** s'ouvre automatiquement avec tous vos livrables.
+### Emplacement de vos livrables :
+- **Pour une vidéo de votre choix** : un dossier dédié **`<NomDeLaVideo>_livrables`** est automatiquement créé **directement à côté de votre vidéo** (ex: sur votre Bureau si la vidéo s'y trouve).
+- **Pour la vidéo d'exemple** : les fichiers sont dans le dossier **[`output/`](./output/)**.
+- Dans tous les cas, l'Explorateur Windows s'ouvre automatiquement à la fin et une boîte de confirmation vous indique l'adresse complète.
 
 ---
 

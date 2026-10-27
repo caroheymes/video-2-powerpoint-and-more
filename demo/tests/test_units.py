@@ -61,5 +61,21 @@ class TestUnitFunctions:
         import inspect
         source = inspect.getsource(pipeline.analyze_with_llm)
         assert "HUMANIZER" in source
-        assert "BANNIR LE JARGON IA" in source
-        assert "BANNIR LA MISE EN FORME MÉCANIQUE" in source
+        assert "BANNIR LE JARGON IA" in source or "ANTI-CLICHÉS" in source
+
+    def test_clean_humanizer_text_filters_cliches(self):
+        """Vérifie que les tics IA notoires sont éliminés par le filtre programmatique."""
+        raw_text = (
+            "Dans un monde hyper-connecté et en constante évolution, il est crucial de libérer votre potentiel créatif. "
+            "Ces activités nourrissent l'âme et révèlent des trésors cachés. "
+            "Gamora a su le faire. Présentation, date, Zoe Hames — un voyage exceptionnel !"
+        )
+        cleaned = pipeline.clean_humanizer_text(raw_text)
+
+        assert "Dans un monde" not in cleaned
+        assert "nourrissent l'âme" not in cleaned
+        assert "trésors cachés" not in cleaned
+        assert "libérer votre potentiel créatif" not in cleaned
+        assert "Gamora" not in cleaned
+        assert "date" not in cleaned
+        assert "—" not in cleaned

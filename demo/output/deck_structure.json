@@ -1,87 +1,180 @@
 {
-  "summary_markdown": "# Synthèse de la session\n\nZoe Hames a présenté des stratégies pour libérer le potentiel créatif, s'appuyant sur les idées de Chris Lewis dans son livre *Too Fast to Think*. Elle a souligné l'importance de trouver des moments de silence, d'explorer le pouvoir des rêves et de pratiquer l'art de laisser aller. Ces approches permettent de créer un environnement propice à la créativité, loin des distractions du quotidien. En se reconnectant à soi-même et en adoptant une attitude ludique, chacun peut découvrir de nouvelles sources d'inspiration.",
-  "article_title": "Stratégies pour Développer la Créativité",
+  "summary_markdown": "# Synthèse de la session Cette session a été animée par Zoe Hames, qui a partagé des stratégies pour stimuler la créativité des individus. En s'appuyant sur les idées de Chris Lewis dans son livre *Too Fast to Think*, elle a mis en avant l'importance de trouver des moments de silence, d'explorer le pouvoir des rêves et de lâcher prise. Ces approches visent à contrer les distractions de notre environnement hyperconnecté et à favoriser un espace propice à la créativité. Les trois stratégies abordées sont essentielles pour permettre aux individus de se reconnecter à leur créativité innée. En intégrant ces pratiques dans leur quotidien, les participants peuvent espérer voir une amélioration significative de leur capacité à innover et à penser de manière créative.",
+  "article_title": "Stratégies pour stimuler la créativité",
   "article_sections": [
     {
-      "heading": "Trouver le Silence dans le Chaos",
+      "heading": "1. Importance du Silence",
       "paragraphs": [
-        "Zoe Hames insiste sur la nécessité de moments de calme pour favoriser la créativité. Dans un monde bruyant, le silence devient essentiel pour laisser place à l'inspiration.",
-        "Elle évoque l'exemple de Gamora, qui a dû se concentrer intensément pour maîtriser son art. De même, la créativité nécessite un espace pour se développer, loin des distractions."
+        "Dans un monde saturé de stimuli, trouver des moments de silence est crucial pour la créativité. Ces instants permettent de se reconnecter à soi-même et d'accéder à des idées nouvelles.",
+        "Chris Lewis souligne que la créativité nécessite un espace pour se développer, loin des distractions constantes."
       ],
       "bullets": [
         "Consacrer quelques minutes chaque jour à la déconnexion.",
-        "Prendre des promenades dans la nature pour se reconnecter aux sensations."
+        "Pratiquer des activités en pleine nature pour favoriser la réflexion."
       ],
       "keyframe": "slide_keyframe_01.jpg",
-      "callout": "Créer des moments de silence aide à libérer l'esprit."
+      "callout": "Le silence est un terrain fertile pour l'inspiration."
     },
     {
-      "heading": "Exploiter le Pouvoir des Rêves",
+      "heading": "2. Explorer le Pouvoir des Rêves",
       "paragraphs": [
-        "Zoe Hames encourage à retrouver l'énergie imaginative de l'enfance. Elle souligne l'importance de laisser libre cours à ses pensées sans jugement.",
-        "Les idées les plus folles peuvent mener à des innovations significatives. En se permettant de rêver, on peut découvrir des trésors cachés dans notre créativité."
+        "Les rêves, qu'ils soient nocturnes ou diurnes, offrent une source inépuisable d'inspiration. Ils permettent d'accéder à une créativité sans limites, semblable à celle de l'enfance.",
+        "Encourager la pensée libre et l'absence de jugement est essentiel pour libérer l'imagination."
       ],
       "bullets": [
-        "Doodler, rêver éveillé et noter toutes les idées, même les plus absurdes.",
-        "Explorer son imagination comme un univers à découvrir."
+        "S'autoriser à jouer et à explorer des idées sans contraintes.",
+        "Tenir un journal des rêves pour capturer des inspirations inattendues."
       ],
       "keyframe": "slide_keyframe_02.jpg",
-      "callout": "Les rêves peuvent révéler des désirs et des peurs cachés."
+      "callout": "Les idées les plus innovantes peuvent surgir des pensées les plus absurdes."
     },
     {
-      "heading": "L'Art de Laisser Aller",
+      "heading": "3. Lâcher Prise pour Favoriser la Créativité",
       "paragraphs": [
-        "Zoe Hames aborde l'importance de lâcher prise pour favoriser la créativité. Elle explique que parfois, il faut accepter de ne pas tout contrôler.",
-        "En priorisant nos besoins fondamentaux, comme le sommeil et la nutrition, nous créons un environnement où la créativité peut s'épanouir."
+        "Lâcher prise est une compétence essentielle pour stimuler la créativité. Cela implique de renoncer à la nécessité de tout contrôler et d'accepter l'incertitude.",
+        "Chris Lewis insiste sur l'importance de prendre soin de soi pour maintenir un niveau créatif optimal."
       ],
       "bullets": [
-        "Établir des limites et dire non aux activités épuisantes.",
-        "Accorder du temps à des activités joyeuses qui nourrissent l'âme."
+        "Établir des limites pour préserver son énergie.",
+        "Accorder la priorité à des activités qui nourrissent l'esprit et le corps."
       ],
       "keyframe": "slide_keyframe_03.jpg",
-      "callout": "Prendre soin de soi est essentiel pour libérer sa créativité."
+      "callout": "La créativité prospère dans un environnement où l'on se sent en sécurité et nourri."
+    },
+    {
+      "heading": "4. Pratiques Quotidiennes pour Stimuler la Créativité",
+      "paragraphs": [
+        "Intégrer ces stratégies dans la vie quotidienne peut sembler difficile, mais des actions simples peuvent avoir un impact significatif.",
+        "Créer des rituels de déconnexion et de réflexion peut aider à établir un cadre propice à la créativité."
+      ],
+      "bullets": [
+        "Planifier des moments de silence dans son emploi du temps.",
+        "Participer à des activités artistiques ou ludiques régulièrement."
+      ],
+      "keyframe": "slide_keyframe_04.jpg",
+      "callout": "Des rituels simples peuvent transformer votre approche de la créativité."
+    },
+    {
+      "heading": "5. Conclusion et Prochaines Étapes",
+      "paragraphs": [
+        "Ces stratégies offrent un cadre pour explorer et développer la créativité. En les appliquant, chacun peut espérer retrouver un accès à son potentiel créatif.",
+        "Il est important de rester ouvert aux nouvelles idées et de ne pas craindre l'expérimentation."
+      ],
+      "bullets": [
+        "Évaluer régulièrement ses progrès créatifs.",
+        "S'engager à pratiquer ces stratégies sur le long terme."
+      ],
+      "keyframe": "slide_keyframe_05.jpg",
+      "callout": "La créativité est un voyage, pas une destination."
     }
   ],
-  "presentation_title": "Débloquer le Potentiel Créatif",
-  "presentation_subtitle": "Stratégies de créativité, date, Zoe Hames et Chris Lewis",
+  "presentation_title": "stimuler la créativité",
+  "presentation_subtitle": "Session animée par Zoe Hames",
   "slides": [
     {
       "slide_number": 1,
       "type": "title",
-      "title": "Débloquer votre créativité",
-      "subtitle": "Zoe Hames"
+      "title": "stimuler la créativité",
+      "subtitle": "Session animée par Zoe Hames"
     },
     {
       "slide_number": 2,
       "type": "content",
-      "title": "Trouver le Silence",
+      "title": "Contexte et problématique centrale",
       "bullets": [
-        "Le silence permet à l'inspiration de surgir.",
-        "Créer des moments de calme aide à se reconnecter à soi-même."
+        "Saturation d'informations",
+        "Impact sur la créativité",
+        "Nécessité de stratégies adaptées"
       ],
-      "keyframe": "slide_keyframe_02.jpg",
+      "keyframe": "slide_keyframe_01.jpg",
       "kpi": null
     },
     {
       "slide_number": 3,
       "type": "content",
-      "title": "Exploiter les Rêves",
+      "title": "Importance du Silence",
       "bullets": [
-        "Laissez libre cours à votre imagination.",
-        "Les idées folles peuvent mener à des innovations."
+        "Moments de déconnexion",
+        "Espace pour la réflexion"
       ],
-      "keyframe": "slide_keyframe_03.jpg",
+      "keyframe": "slide_keyframe_02.jpg",
       "kpi": null
     },
     {
       "slide_number": 4,
       "type": "content",
-      "title": "Laisser Aller",
+      "title": "Explorer le Pouvoir des Rêves",
       "bullets": [
-        "Accepter de ne pas tout contrôler.",
-        "Prioriser le bien-être pour favoriser la créativité."
+        "Pensée libre",
+        "Inspiration des rêves"
+      ],
+      "keyframe": "slide_keyframe_03.jpg",
+      "kpi": null
+    },
+    {
+      "slide_number": 5,
+      "type": "content",
+      "title": "Lâcher Prise pour Favoriser la Créativité",
+      "bullets": [
+        "Accepter l'incertitude",
+        "Prendre soin de soi"
       ],
       "keyframe": "slide_keyframe_04.jpg",
+      "kpi": null
+    },
+    {
+      "slide_number": 6,
+      "type": "content",
+      "title": "Pratiques Quotidiennes pour Stimuler la Créativité",
+      "bullets": [
+        "Rituels de déconnexion",
+        "Activités artistiques"
+      ],
+      "keyframe": "slide_keyframe_05.jpg",
+      "kpi": null
+    },
+    {
+      "slide_number": 7,
+      "type": "content",
+      "title": "Conclusion et Prochaines Étapes",
+      "bullets": [
+        "Évaluation des progrès",
+        "Engagement à long terme"
+      ],
+      "keyframe": "slide_keyframe_06.jpg",
+      "kpi": null
+    },
+    {
+      "slide_number": 8,
+      "type": "content",
+      "title": "Synthèse des Stratégies",
+      "bullets": [
+        "Silence, Rêves, Lâcher Prise",
+        "Importance de l'expérimentation"
+      ],
+      "keyframe": "slide_keyframe_07.jpg",
+      "kpi": null
+    },
+    {
+      "slide_number": 9,
+      "type": "content",
+      "title": "Impact sur la Créativité",
+      "bullets": [
+        "Amélioration de l'innovation",
+        "Réduction du stress créatif"
+      ],
+      "keyframe": "slide_keyframe_08.jpg",
+      "kpi": null
+    },
+    {
+      "slide_number": 10,
+      "type": "content",
+      "title": "Questions et Échanges",
+      "bullets": [
+        "Discussion ouverte",
+        "Partage d'expériences"
+      ],
+      "keyframe": "slide_keyframe_09.jpg",
       "kpi": null
     }
   ]

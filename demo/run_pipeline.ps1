@@ -296,10 +296,41 @@ Write-Host "Vérification des dépendances (faster-whisper, scenedetect, python-
 # ------------------------------------------------------------------------------
 Write-Host "`nLancement du pipeline de traitement..." -ForegroundColor Green
 
+# Détermination intelligente et explicite du dossier de sortie :
+# Si la vidéo est un fichier local situé en dehors du dossier demo/ et qu'aucun dossier personnalisé n'est forcé :
+# Créer le dossier "<Nom_de_la_video>_livrables" directement à côté de la vidéo !
+$ResolvedOutputDir = $null
+if (![string]::IsNullOrWhiteSpace($OutputDir) -and $OutputDir -ne "output") {
+    $ResolvedOutputDir = $OutputDir
+    if (![System.IO.Path]::IsPathRooted($ResolvedOutputDir)) {
+        $ResolvedOutputDir = Join-Path $ScriptDir $OutputDir
+    }
+} else {
+    if (!$isUrl -and (Test-Path $VideoPath)) {
+        $fullVideoPath = (Resolve-Path $VideoPath).Path
+        $videoParent = Split-Path -Parent $fullVideoPath
+        $videoBaseName = [System.IO.Path]::GetFileNameWithoutExtension($fullVideoPath)
+        $scriptFullPath = (Resolve-Path $ScriptDir).Path
+        if ($videoParent -ne $scriptFullPath) {
+            # Vidéo externe choisie sur le disque : créer le dossier juste à côté de la vidéo
+            $ResolvedOutputDir = Join-Path $videoParent "${videoBaseName}_livrables"
+        } else {
+            # Vidéo interne du dossier demo : enregistrer dans demo/output
+            $ResolvedOutputDir = Join-Path $ScriptDir "output"
+        }
+    } else {
+        $ResolvedOutputDir = Join-Path $ScriptDir "output"
+    }
+}
+
+if (!(Test-Path $ResolvedOutputDir)) {
+    New-Item -ItemType Directory -Path $ResolvedOutputDir -Force | Out-Null
+}
+
 $pipelineArgs = @(
     (Join-Path $ScriptDir "pipeline.py"),
     "--video", $VideoPath,
-    "--output", (Join-Path $ScriptDir $OutputDir),
+    "--output", $ResolvedOutputDir,
     "--model", $ModelSize,
     "--provider", $auth.Provider,
     "--api-key", $auth.Key
@@ -324,4 +355,37 @@ Write-Host ""
 Write-Host "================================================================" -ForegroundColor Green
 Write-Host "   PIPELINE TERMINÉ AVEC SUCCÈS EN $elapsed !                  " -ForegroundColor Green
 Write-Host "================================================================" -ForegroundColor Green
-Write-Host "Livrables générés dans : $(Join-Path $ScriptDir $OutputDir)" -ForegroundColor Cyan
+Write-Host ""
+Write-Host " DOSSIER OÙ VOS LIVRABLES SONT ENREGISTRÉS :" -ForegroundColor Yellow
+Write-Host " >>> $ResolvedOutputDir <<<" -ForegroundColor White -BackgroundColor DarkGreen
+Write-Host ""
+Write-Host "   • Diapositives PowerPoint : $(Join-Path $ResolvedOutputDir 'presentation.pptx')" -ForegroundColor Cyan
+Write-Host "   • Mode d'emploi Word      : $(Join-Path $ResolvedOutputDir 'article_mode_d_emploi.docx')" -ForegroundColor Cyan
+Write-Host "   • Présentation Web HTML   : $(Join-Path $ResolvedOutputDir 'presentation.html')" -ForegroundColor Cyan
+Write-Host "   • Export PDF 16:9         : $(Join-Path $ResolvedOutputDir 'presentation.pdf')" -ForegroundColor Cyan
+Write-Host "   • Synthèse Exécutive      : $(Join-Path $ResolvedOutputDir 'summary.md')" -ForegroundColor Cyan
+Write-Host "   • Transcription Intégrale : $(Join-Path $ResolvedOutputDir 'transcript.md')" -ForegroundColor Cyan
+Write-Host ""
+Write-Host "Ouverture automatique du dossier dans l'Explorateur Windows..." -ForegroundColor Yellow
+
+# Ouvrir immédiatement l'explorateur Windows sur le dossier exact des résultats
+try {
+    Start-Process explorer.exe -ArgumentList "`"$ResolvedOutputDir`""
+} catch {}
+
+# Afficher une boîte de dialogue Windows pour confirmation visuelle immédiate
+try {
+    Add-Type -AssemblyName System.Windows.Forms
+    [System.Windows.Forms.MessageBox]::Show(
+        "Vos livrables ont été générés avec succès !`n`nIls sont enregistrés dans le dossier :`n$ResolvedOutputDir`n`nLe dossier vient de s'ouvrir dans l'Explorateur Windows.",
+        "Video to PowerPoint - Livrables Prêts",
+        [System.Windows.Forms.MessageBoxButtons]::OK,
+        [System.Windows.Forms.MessageBoxIcon]::Information
+    ) | Out-Null
+} catch {}
+
+Write-Host ""
+Write-Host "Appuyez sur une touche pour fermer cette fenêtre..." -ForegroundColor Gray
+try {
+    $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+} catch {}

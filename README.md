@@ -48,7 +48,10 @@ Deux méthodes simples :
   - **Tapez 3** : pour coller un lien Google Drive ou une adresse de vidéo en ligne.
   - Vous pouvez aussi faire glisser votre fichier vidéo directement dans la console.
 
-Dès que le traitement se termine, le dossier contenant vos documents finaux s'ouvre automatiquement sous vos yeux.
+### Où sont enregistrés vos documents ?
+- **Pour une vidéo personnelle** (au clic droit ou via le sélecteur) : un dossier nommé **`<NomDeLaVidéo>_livrables`** est automatiquement créé **au même endroit que votre fichier vidéo** (sur votre Bureau, dans vos Téléchargements, etc.).
+- **Pour la vidéo d'exemple intégrée** : les fichiers sont placés dans le sous-dossier [`demo/output/`](./demo/output/).
+- **À la fin du traitement** : l'Explorateur Windows s'ouvre automatiquement sur le dossier final, accompagné d'une boîte de dialogue vous confirmant l'emplacement exact de tous vos livrables.
 
 ### Que faire face aux messages de la console ?
 Rien de particulier. Certains avertissements de bibliothèque (comme les remarques de Hugging Face signalant que Windows gère le cache sans liens symboliques) sont de simples indications informatives internes. Ils ne bloquent pas le calcul et ne modifient en rien le résultat final.
@@ -88,11 +91,11 @@ Les documents issus de ce test sont consultables directement dans le dossier [`d
 
 ## Banc de tests & Validation (Harness)
 
-Une suite de 20 tests automatisés avec `pytest` garantit la fiabilité de chaque composant du pipeline :
+Une suite de 21 tests automatisés avec `pytest` garantit la fiabilité de chaque composant du pipeline :
 - **Intégrité de l'environnement** : présence effective de `ffmpeg` autonome et des bibliothèques (`faster-whisper`, `scenedetect`, `python-docx`, `python-pptx`, `Pillow`).
-- **Générateurs de documents** : conformité des fichiers Word (`.docx`), du format 16:9 widescreen PowerPoint (`.pptx`), et du deck web HTML autonome (`.html`).
+- **Générateurs de documents** : conformité des fichiers Word (`.docx`), du format 16:9 widescreen PowerPoint (`.pptx`), du deck web HTML autonome (`.html`) et de l'export PDF.
 - **Banc d'essai de bout en bout (Harness E2E)** : simulation complète du cycle de vie du pipeline avec vérification de la production des 7 livrables.
-- **Règles rédactionnelles Humanizer** : contrôle de l'application stricte des directives anti-jargon IA.
+- **Règles rédactionnelles Humanizer** : contrôle de l'application stricte des directives anti-jargon IA et du filtrage programmatique des clichés.
 
 Pour lancer tous les tests en un clic :  
 Double-cliquez sur **`LANCER_TESTS.bat`** (à la racine ou dans `demo/`).
