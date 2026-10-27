@@ -38,17 +38,20 @@ Les fichiers issus de cette vidéo sont déjà présents dans le dossier [`outpu
 
 ---
 
-## Lancement
+## Utilisation
 
 Aucune installation préalable de Python n'est nécessaire sur l'ordinateur hôte.
 
-1. Double-cliquez sur `LANCER_PIPELINE.bat`.
-2. Si aucune vidéo n'est présente dans le dossier `demo/`, indiquez l'emplacement du fichier :
-   - en le glissant dans la fenêtre,
-   - en écrivant son chemin d'accès,
-   - ou en appuyant sur Entrée pour ouvrir la boîte de dialogue habituelle de Windows.
-3. Renseignez votre clé API (Gemini, Mistral ou OpenAI) lors de la première utilisation.
-4. Les documents sont générés dans le dossier `output/`, qui s'ouvrira automatiquement à la fin de l'opération.
+### 1. Installation en un clic (recommandé)
+Double-cliquez sur `INSTALLER_WINDOWS.bat` pour configurer l'outil :
+- Renseignez votre clé d'accès (OpenAI, Gemini ou Mistral),
+- Activez le raccourci sur le Bureau et l'option Clic Droit Windows sur les vidéos.
+
+### 2. Traitement d'une vidéo
+- **Par Clic Droit** : Clic droit sur n'importe quel fichier `.mp4` -> *« Convertir avec Video2PowerPoint (IA) »*.
+- **Ou via `LANCER_PIPELINE.bat`** : Double-cliquez dessus. Si aucune vidéo n'est présente dans le dossier, appuyez sur Entrée pour la sélectionner dans l'explorateur Windows habituel.
+
+Le dossier `output/` s'ouvre automatiquement dès que les fichiers sont prêts.
 
 ---
 

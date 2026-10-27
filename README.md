@@ -41,28 +41,30 @@ Les documents générés lors de ce test sont consultables directement dans le d
 
 ---
 
-## Utilisation
+## Guide d'utilisation (pour utilisateurs non techniques)
 
-Le script a été conçu pour tourner sur n'importe quel ordinateur Windows, même si Python n'est pas installé sur la machine. Les dépendances sont isolées localement sans modifier la configuration système.
+Aucune compétence informatique ni installation préalable de Python n'est requise.
 
-### Méthode 1 : L'assistant d'installation graphique (recommandé)
+### 1. Installation en un clic (à faire une seule fois)
 
-Double-cliquez simplement sur **`INSTALLER_WINDOWS.bat`**. Une fenêtre s'ouvre pour configurer l'outil :
-- Saisir votre clé d'API (OpenAI, Gemini ou Mistral),
-- Créer automatiquement un raccourci **« Video to PowerPoint »** sur votre Bureau,
-- Activer l'option au **clic droit dans Windows** sur les fichiers `.mp4` (*« Convertir avec Video2PowerPoint »*).
+1. Double-cliquez sur le fichier **`INSTALLER_WINDOWS.bat`**.
+2. Une fenêtre Windows s'affiche :
+   - Choisissez votre fournisseur d'IA (OpenAI, Gemini ou Mistral),
+   - Collez votre clé d'accès dans le champ prévu,
+   - Cliquez sur **« Installer & Configurer »**.
+3. L'assistant prépare automatiquement l'environnement sans modifier votre système, ajoute un raccourci **« Video to PowerPoint »** sur votre Bureau, et active l'option dans le menu Clic Droit de Windows.
 
-Une fois installé, vous pouvez lancer une conversion soit depuis l'icône sur votre Bureau, soit en faisant un simple clic droit sur n'importe quel fichier vidéo !
+### 2. Traiter une vidéo au quotidien
 
-### Méthode 2 : Lancement direct sans installation
+Deux options au choix :
 
-1. Ouvrez le dossier `demo/`.
-2. Double-cliquez sur `LANCER_PIPELINE.bat`.
-3. À la question *« Où se trouve la vidéo ? »* :
-   - Glissez votre fichier `.mp4` dans la fenêtre,
-   - Ou tapez son chemin,
-   - Ou appuyez simplement sur Entrée pour choisir le fichier via l'explorateur Windows habituel.
-4. Une fois le traitement terminé, l'explorateur s'ouvre directement sur le dossier `output/`.
+- **Par un simple clic droit (le plus rapide)** :  
+  Faites un clic droit sur n'importe quel fichier vidéo (`.mp4`) sur votre ordinateur, puis cliquez sur **« Convertir avec Video2PowerPoint (IA) »**.
+
+- **Depuis l'icône sur le Bureau** :  
+  Double-cliquez sur le raccourci **« Video to PowerPoint »** sur votre Bureau, puis appuyez sur Entrée pour désigner votre fichier vidéo dans l'explorateur Windows habituel.
+
+Le traitement se lance automatiquement. Dès qu'il est terminé, le dossier contenant vos documents finaux (Word, PowerPoint, PDF, synthèse) s'ouvre directement sous vos yeux.
 
 ---
 
