@@ -1,74 +1,86 @@
 # Video to PowerPoint & More
 
-Ce projet convertit un enregistrement vidéo (réunion d'équipe, atelier, conférence, cours) en un ensemble complet de documents directement exploitables :
+Ce projet transforme n'importe quel enregistrement vidéo (réunion, formation, atelier, conférence) en documents de travail complets et prêts à l'emploi :
 
-- La transcription intégrale horodatée, réalisée sur votre machine avec Whisper.
-- Une synthèse claire des échanges et des décisions.
-- Une note de cadrage au format Word (`.docx`) enrichie des captures d'écran des diapositives.
+- La transcription intégrale horodatée, générée sur votre ordinateur avec Whisper.
+- Une synthèse claire des messages clés et des décisions.
+- Une note de cadrage Word (`.docx`) illustrée par les diapositives de la vidéo.
 - Un diaporama PowerPoint 16:9 (`.pptx`) prêt à projeter.
-- Une version web plein écran (`.html`) avec son export imprimable (`.pdf`).
+- Une version web plein écran (`.html`) et son export imprimable (`.pdf`).
 
 ---
 
-## Prise en main rapide
+## Démarrage en 3 clics (sans compétences techniques)
 
-Vous n'avez pas besoin d'installer Python ni de taper de ligne de commande.
+Vous n'avez pas besoin d'installer Python, ni Git, ni aucun logiciel de développement.
 
-### 1. Première installation
+1. **Téléchargez le projet** :  
+   [Cliquez ici pour télécharger le dossier complet (.zip)](https://github.com/caroheymes/video-2-powerpoint-and-more/archive/refs/heads/master.zip) *(ou sur GitHub via le bouton vert `Code` puis `Download ZIP`)*.
+2. **Dézippez le dossier** :  
+   Faites un clic droit sur le fichier `.zip` téléchargé et choisissez **« Extraire tout »**, puis validez.
+3. **Lancez l'installation** :  
+   Dans le dossier extrait, double-cliquez sur le fichier **`INSTALLER_WINDOWS.bat`**.
 
-1. Double-cliquez sur `INSTALLER_WINDOWS.bat`.
-2. Une fenêtre s'affiche pour vous permettre de :
-   - Choisir votre moteur d'IA (OpenAI, Google Gemini ou Mistral),
-   - Renseigner votre clé d'accès,
-   - Cliquer sur **Installer & Configurer**.
-3. L'assistant prépare tout en autonomie, dépose un raccourci **Video to PowerPoint** sur votre Bureau et ajoute l'option dans le menu clic droit de Windows.
+Une petite fenêtre s'affiche :
+- Choisissez votre moteur d'IA (OpenAI, Google Gemini ou Mistral),
+- Collez votre clé d'accès dans le champ prévu,
+- Cliquez sur le bouton **« Installer & Configurer »**.
 
-### 2. Traitement d'une vidéo
+L'assistant configure tout de manière autonome :
+- Une icône **Video to PowerPoint** est déposée sur votre Bureau.
+- Une commande **« Convertir avec Video2PowerPoint (IA) »** s'ajoute au menu clic droit de vos fichiers vidéo dans Windows.
 
-Deux façons simples de lancer une conversion :
+---
 
-- **Le clic droit dans vos dossiers** : faites un clic droit sur n'importe quel fichier `.mp4` sur votre ordinateur et choisissez **Convertir avec Video2PowerPoint (IA)**. Le traitement démarre immédiatement sur ce fichier.
-- **Le raccourci sur le Bureau** : double-cliquez sur l'icône **Video to PowerPoint**. La fenêtre vous propose alors un choix direct et accessible :
-  - **Appuyez sur Entrée** : si vous n'avez pas encore de vidéo, le programme télécharge automatiquement la vidéo d'exemple depuis Google Drive (atelier de 7 minutes) et lance la conversion. Si elle est déjà présente sur votre disque, il l'utilise directement.
-  - **Tapez 2** : pour ouvrir l'explorateur Windows et sélectionner n'importe quelle vidéo sur votre ordinateur (Bureau, Téléchargements...).
-  - **Tapez 3** : pour coller un lien Google Drive ou l'adresse d'une vidéo en ligne (téléchargement automatique avec barre de progression).
-  - Vous pouvez aussi faire glisser directement un fichier vidéo dans la fenêtre.
+## Convertir une vidéo au quotidien
 
-Dès que le calcul s'achève, le dossier contenant tous vos documents finaux s'ouvre automatiquement.
+Deux méthodes simples :
 
-### Que faire si des messages d'avertissement s'affichent ?
+- **Au clic droit (le plus rapide)** :  
+  Faites un clic droit sur n'importe quel fichier vidéo (`.mp4`) sur votre machine et choisissez **« Convertir avec Video2PowerPoint (IA) »**. La conversion démarre aussitôt.
 
-Rien du tout. Certains avertissements de bibliothèque (par exemple les messages de Hugging Face signalant que Windows ne gère pas nativement les liens symboliques en mode standard) sont de simples indications techniques internes. Ils n'interrompent pas le calcul et ne dégradent en rien vos documents.
+- **Depuis l'icône sur le Bureau (ou `LANCER_PIPELINE.bat`)** :  
+  Double-cliquez dessus. La console vous laisse le choix :
+  - **Appuyez sur Entrée** : si vous n'avez pas encore de fichier sous la main, le programme télécharge automatiquement la vidéo de démonstration depuis Google Drive (atelier de 7 minutes) et lance le traitement. Si elle est déjà sur votre disque, il l'utilise directement.
+  - **Tapez 2** : pour parcourir vos dossiers et désigner un fichier vidéo sur votre ordinateur (Bureau, Téléchargements, etc.).
+  - **Tapez 3** : pour coller un lien Google Drive ou une adresse de vidéo en ligne.
+  - Vous pouvez aussi faire glisser votre fichier vidéo directement dans la console.
+
+Dès que le traitement se termine, le dossier contenant vos documents finaux s'ouvre automatiquement sous vos yeux.
+
+### Que faire face aux messages de la console ?
+Rien de particulier. Certains avertissements de bibliothèque (comme les remarques de Hugging Face signalant que Windows gère le cache sans liens symboliques) sont de simples indications informatives internes. Ils ne bloquent pas le calcul et ne modifient en rien le résultat final.
 
 ---
 
 ## Exemple concret (vidéo de test)
 
-Le fonctionnement a été validé sur un atelier de 7 minutes (intervention de Zoe Hames sur l'ouvrage *Too Fast to Think* de Chris Lewis).
+Le pipeline a été validé sur un atelier de 7 minutes (intervention de Zoe Hames autour du livre *Too Fast to Think* de Chris Lewis).
 
-- Fichier source : [Télécharger la vidéo sur Google Drive](https://drive.google.com/file/d/1pbT3kRivzOONa3B1bRP1nIhbFdkt3ef2/view?usp=sharing)
-- Temps de traitement mesuré : 1 minute et 11 secondes sur un ordinateur de bureau standard.
+- Fichier source : [Lien de téléchargement Google Drive](https://drive.google.com/file/d/1pbT3kRivzOONa3B1bRP1nIhbFdkt3ef2/view?usp=sharing)
+- Temps de calcul constaté : 1 minute et 11 secondes sur un ordinateur de bureau standard.
 
-Les documents générés lors de ce test sont consultables directement dans le dossier [`demo/output/`](./demo/output/) :
+Les documents issus de ce test sont consultables directement dans le dossier [`demo/output/`](./demo/output/) :
 
 | Document | Fichier généré | Contenu |
 | :--- | :--- | :--- |
-| Note de synthèse | [`article_mode_d_emploi.docx`](./demo/output/article_mode_d_emploi.docx) | Document Word structuré avec les idées directrices et les captures associées. |
-| Présentation PowerPoint | [`presentation.pptx`](./demo/output/presentation.pptx) | Diapositives 16:9 avec les messages clés et les visuels de la vidéo. |
-| Version imprimable | [`presentation.pdf`](./demo/output/presentation.pdf) | Rendu PDF paysage page à page, sans coupure. |
+| Note de synthèse | [`article_mode_d_emploi.docx`](./demo/output/article_mode_d_emploi.docx) | Document Word structuré avec les idées maîtresses et les visuels associés. |
+| Présentation PowerPoint | [`presentation.pptx`](./demo/output/presentation.pptx) | Diaporama 16:9 reprenant les messages clés et les captures stables. |
+| Version imprimable | [`presentation.pdf`](./demo/output/presentation.pdf) | Rendu PDF paysage page à page, sans coupure de diapositive. |
 | Présentation interactive | [`presentation.html`](./demo/output/presentation.html) | Fichier web autonome (les visuels sont intégrés, fonctionne hors-ligne). |
-| Synthèse rapide | [`summary.md`](./demo/output/summary.md) | Synthèse concise des points clés et des conclusions. |
-| Transcription brute | [`transcript.md`](./demo/output/transcript.md) | Texte intégral horodaté seconde par seconde. |
+| Synthèse rapide | [`summary.md`](./demo/output/summary.md) | Synthèse textuelle courte des messages essentiels et des conclusions. |
+| Transcription brute | [`transcript.md`](./demo/output/transcript.md) | Retranscription intégrale horodatée seconde par seconde. |
 | Visuels extraits | [`keyframes/`](./demo/output/keyframes/) | 18 captures des moments stables de la vidéo. |
 
 ---
 
-## Structure du projet
+## Organisation des dossiers
 
-- **`INSTALLER_WINDOWS.bat`** : Assistant d'installation graphique pour Windows.
-- **[`demo/`](./demo/)** : Pipeline prêt à l'emploi avec scripts d'exécution et dossier de sortie.
+- **`INSTALLER_WINDOWS.bat`** : Assistant d'installation graphique pour Windows (à la racine).
+- **`LANCER_PIPELINE.bat`** : Lanceur direct du traitement (à la racine).
+- **[`demo/`](./demo/)** : Pipeline complet avec code Python, environnement virtuel et dossier de sortie.
 - **[`scripts_historiques/`](./scripts_historiques/)** : Scripts d'exploration et de validation initiaux.
 
-Pour adapter ou auditer le code interne :
-- [`demo/pipeline.py`](./demo/pipeline.py) regroupe l'extraction audio ffmpeg, la transcription locale Whisper, la détection visuelle de plans, les requêtes d'analyse LLM et les moteurs d'export Word, PowerPoint, HTML et PDF.
-- [`demo/run_pipeline.ps1`](./demo/run_pipeline.ps1) gère la sélection interactive du fichier et l'environnement virtuel.
+Pour adapter ou inspecter le fonctionnement technique :
+- [`demo/pipeline.py`](./demo/pipeline.py) regroupe l'extraction audio ffmpeg, le téléchargement automatique Google Drive, la transcription locale Whisper, la détection visuelle de plans, l'analyse LLM et les moteurs d'export Word, PowerPoint, HTML et PDF.
+- [`demo/run_pipeline.ps1`](./demo/run_pipeline.ps1) gère l'installation autonome de l'environnement virtuel (`uv`) et la sélection interactive des fichiers.
