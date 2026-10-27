@@ -1,4 +1,5 @@
 @echo off
+chcp 65001 >nul
 setlocal
 :: Désactiver les alertes de sécurité Windows 'L'éditeur n'a pas pu être vérifié' (Attachment Execution Service)
 set SEE_MASK_NOZONECHECKS=1

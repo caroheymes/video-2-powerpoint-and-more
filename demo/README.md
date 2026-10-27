@@ -12,7 +12,8 @@ Ce dossier rassemble l'ensemble des scripts nécessaires pour transformer un enr
 demo/
 ├── output/                    # Dossier recevant les livrables finaux
 │   ├── transcript.md          # Transcription intégrale horodatée
-│   ├── summary.md             # Synthèse textuelle
+│   ├── summary.md             # Synthèse textuelle enrichie de l'évaluation FinOps
+│   ├── finops_report.json     # Rapport FinOps structuré (tokens, coûts et économies)
 │   ├── article_mode_d_emploi.docx # Note de synthèse Word illustrée
 │   ├── presentation.pptx      # Support PowerPoint 16:9
 │   ├── presentation.html      # Présentation web interactive plein écran
@@ -22,7 +23,7 @@ demo/
 ├── LANCER_PIPELINE.bat        # Fichier à double-cliquer pour démarrer
 ├── LANCER_TESTS.bat           # Lanceur du banc d'essai et tests automatisés
 ├── INSTALLER_WINDOWS.bat      # Assistant de configuration graphique
-├── tests/                     # Suite de tests automatisés (21 tests pytest)
+├── tests/                     # Suite de tests automatisés (23 tests pytest)
 ├── pytest.ini                 # Configuration du banc de test
 ├── pipeline.py                # Moteur Python (Whisper, Google Drive, LLM, exports)
 ├── run_pipeline.ps1           # Script PowerShell orchestrateur

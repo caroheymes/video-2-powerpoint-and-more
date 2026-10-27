@@ -1,5 +1,10 @@
-# Configuration et Installeur Graphique Windows (WinForms)
+﻿# Configuration et Installeur Graphique Windows (WinForms)
 # Zéro dépendance externe : fonctionne nativement sur tous les Windows 10/11 sans Python préalable.
+
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+[Console]::InputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+$env:SEE_MASK_NOZONECHECKS = "1"
 
 Add-Type -AssemblyName System.Windows.Forms
 Add-Type -AssemblyName System.Drawing

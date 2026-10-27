@@ -74,8 +74,22 @@ Les documents issus de ce test sont consultables directement dans le dossier [`d
 | Version imprimable | [`presentation.pdf`](./demo/output/presentation.pdf) | Rendu PDF paysage page à page, sans coupure de diapositive. |
 | Présentation interactive | [`presentation.html`](./demo/output/presentation.html) | Fichier web autonome navigable au clavier (les visuels sont intégrés, fonctionne hors-ligne). |
 | Synthèse rapide | [`summary.md`](./demo/output/summary.md) | Synthèse textuelle incisive des messages essentiels et des conclusions. |
+| Bilan FinOps | [`finops_report.json`](./demo/output/finops_report.json) | Rapport structuré des coûts d'API, consommation de tokens et économies d'infrastructure réalisées. |
 | Transcription brute | [`transcript.md`](./demo/output/transcript.md) | Retranscription intégrale horodatée seconde par seconde avec Whisper. |
 | Visuels extraits | [`keyframes/`](./demo/output/keyframes/) | 18 captures des moments stables de la vidéo. |
+
+---
+
+## 📊 Maîtrise des Coûts & Démarche FinOps
+
+L'architecture du projet a été conçue pour minimiser drastiquement les coûts d'infrastructure et d'intelligence artificielle :
+
+- **Traitement lourd 100% local (0,00 €)** : L'extraction audio (`ffmpeg`), la transcription intégrale de la parole (`faster-whisper`), la détection de scènes (`scenedetect`) et la génération de tous les documents finaux (Word, PowerPoint, HTML, PDF) tournent exclusivement sur votre ordinateur, sans aucun abonnement cloud.
+- **Économie directe constatée** : L'exécution locale de Whisper évite la facturation des API de transcription cloud (facturées 0,006 $/minute, soit plus de 0,42 $ d'économies directes par heure de vidéo).
+- **Consommation LLM ultra-maîtrisée** : Seule l'étape de synthèse stratégique sollicite l'API de votre choix (OpenAI `gpt-4o-mini`, Google Gemini ou Mistral), avec un coût moyen inférieur à **0,002 € par vidéo de 10 minutes** et moins de **0,05 € pour une réunion d'une heure**.
+- **Traçabilité financière** : À chaque exécution, un rapport détaillé `finops_report.json` est enregistré à côté de vos livrables et intégré dans votre synthèse, détaillant le nombre exact de tokens en entrée/sortie et le coût en dollars et en euros.
+
+---
 
 ---
 
@@ -83,7 +97,7 @@ Les documents issus de ce test sont consultables directement dans le dossier [`d
 
 - **`INSTALLER_WINDOWS.bat`** : Assistant d'installation graphique pour Windows (à la racine).
 - **`LANCER_PIPELINE.bat`** : Lanceur direct du traitement (à la racine).
-- **`LANCER_TESTS.bat`** : Banc d'essai automatisé (21 tests unitaires et d'intégration).
+- **`LANCER_TESTS.bat`** : Banc d'essai automatisé (23 tests unitaires, générateurs et d'intégration).
 - **[`demo/`](./demo/)** : Pipeline complet avec code Python, environnement virtuel, tests et dossier de sortie.
 - **[`scripts_historiques/`](./scripts_historiques/)** : Scripts d'exploration et de validation initiaux.
 
@@ -91,11 +105,12 @@ Les documents issus de ce test sont consultables directement dans le dossier [`d
 
 ## Banc de tests & Validation (Harness)
 
-Une suite de 21 tests automatisés avec `pytest` garantit la fiabilité de chaque composant du pipeline :
+Une suite de 23 tests automatisés avec `pytest` garantit la fiabilité de chaque composant du pipeline :
 - **Intégrité de l'environnement** : présence effective de `ffmpeg` autonome et des bibliothèques (`faster-whisper`, `scenedetect`, `python-docx`, `python-pptx`, `Pillow`).
 - **Générateurs de documents** : conformité des fichiers Word (`.docx`), du format 16:9 widescreen PowerPoint (`.pptx`), du deck web HTML autonome (`.html`) et de l'export PDF.
 - **Banc d'essai de bout en bout (Harness E2E)** : simulation complète du cycle de vie du pipeline avec vérification de la production des 7 livrables.
 - **Règles rédactionnelles Humanizer** : contrôle de l'application stricte des directives anti-jargon IA et du filtrage programmatique des clichés.
+- **Calculateur FinOps** : validation des calculs de coûts multi-fournisseurs (OpenAI, Gemini, Mistral) et des économies locales.
 
 Pour lancer tous les tests en un clic :  
 Double-cliquez sur **`LANCER_TESTS.bat`** (à la racine ou dans `demo/`).

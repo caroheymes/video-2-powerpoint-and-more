@@ -79,3 +79,35 @@ class TestUnitFunctions:
         assert "Gamora" not in cleaned
         assert "date" not in cleaned
         assert "—" not in cleaned
+
+    def test_finops_calculation_openai(self):
+        """Vérifie le calcul FinOps pour OpenAI gpt-4o-mini."""
+        res = pipeline.calculate_finops_cost(
+            provider="openai",
+            model="gpt-4o-mini",
+            prompt_tokens=10000,
+            completion_tokens=2000,
+            audio_duration_seconds=420.0
+        )
+        assert res["provider"] == "openai"
+        assert res["model"] == "gpt-4o-mini"
+        assert res["tokens"]["total_tokens"] == 12000
+        # 10k in * 0.150/1M = 0.0015 $, 2k out * 0.600/1M = 0.0012 $ -> total = 0.0027 $
+        assert abs(res["costs"]["total_llm_cost_usd"] - 0.0027) < 1e-5
+        assert res["costs"]["total_llm_cost_eur"] > 0
+        assert res["local_compute_savings"]["whisper_cloud_avoided_cost_usd"] == 0.042
+
+    def test_finops_calculation_gemini_and_savings(self):
+        """Vérifie le calcul FinOps pour Gemini et l'économie Whisper locale."""
+        res = pipeline.calculate_finops_cost(
+            provider="gemini",
+            model="gemini-2.0-flash",
+            prompt_tokens=5000,
+            completion_tokens=1000,
+            audio_duration_seconds=120.0
+        )
+        assert res["provider"] == "gemini"
+        assert res["tokens"]["total_tokens"] == 6000
+        assert res["costs"]["total_llm_cost_usd"] > 0
+        # 2 minutes * 0.006 $ = 0.012 $ économisés
+        assert res["local_compute_savings"]["whisper_cloud_avoided_cost_usd"] == 0.012

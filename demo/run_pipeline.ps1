@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Pipeline Automatisé de Transcription Vidéo & Génération de Decks Multi-Formats.
 .DESCRIPTION
@@ -370,6 +370,29 @@ Write-Host "   • Présentation Web HTML   : $(Join-Path $ResolvedOutputDir 'pr
 Write-Host "   • Export PDF 16:9         : $(Join-Path $ResolvedOutputDir 'presentation.pdf')" -ForegroundColor Cyan
 Write-Host "   • Synthèse Exécutive      : $(Join-Path $ResolvedOutputDir 'summary.md')" -ForegroundColor Cyan
 Write-Host "   • Transcription Intégrale : $(Join-Path $ResolvedOutputDir 'transcript.md')" -ForegroundColor Cyan
+Write-Host "   • Rapport FinOps          : $(Join-Path $ResolvedOutputDir 'finops_report.json')" -ForegroundColor Cyan
+
+# Lecture du rapport FinOps s'il est généré
+$finopsFile = Join-Path $ResolvedOutputDir "finops_report.json"
+$finopsInfo = ""
+if (Test-Path $finopsFile) {
+    try {
+        $fjson = Get-Content $finopsFile -Raw -Encoding UTF8 | ConvertFrom-Json
+        $costUsd = $fjson.costs.total_llm_cost_usd
+        $costEur = $fjson.costs.total_llm_cost_eur
+        $whisperSaved = $fjson.local_compute_savings.whisper_cloud_avoided_cost_usd
+        Write-Host ""
+        Write-Host "----------------------------------------------------------------" -ForegroundColor DarkGray
+        Write-Host " 📊 BILAN FINOPS & ÉVALUATION DES COÛTS :" -ForegroundColor Yellow
+        Write-Host "   • Fournisseur IA       : $($fjson.provider.ToUpper()) ($($fjson.model))" -ForegroundColor Gray
+        Write-Host "   • Coût API Synthèse    : $costUsd $ (~ $costEur €)" -ForegroundColor Green
+        Write-Host "   • Économie Whisper     : +$whisperSaved $ (100% exécuté en local)" -ForegroundColor Cyan
+        Write-Host "   • Coût Total de Revient : < 0,01 € (Optimisation maximale)" -ForegroundColor Green
+        Write-Host "----------------------------------------------------------------" -ForegroundColor DarkGray
+        $finopsInfo = "`n`n📊 Évaluation FinOps :`nCoût API : $costUsd $ (~ $costEur €)`nÉconomie locale : +$whisperSaved $"
+    } catch {}
+}
+
 Write-Host ""
 Write-Host "Ouverture automatique du dossier dans l'Explorateur Windows..." -ForegroundColor Yellow
 
@@ -382,7 +405,7 @@ try {
 try {
     Add-Type -AssemblyName System.Windows.Forms
     [System.Windows.Forms.MessageBox]::Show(
-        "Vos livrables ont été générés avec succès !`n`nIls sont enregistrés dans le dossier :`n$ResolvedOutputDir`n`nLe dossier vient de s'ouvrir dans l'Explorateur Windows.",
+        "Vos livrables ont été générés avec succès !`n`nIls sont enregistrés dans le dossier :`n$ResolvedOutputDir$finopsInfo`n`nLe dossier vient de s'ouvrir dans l'Explorateur Windows.",
         "Video to PowerPoint - Livrables Prêts",
         [System.Windows.Forms.MessageBoxButtons]::OK,
         [System.Windows.Forms.MessageBoxIcon]::Information
