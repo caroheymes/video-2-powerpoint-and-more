@@ -51,6 +51,11 @@ demo/
      - Ou tapez **3** pour coller un lien Google Drive / URL de vidéo.
      - Ou glissez-déposez votre vidéo dans la console.
 
+### Suivi de l'avancement :
+- **Barre de progression en console** : pourcentage, durée traitée et temps restant affichés en direct via `tqdm`.
+- **Écriture progressive** : `transcript.md` est mis à jour segment par segment en continu.
+- **Diapositives adaptatives** : 10 slides (< 10 min) à 25-35 slides (> 1h), ou réglable via `--slides N`.
+
 ### Emplacement de vos livrables :
 - **Pour une vidéo de votre choix** : un dossier dédié **`<NomDeLaVideo>_livrables`** est automatiquement créé **directement à côté de votre vidéo** (ex: sur votre Bureau si la vidéo s'y trouve).
 - **Pour la vidéo d'exemple** : les fichiers sont dans le dossier **[`output/`](./output/)**.

@@ -198,28 +198,42 @@ def transcribe_audio(audio_path: Path, output_transcript_path: Path, model_size:
         model = None
 
     if model is None:
-        print(" Exécution sur CPU (calcul: int8 optimisé)...")
+        print(" Exécution sur CPU (calcul: int8 optimisé, greedy decoding rapide)...")
         model = WhisperModel(model_size, device="cpu", compute_type="int8")
-        segments, info = model.transcribe(str(audio_path), beam_size=5)
+        # beam_size=1 sur CPU permet un décodage 3 à 4x plus rapide tout en préservant une excellente fidélité
+        segments, info = model.transcribe(str(audio_path), beam_size=1)
 
     print(f" Langue détectée : {info.language} (confiance: {info.language_probability:.2f})")
     print(f" Durée audio : {format_timestamp(info.duration)}")
 
-    lines = []
-    lines.append(f"# Transcription Intégrale Horodatée\n")
-    lines.append(f"- **Fichier source** : `{audio_path.name}`\n")
-    lines.append(f"- **Durée totale** : `{format_timestamp(info.duration)}`\n\n---\n")
+    output_transcript_path.parent.mkdir(parents=True, exist_ok=True)
+    header = (
+        f"# Transcription Intégrale Horodatée\n\n"
+        f"- **Fichier source** : `{audio_path.name}`\n"
+        f"- **Durée totale** : `{format_timestamp(info.duration)}`\n"
+        f"- **Langue détectée** : `{info.language}` (confiance: {info.language_probability:.2f})\n\n---\n\n"
+    )
+    output_transcript_path.write_text(header, encoding="utf-8")
 
     full_text_parts = []
-    for seg in segments:
-        ts = f"[{format_timestamp(seg.start)} -> {format_timestamp(seg.end)}]"
-        text = seg.text.strip()
-        lines.append(f"**{ts}** {text}\n")
-        full_text_parts.append(f"{ts} {text}")
+    total_secs = round(info.duration) if info and info.duration else 100
+    with tqdm(total=total_secs, unit="s", desc="🎙 Transcription Whisper", dynamic_ncols=True, colour="green") as pbar:
+        for seg in segments:
+            ts = f"[{format_timestamp(seg.start)} -> {format_timestamp(seg.end)}]"
+            text = seg.text.strip()
+            line = f"**{ts}** {text}\n"
+            full_text_parts.append(f"{ts} {text}")
 
-    full_markdown = "\n".join(lines)
-    output_transcript_path.write_text(full_markdown, encoding="utf-8")
-    print(f" Transcription sauvegardée dans : {output_transcript_path}")
+            # Écriture immédiate au fil de l'eau sur le disque (visible en temps réel par l'utilisateur)
+            with open(output_transcript_path, "a", encoding="utf-8") as f_out:
+                f_out.write(line + "\n")
+
+            curr_sec = min(total_secs, round(seg.end))
+            delta = max(0, curr_sec - pbar.n)
+            if delta > 0:
+                pbar.update(delta)
+
+    print(f"\n Transcription finalisée et sauvegardée dans : {output_transcript_path}")
     return "\n".join(full_text_parts)
 
 
@@ -433,11 +447,12 @@ def calculate_finops_cost(
 # ==============================================================================
 # Étape 4 : Synthèse & Structuration par API LLM (Gemini / Mistral / OpenAI)
 # ==============================================================================
-def analyze_with_llm(transcript_text: str, keyframes: List[Dict[str, Any]], api_key: str, provider: str = "gemini") -> Dict[str, Any]:
+def analyze_with_llm(transcript_text: str, keyframes: List[Dict[str, Any]], api_key: str, provider: str = "gemini", target_slides: int = 10) -> Dict[str, Any]:
     """Appelle l'API LLM pour synthétiser la vidéo et architecturer le deck avec des directives Humanizer strictes."""
-    print(f"\n[4/5] 🧠 Synthèse exécutive & modélisation des slides via {provider.upper()}...")
+    print(f"\n[4/5] 🧠 Synthèse exécutive & modélisation de {target_slides} slides via {provider.upper()}...")
 
     keyframes_summary = "\n".join([f"- Image {kf['index']} ({kf['filename']}) capturée à {kf['timestamp']}" for kf in keyframes])
+    target_sections = max(5, min(10, target_slides // 2))
 
     system_prompt = (
         "Tu es un consultant senior en management et stratégie d'entreprise. Tu rédiges avec un style humain, naturel, "
@@ -451,10 +466,10 @@ def analyze_with_llm(transcript_text: str, keyframes: List[Dict[str, Any]], api_
         "   - ZÉRO triade forcée : Ne force pas 3 points si le sujet en compte 2 ou 4.\n"
         "   - ZÉRO métadonnées résiduelles : Ne copie jamais les mots 'date', 'sujet', ou 'intervenants' dans les titres ou sous-titres.\n\n"
         "2. EXIGENCES DE PROFONDEUR ET COUVERTURE COMPLÈTE :\n"
-        "   - Pour la présentation : Produis EXACTEMENT entre 8 et 12 diapositives complètes (Slide 1: Titre sobre, Slides 2 à 10+: diapositives de contenu substantielles, sans t'arrêter à 3 ou 4).\n"
+        f"   - Pour la présentation : Produis un jeu complet d'exactement {target_slides} diapositives substantielles (Slide 1: Titre sobre, Slides 2 à {target_slides}: diapositives de contenu réparties chronologiquement et thématiquement sans t'arrêter prématurément).\n"
         "   - Chaque diapositive de contenu doit aborder un point précis tiré de la vidéo, avec un titre sobre et 2 à 4 points factuels.\n"
         "   - Attribue à chaque diapositive une image différente parmi la liste des images disponibles (ex: slide_keyframe_01.jpg, slide_keyframe_02.jpg, etc.).\n"
-        "   - Pour l'article Word : Rédige 5 sections complètes et structurées avec des constats concrets et des recommandations directement applicables en entreprise.\n\n"
+        f"   - Pour l'article Word : Rédige {target_sections} sections complètes et structurées avec des constats concrets et des recommandations directement applicables en entreprise.\n\n"
         "Structure JSON STRICTE à respecter (respecte impérativement le nombre de slides et sections requises) :\n"
         "{\n"
         '  "summary_markdown": "# Synthèse de la session\\n\\nSynthèse concise et dense en 2 ou 3 paragraphes factuels...",\n'
@@ -1250,6 +1265,7 @@ def main():
     parser.add_argument("--provider", default="gemini", choices=["gemini", "mistral", "openai"], help="Fournisseur LLM")
     parser.add_argument("--api-key", default="", help="Clé API Gemini ou Mistral")
     parser.add_argument("--skip-transcription", action="store_true", help="Réutilise le transcript.md s'il existe déjà")
+    parser.add_argument("--slides", type=int, default=0, help="Nombre cible de diapositives (0 = automatique selon la durée)")
     args = parser.parse_args()
 
     out_dir = Path(args.output).resolve()
@@ -1318,13 +1334,7 @@ def main():
         extract_audio(video_path, audio_path)
         transcript_text = transcribe_audio(audio_path, transcript_path, model_size=args.model)
 
-    # 3. Découpage de Scènes
-    keyframes = extract_scenes(video_path, keyframes_dir)
-
-    # 4. Synthèse LLM & Plan
-    plan_data = analyze_with_llm(transcript_text, keyframes, api_key=api_key, provider=args.provider)
-
-    # Calcul et intégration de la durée audio réelle pour les économies FinOps
+    # Calcul de la durée audio réelle pour les économies FinOps et l'adaptation du nombre de diapositives
     audio_duration_sec = 0.0
     if audio_path.exists():
         try:
@@ -1333,6 +1343,27 @@ def main():
                 audio_duration_sec = wf.getnframes() / float(wf.getframerate())
         except Exception:
             pass
+
+    # Détermination adaptative du nombre de diapositives selon la durée de la vidéo
+    if args.slides > 0:
+        target_slides = args.slides
+    else:
+        if audio_duration_sec > 3600:     # Réunion > 1 heure
+            target_slides = 25
+        elif audio_duration_sec > 1800:   # 30 min - 1 heure
+            target_slides = 18
+        elif audio_duration_sec > 600:    # 10 min - 30 min
+            target_slides = 14
+        else:                             # < 10 min (format condensé)
+            target_slides = 10
+
+    max_scenes = max(18, min(40, target_slides + 5))
+
+    # 3. Découpage de Scènes
+    keyframes = extract_scenes(video_path, keyframes_dir, max_scenes=max_scenes)
+
+    # 4. Synthèse LLM & Plan
+    plan_data = analyze_with_llm(transcript_text, keyframes, api_key=api_key, provider=args.provider, target_slides=target_slides)
 
     finops_data = calculate_finops_cost(
         provider=args.provider,

@@ -51,6 +51,11 @@ Deux méthodes simples :
   - **Tapez 3** : pour coller un lien Google Drive ou une adresse de vidéo en ligne.
   - Vous pouvez aussi faire glisser votre fichier vidéo directement dans la console.
 
+### Suivi en temps réel & Progression
+- **Barre de progression dans la console** : Pendant la transcription Whisper, une barre visuelle dynamique affiche en continu le pourcentage d'avancement, la durée traitée et la vitesse d'exécution (`🎙 Transcription Whisper: [=========> ] 75% 00:52:10 / 01:09:48`).
+- **Écriture au fil de l'eau** : Le fichier `transcript.md` est créé dès le début du traitement et complété segment par segment. Vous pouvez l'ouvrir à tout moment pour lire les échanges au fur et à mesure de leur transcription.
+- **Nombre de diapositives adaptatif** : Le nombre de slides s'ajuste automatiquement à la durée de la vidéo (10 slides pour < 10 min, jusqu'à 25-35 slides pour les réunions de plus d'une heure) afin d'assurer une couverture complète sans perte d'information. Vous pouvez aussi fixer librement ce nombre via l'option `--slides`.
+
 ### Où sont enregistrés vos documents ?
 - **Pour une vidéo personnelle** (au clic droit ou via le sélecteur) : un dossier nommé **`<NomDeLaVidéo>_livrables`** est automatiquement créé **au même endroit que votre fichier vidéo** (sur votre Bureau, dans vos Téléchargements, etc.).
 - **Pour la vidéo d'exemple intégrée** : les fichiers sont placés dans le sous-dossier [`demo/output/`](./demo/output/).
