@@ -27,11 +27,12 @@ Vous n'avez pas besoin d'installer Python ni de taper de ligne de commande.
 
 Deux façons simples de lancer une conversion :
 
-- **Le clic droit dans vos dossiers** : faites un clic droit sur n'importe quel fichier `.mp4` et choisissez **Convertir avec Video2PowerPoint (IA)**. Le traitement commence aussitôt sur cette vidéo.
-- **Le raccourci sur le Bureau** : double-cliquez sur l'icône **Video to PowerPoint**. La fenêtre vous propose alors un choix direct :
-  - Appuyez sur **Entrée** pour tester la vidéo d'exemple déjà incluse.
-  - Tapez **2** pour ouvrir l'explorateur Windows et sélectionner un autre fichier vidéo.
-  - Vous pouvez aussi faire glisser votre fichier vidéo directement dans la fenêtre.
+- **Le clic droit dans vos dossiers** : faites un clic droit sur n'importe quel fichier `.mp4` sur votre ordinateur et choisissez **Convertir avec Video2PowerPoint (IA)**. Le traitement démarre immédiatement sur ce fichier.
+- **Le raccourci sur le Bureau** : double-cliquez sur l'icône **Video to PowerPoint**. La fenêtre vous propose alors un choix direct et accessible :
+  - **Appuyez sur Entrée** : si vous n'avez pas encore de vidéo, le programme télécharge automatiquement la vidéo d'exemple depuis Google Drive (atelier de 7 minutes) et lance la conversion. Si elle est déjà présente sur votre disque, il l'utilise directement.
+  - **Tapez 2** : pour ouvrir l'explorateur Windows et sélectionner n'importe quelle vidéo sur votre ordinateur (Bureau, Téléchargements...).
+  - **Tapez 3** : pour coller un lien Google Drive ou l'adresse d'une vidéo en ligne (téléchargement automatique avec barre de progression).
+  - Vous pouvez aussi faire glisser directement un fichier vidéo dans la fenêtre.
 
 Dès que le calcul s'achève, le dossier contenant tous vos documents finaux s'ouvre automatiquement.
 

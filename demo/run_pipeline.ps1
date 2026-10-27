@@ -64,24 +64,26 @@ function Open-VideoFilePicker {
 
 if ([string]::IsNullOrWhiteSpace($VideoPath)) {
     $mp4Files = @(Get-ChildItem -Path $ScriptDir -Filter "*.mp4")
+    $defaultGdriveUrl = "https://drive.google.com/file/d/1pbT3kRivzOONa3B1bRP1nIhbFdkt3ef2/view?usp=sharing"
     
     Write-Host "----------------------------------------------------------------" -ForegroundColor Cyan
     Write-Host "  CHOIX DE LA VIDÉO À TRAITER" -ForegroundColor Yellow
     Write-Host "----------------------------------------------------------------" -ForegroundColor Cyan
     
-    if ($mp4Files.Count -eq 1) {
+    if ($mp4Files.Count -ge 1) {
         $defaultVideo = $mp4Files[0]
-        Write-Host "Vidéo d'exemple détectée dans le dossier :" -ForegroundColor Gray
+        Write-Host "Vidéo d'exemple disponible sur votre disque :" -ForegroundColor Gray
         Write-Host "  [1] $($defaultVideo.Name) (par défaut)" -ForegroundColor Green
-        Write-Host "  [2] Parcourir mes dossiers pour choisir une autre vidéo" -ForegroundColor Yellow
+        Write-Host "  [2] Parcourir mes dossiers pour choisir une vidéo sur mon ordinateur" -ForegroundColor Yellow
+        Write-Host "  [3] Télécharger une autre vidéo depuis Google Drive (coller le lien)" -ForegroundColor Cyan
         Write-Host ""
         Write-Host "Astuce : vous pouvez aussi glisser-déposer directement un fichier vidéo dans cette fenêtre." -ForegroundColor Gray
         Write-Host ""
-        $rep = (Read-Host "Votre choix (Entrée ou 1 = vidéo par défaut, 2 = parcourir)").Trim('"').Trim("'")
+        $rep = (Read-Host "Votre choix (Entrée ou 1 = vidéo locale, 2 = parcourir, 3 = lien Drive)").Trim('"').Trim("'")
         
         if ([string]::IsNullOrWhiteSpace($rep) -or $rep -eq "1") {
             $VideoPath = $defaultVideo.FullName
-            Write-Host "`n [Sélection] Utilisation de la vidéo par défaut : $($defaultVideo.Name)" -ForegroundColor Green
+            Write-Host "`n [Sélection] Utilisation de la vidéo locale : $($defaultVideo.Name)" -ForegroundColor Green
         } elseif ($rep -eq "2") {
             Write-Host "`nOuverture de l'explorateur de fichiers..." -ForegroundColor Yellow
             $chosen = Open-VideoFilePicker
@@ -92,6 +94,16 @@ if ([string]::IsNullOrWhiteSpace($VideoPath)) {
                 Write-Error "Opération annulée : aucun fichier sélectionné."
                 exit 1
             }
+        } elseif ($rep -eq "3") {
+            $urlInput = (Read-Host "`nCollez le lien Google Drive ou l'adresse de votre vidéo").Trim('"').Trim("'")
+            if ($urlInput) {
+                $VideoPath = $urlInput
+            } else {
+                Write-Error "Aucun lien renseigné."
+                exit 1
+            }
+        } elseif ($rep.StartsWith("http") -or ($rep -match "drive\.google\.com")) {
+            $VideoPath = $rep
         } elseif (Test-Path $rep) {
             $VideoPath = $rep
             Write-Host " [Sélection] Vidéo choisie : $VideoPath" -ForegroundColor Green
@@ -99,40 +111,24 @@ if ([string]::IsNullOrWhiteSpace($VideoPath)) {
             Write-Error "Choix ou fichier non reconnu : '$rep'"
             exit 1
         }
-    } elseif ($mp4Files.Count -gt 1) {
-        Write-Host "Plusieurs vidéos trouvées dans le dossier :" -ForegroundColor Yellow
-        for ($i = 0; $i -lt $mp4Files.Count; $i++) {
-            Write-Host "  [$($i+1)] $($mp4Files[$i].Name)"
-        }
-        Write-Host "  [P] Parcourir mes dossiers pour choisir une autre vidéo" -ForegroundColor Cyan
-        Write-Host ""
-        $rep = (Read-Host "Votre choix (1-$($mp4Files.Count), ou P pour parcourir)").Trim('"').Trim("'")
-        if ($rep -match '^[0-9]+$' -and [int]$rep -ge 1 -and [int]$rep -le $mp4Files.Count) {
-            $VideoPath = $mp4Files[[int]$rep - 1].FullName
-            Write-Host " [Sélection] Vidéo choisie : $($VideoPath)" -ForegroundColor Green
-        } elseif ($rep -eq "P" -or $rep -eq "p" -or [string]::IsNullOrWhiteSpace($rep)) {
-            $chosen = Open-VideoFilePicker
-            if ($chosen) {
-                $VideoPath = $chosen
-                Write-Host " [Sélection] Vidéo choisie : $VideoPath" -ForegroundColor Green
-            } else {
-                exit 1
-            }
-        } elseif (Test-Path $rep) {
-            $VideoPath = $rep
-            Write-Host " [Sélection] Vidéo choisie : $VideoPath" -ForegroundColor Green
-        } else {
-            Write-Error "Choix invalide."
-            exit 1
-        }
     } else {
-        Write-Host "Aucune vidéo n'est présente dans le dossier actuel."
-        Write-Host "  • Appuyez sur [Entrée] pour parcourir vos dossiers et choisir une vidéo,"
-        Write-Host "  • Ou glissez-déposez votre vidéo (.mp4, .mkv, .mov) dans cette fenêtre."
+        Write-Host "Aucune vidéo n'a été trouvée sur votre disque." -ForegroundColor Gray
         Write-Host ""
-        $rep = (Read-Host "Où se trouve la vidéo ?").Trim('"').Trim("'")
-        if ([string]::IsNullOrWhiteSpace($rep)) {
-            Write-Host "Ouverture de l'explorateur de fichiers..." -ForegroundColor Yellow
+        Write-Host "Que souhaitez-vous faire ?"
+        Write-Host "  [1] Télécharger la vidéo d'exemple depuis Google Drive (recommandé)" -ForegroundColor Green
+        Write-Host "      -> Atelier de 7 min : Chris Lewis, Too Fast to Think (226 Mo)" -ForegroundColor Gray
+        Write-Host "  [2] Parcourir mes dossiers pour choisir une vidéo sur mon ordinateur" -ForegroundColor Yellow
+        Write-Host "  [3] Coller un lien Google Drive ou une URL de vidéo" -ForegroundColor Cyan
+        Write-Host ""
+        Write-Host "Astuce : vous pouvez aussi glisser-déposer directement un fichier vidéo dans cette fenêtre." -ForegroundColor Gray
+        Write-Host ""
+        $rep = (Read-Host "Votre choix (Entrée ou 1 = Télécharger l'exemple, 2 = Choisir sur mon PC, 3 = Lien)").Trim('"').Trim("'")
+        
+        if ([string]::IsNullOrWhiteSpace($rep) -or $rep -eq "1") {
+            $VideoPath = $defaultGdriveUrl
+            Write-Host "`n [Téléchargement] Récupération de la vidéo d'exemple depuis Google Drive..." -ForegroundColor Green
+        } elseif ($rep -eq "2") {
+            Write-Host "`nOuverture de l'explorateur de fichiers..." -ForegroundColor Yellow
             $chosen = Open-VideoFilePicker
             if ($chosen) {
                 $VideoPath = $chosen
@@ -141,17 +137,28 @@ if ([string]::IsNullOrWhiteSpace($VideoPath)) {
                 Write-Error "Opération annulée : aucun fichier sélectionné."
                 exit 1
             }
+        } elseif ($rep -eq "3") {
+            $urlInput = (Read-Host "`nCollez le lien Google Drive ou l'adresse de votre vidéo").Trim('"').Trim("'")
+            if ($urlInput) {
+                $VideoPath = $urlInput
+            } else {
+                Write-Error "Aucun lien renseigné."
+                exit 1
+            }
+        } elseif ($rep.StartsWith("http") -or ($rep -match "drive\.google\.com")) {
+            $VideoPath = $rep
         } elseif (Test-Path $rep) {
             $VideoPath = $rep
             Write-Host " [Sélection] Vidéo choisie : $VideoPath" -ForegroundColor Green
         } else {
-            Write-Error "Le fichier vidéo '$rep' est introuvable."
+            Write-Error "Choix ou fichier non reconnu : '$rep'"
             exit 1
         }
     }
 }
 
-if (!(Test-Path $VideoPath)) {
+$isUrl = $VideoPath.StartsWith("http://") -or $VideoPath.StartsWith("https://") -or ($VideoPath -match "drive\.google\.com")
+if (!$isUrl -and !(Test-Path $VideoPath)) {
     Write-Error "Le fichier vidéo '$VideoPath' est introuvable."
     exit 1
 }

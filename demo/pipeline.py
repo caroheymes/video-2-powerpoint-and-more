@@ -41,6 +41,95 @@ def format_timestamp(seconds: float) -> str:
 
 
 # ==============================================================================
+# Téléchargement Vidéo Distante (Google Drive / HTTP)
+# ==============================================================================
+def download_video_if_url(video_target: str, destination_dir: Path) -> Path:
+    """Télécharge un fichier vidéo depuis Google Drive ou une URL directe."""
+    import re
+    from tqdm import tqdm
+
+    is_gdrive = "drive.google.com" in video_target or bool(re.match(r'^[a-zA-Z0-9_-]{25,}$', video_target.strip()))
+    if is_gdrive:
+        if "drive.google.com" in video_target:
+            m = re.search(r'/d/([a-zA-Z0-9_-]+)', video_target)
+            if not m:
+                m = re.search(r'id=([a-zA-Z0-9_-]+)', video_target)
+            file_id = m.group(1) if m else video_target.strip()
+        else:
+            file_id = video_target.strip()
+
+        print(f"\n[Téléchargement] Récupération de la vidéo depuis Google Drive (ID: {file_id})...")
+        session = requests.Session()
+        init_url = f"https://drive.google.com/uc?export=download&id={file_id}"
+        resp = session.get(init_url)
+
+        confirm = None
+        m_conf = re.search(r'name="confirm"\s+value="([^"]+)"', resp.text)
+        if m_conf:
+            confirm = m_conf.group(1)
+
+        uuid = None
+        m_uuid = re.search(r'name="uuid"\s+value="([^"]+)"', resp.text)
+        if m_uuid:
+            uuid = m_uuid.group(1)
+
+        action_url = "https://drive.usercontent.google.com/download"
+        params = {'id': file_id, 'export': 'download'}
+        if confirm:
+            params['confirm'] = confirm
+        if uuid:
+            params['uuid'] = uuid
+
+        download_resp = session.get(action_url, params=params, stream=True)
+        if download_resp.status_code != 200:
+            download_resp = session.get(init_url, stream=True)
+            if download_resp.status_code != 200:
+                raise RuntimeError(f"Échec du téléchargement Google Drive (statut HTTP {download_resp.status_code})")
+
+        cd = download_resp.headers.get("Content-Disposition", "")
+        filename = None
+        if "filename=" in cd:
+            fn_match = re.search(r'filename="?([^";]+)"?', cd)
+            if fn_match:
+                filename = fn_match.group(1).strip()
+
+        target_name = filename or f"video_{file_id[:8]}.mp4"
+        output_file = destination_dir / target_name
+
+        total_size = int(download_resp.headers.get('content-length', 0))
+        print(f" Téléchargement en cours : {target_name} ({total_size / (1024*1024):.1f} Mo)")
+
+        with open(output_file, 'wb') as f:
+            with tqdm(total=total_size, unit='B', unit_scale=True, desc=target_name[:30], unit_divisor=1024) as pbar:
+                for chunk in download_resp.iter_content(chunk_size=1024 * 1024):
+                    if chunk:
+                        f.write(chunk)
+                        pbar.update(len(chunk))
+
+        print(f" Vidéo téléchargée et prête : {output_file.name}")
+        return output_file
+
+    elif video_target.startswith("http://") or video_target.startswith("https://"):
+        print(f"\n[Téléchargement] Téléchargement direct depuis l'URL : {video_target}...")
+        resp = requests.get(video_target, stream=True)
+        resp.raise_for_status()
+        filename = video_target.split("/")[-1].split("?")[0] or "video_telechargee.mp4"
+        output_file = destination_dir / filename
+        total_size = int(resp.headers.get('content-length', 0))
+        with open(output_file, 'wb') as f:
+            with tqdm(total=total_size, unit='B', unit_scale=True, desc=filename[:30], unit_divisor=1024) as pbar:
+                for chunk in resp.iter_content(chunk_size=1024 * 1024):
+                    if chunk:
+                        f.write(chunk)
+                        pbar.update(len(chunk))
+        print(f" Vidéo téléchargée : {output_file.name}")
+        return output_file
+
+    else:
+        return Path(video_target).resolve()
+
+
+# ==============================================================================
 # Étape 1 : Extraction Audio
 # ==============================================================================
 def extract_audio(video_path: Path, output_audio_path: Path) -> Path:
@@ -920,13 +1009,18 @@ def main():
     parser.add_argument("--skip-transcription", action="store_true", help="Réutilise le transcript.md s'il existe déjà")
     args = parser.parse_args()
 
-    video_path = Path(args.video).resolve()
-    if not video_path.exists():
-        print(f"Erreur : Le fichier vidéo '{video_path}' est introuvable.")
-        sys.exit(1)
-
     out_dir = Path(args.output).resolve()
     out_dir.mkdir(parents=True, exist_ok=True)
+
+    video_input = args.video.strip().strip('"').strip("'")
+    is_url = video_input.startswith("http://") or video_input.startswith("https://") or "drive.google.com" in video_input or ("/" not in video_input and "\\" not in video_input and len(video_input) >= 25)
+    if is_url:
+        video_path = download_video_if_url(video_input, out_dir.parent)
+    else:
+        video_path = Path(video_input).resolve()
+        if not video_path.exists():
+            print(f"Erreur : Le fichier vidéo '{video_path}' est introuvable.")
+            sys.exit(1)
     keyframes_dir = out_dir / "keyframes"
 
     audio_path = out_dir / "audio_extracted.wav"

@@ -39,7 +39,11 @@ Double-cliquez sur `INSTALLER_WINDOWS.bat` pour configurer votre clé d'accès (
 ### Traiter une vidéo
 Deux options selon vos habitudes :
 - **Au clic droit** : faites un clic droit sur n'importe quel fichier vidéo (`.mp4`) puis sélectionnez **Convertir avec Video2PowerPoint (IA)**.
-- **Depuis le lanceur** : double-cliquez sur `LANCER_PIPELINE.bat` (ou le raccourci Bureau). Le programme vous propose de valider la vidéo d'exemple avec Entrée, ou de taper 2 pour aller chercher un autre fichier dans vos dossiers.
+- **Depuis le lanceur** : double-cliquez sur `LANCER_PIPELINE.bat` (ou le raccourci Bureau). Le programme vous propose :
+  - **Entrée** : télécharger ou réutiliser la vidéo d'exemple Google Drive.
+  - **Touche 2** : parcourir vos dossiers pour choisir une vidéo locale via l'explorateur Windows.
+  - **Touche 3** : coller un lien Google Drive ou une URL de vidéo en ligne.
+  - Ou glisser-déposer directement un fichier dans la console.
 
 Le dossier `output/` s'ouvre automatiquement dès que les fichiers sont prêts.
 

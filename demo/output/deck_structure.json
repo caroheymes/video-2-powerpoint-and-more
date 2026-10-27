@@ -1,49 +1,49 @@
 {
-  "summary_markdown": "# Synthèse de la session\n\nZoe Hames a présenté des stratégies pour libérer le potentiel créatif, s'appuyant sur les idées de Chris Lewis dans son livre *Too Fast to Think*. Elle a mis en avant trois approches essentielles : trouver le calme, exploiter la puissance des rêves et apprendre à lâcher prise. La première stratégie souligne l'importance de moments de silence pour favoriser l'inspiration. La deuxième encourage à retrouver l'énergie imaginative de l'enfance, en permettant à l'esprit de vagabonder sans contraintes. Enfin, la dernière stratégie insiste sur la nécessité de se défaire du besoin de tout contrôler, afin de laisser la créativité s'épanouir. Ces conseils visent à créer un environnement propice à l'innovation et à l'expression personnelle.",
+  "summary_markdown": "# Synthèse de la session\n\nZoe Hames a présenté des stratégies pour libérer le potentiel créatif, s'appuyant sur les idées de Chris Lewis dans son livre *Too Fast to Think*. Elle a souligné l'importance de trouver des moments de silence, d'explorer le pouvoir des rêves et de pratiquer l'art de laisser aller. Ces approches permettent de créer un environnement propice à la créativité, loin des distractions du quotidien. En se reconnectant à soi-même et en adoptant une attitude ludique, chacun peut découvrir de nouvelles sources d'inspiration.",
   "article_title": "Stratégies pour Développer la Créativité",
   "article_sections": [
     {
-      "heading": "Trouver le Calme",
+      "heading": "Trouver le Silence dans le Chaos",
       "paragraphs": [
-        "Dans un monde où le bruit est omniprésent, il est essentiel de créer des moments de silence. Ces instants permettent à l'esprit de se recentrer et d'accueillir l'inspiration.",
-        "Zoe évoque l'exemple de Gamora, qui a dû se concentrer intensément pour maîtriser son art. De même, la créativité nécessite un espace pour se développer, loin des distractions."
+        "Zoe Hames insiste sur la nécessité de moments de calme pour favoriser la créativité. Dans un monde bruyant, le silence devient essentiel pour laisser place à l'inspiration.",
+        "Elle évoque l'exemple de Gamora, qui a dû se concentrer intensément pour maîtriser son art. De même, la créativité nécessite un espace pour se développer, loin des distractions."
       ],
       "bullets": [
         "Consacrer quelques minutes chaque jour à la déconnexion.",
-        "Prendre des pauses en pleine nature pour se reconnecter à soi-même."
+        "Prendre des promenades dans la nature pour se reconnecter aux sensations."
       ],
       "keyframe": "slide_keyframe_01.jpg",
-      "callout": "L'importance de la tranquillité pour stimuler la créativité."
+      "callout": "Créer des moments de silence aide à libérer l'esprit."
     },
     {
-      "heading": "Exploiter la Puissance des Rêves",
+      "heading": "Exploiter le Pouvoir des Rêves",
       "paragraphs": [
-        "Zoe souligne l'importance de retrouver l'énergie imaginative de l'enfance. Elle encourage à laisser libre cours à l'imagination, sans jugement ni limites.",
-        "Les rêves, qu'ils soient nocturnes ou éveillés, peuvent offrir des aperçus précieux sur nos désirs et nos peurs, alimentant ainsi notre créativité."
+        "Zoe Hames encourage à retrouver l'énergie imaginative de l'enfance. Elle souligne l'importance de laisser libre cours à ses pensées sans jugement.",
+        "Les idées les plus folles peuvent mener à des innovations significatives. En se permettant de rêver, on peut découvrir des trésors cachés dans notre créativité."
       ],
       "bullets": [
-        "Accorder du temps à des activités ludiques et créatives.",
-        "Écrire librement sans se soucier de la cohérence."
+        "Doodler, rêver éveillé et noter toutes les idées, même les plus absurdes.",
+        "Explorer son imagination comme un univers à découvrir."
       ],
       "keyframe": "slide_keyframe_02.jpg",
-      "callout": "Les rêves comme source d'inspiration et d'innovation."
+      "callout": "Les rêves peuvent révéler des désirs et des peurs cachés."
     },
     {
-      "heading": "Apprendre à Lâcher Prise",
+      "heading": "L'Art de Laisser Aller",
       "paragraphs": [
-        "Zoe aborde la nécessité de se libérer du besoin de tout contrôler. Elle explique que la créativité prospère dans l'acceptation et la flexibilité.",
-        "Il est crucial de prioriser son bien-être pour nourrir sa créativité, en évitant de s'épuiser dans la quête de la perfection."
+        "Zoe Hames aborde l'importance de lâcher prise pour favoriser la créativité. Elle explique que parfois, il faut accepter de ne pas tout contrôler.",
+        "En priorisant nos besoins fondamentaux, comme le sommeil et la nutrition, nous créons un environnement où la créativité peut s'épanouir."
       ],
       "bullets": [
-        "Établir des limites pour préserver son énergie.",
-        "Accorder du temps à des activités qui apportent de la joie."
+        "Établir des limites et dire non aux activités épuisantes.",
+        "Accorder du temps à des activités joyeuses qui nourrissent l'âme."
       ],
       "keyframe": "slide_keyframe_03.jpg",
-      "callout": "Lâcher prise comme clé pour libérer la créativité."
+      "callout": "Prendre soin de soi est essentiel pour libérer sa créativité."
     }
   ],
   "presentation_title": "Débloquer le Potentiel Créatif",
-  "presentation_subtitle": "Stratégies de créativité, 2023, Zoe Hames",
+  "presentation_subtitle": "Stratégies de créativité, date, Zoe Hames et Chris Lewis",
   "slides": [
     {
       "slide_number": 1,
@@ -54,13 +54,34 @@
     {
       "slide_number": 2,
       "type": "content",
-      "title": "Stratégies pour libérer votre potentiel",
+      "title": "Trouver le Silence",
       "bullets": [
-        "Trouver des moments de calme pour favoriser l'inspiration.",
-        "Exploiter l'énergie imaginative de l'enfance.",
-        "Apprendre à lâcher prise pour laisser place à la créativité."
+        "Le silence permet à l'inspiration de surgir.",
+        "Créer des moments de calme aide à se reconnecter à soi-même."
       ],
       "keyframe": "slide_keyframe_02.jpg",
+      "kpi": null
+    },
+    {
+      "slide_number": 3,
+      "type": "content",
+      "title": "Exploiter les Rêves",
+      "bullets": [
+        "Laissez libre cours à votre imagination.",
+        "Les idées folles peuvent mener à des innovations."
+      ],
+      "keyframe": "slide_keyframe_03.jpg",
+      "kpi": null
+    },
+    {
+      "slide_number": 4,
+      "type": "content",
+      "title": "Laisser Aller",
+      "bullets": [
+        "Accepter de ne pas tout contrôler.",
+        "Prioriser le bien-être pour favoriser la créativité."
+      ],
+      "keyframe": "slide_keyframe_04.jpg",
       "kpi": null
     }
   ]
