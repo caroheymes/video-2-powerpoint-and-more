@@ -1,35 +1,31 @@
-# Moteur de Traitement Video et Generation de Decks Multi-Formats (demo/)
+# Traitement vidéo et génération de supports multi-formats (demo/)
 
-Ce dossier contient la chaine de traitement pour convertir un enregistrement video (reunion, formation, atelier ou conference) en 7 livrables documentaires et visuels.
+Ce dossier contient la chaîne de traitement pour convertir un enregistrement vidéo (réunion, formation, atelier ou conférence) en 7 livrables documentaires et visuels.
 
-> **Note d'avancement :** Le pipeline automatise, les scripts d'export, le module d'installation Windows et les integrations systeme sont operationnels. L'UI reste a mettre en place!
+> **Note d'avancement :** Le pipeline automatisé, les scripts d'export, le module d'installation Windows et les intégrations système sont opérationnels. L'UI reste à mettre en place!
 
----
+## Matrice des sept livrables générés
 
-## Les 7 Livrables Generes
+Chaque exécution produit un ensemble de documents dans le répertoire cible (un sous-dossier `<NomDeLaVideo>_livrables` créé à côté du fichier vidéo source, ou dans [`demo/output/`](./output/) pour la vidéo d'essai):
 
-Chaque execution produit un ensemble de documents dans le repertoire cible (un sous-dossier `<NomDeLaVideo>_livrables` cree a cote du fichier video source, ou dans [`demo/output/`](./output/) pour la video d'essai):
-
-| Livrable | Fichier genere | Format | Role et contenu |
+| Livrable | Fichier généré | Format | Rôle et contenu |
 | :--- | :--- | :---: | :--- |
-| Note de cadrage | [`article_mode_d_emploi.docx`](./output/article_mode_d_emploi.docx) | `.docx` | Document Word structure en 5 a 10 sections operationnelles. Reunit constats chiffres, recommandations, encadres methodologiques et captures extraites de la video. |
-| Diaporama PowerPoint | [`presentation.pptx`](./output/presentation.pptx) | `.pptx` | Support PowerPoint au format large 16:9 widescreen, structure avec typographies Segoe UI et Calibri, puces courtes, indicateurs chifPoint et captures synchronisees. |
-| Support web interactif | [`presentation.html`](./output/presentation.html) | `.html` | Presentation plein ecran autonome sans dependance externe, navigable au clavier (fleches, espace) et lisible hors-ligne avec images integrees en base64. |
-| Export imprimable 16:9 | [`presentation.pdf`](./output/presentation.pdf) | `.pdf` | Rendu vectoriel paysage page par page, sans coupure de diapositive, genere par le moteur Chromium headless. |
-| Synthese executive | [`summary.md`](./output/summary.md) | `.md` | Synthese textuelle des constats essentiels, arbitrages et decisions, completee par le bilan FinOps. |
-| Bilan FinOps | [`finops_report.json`](./output/finops_report.json) | `.json` | Rapport comptable detaillant les jetons consommes, les couts d'API factures en dollars et en euros, et les economies realisees via l'inference locale. |
-| Transcription integrale | [`transcript.md`](./output/transcript.md) | `.md` | Transcription textuelle exhaustive horodatee seconde par seconde avec identification de la langue et de la duree. |
-| Captures cles (keyframes) | [`keyframes/`](./output/keyframes/) | `.jpg` | Selection de 18 a 40 diapositives et moments stables extraits en resolution 1080p. |
+| Note de cadrage | [`article_mode_d_emploi.docx`](./output/article_mode_d_emploi.docx) | `.docx` | Document Word structuré en 5 à 10 sections opérationnelles. Réunit constats chiffrés, recommandations, encadrés méthodologiques et captures extraites de la vidéo. |
+| Diaporama PowerPoint | [`presentation.pptx`](./output/presentation.pptx) | `.pptx` | Support PowerPoint au format large 16:9 widescreen, structuré avec typographies Segoe UI et Calibri, puces denses, cartes d'indicateurs et captures synchronisées. |
+| Support web interactif | [`presentation.html`](./output/presentation.html) | `.html` | Présentation plein écran autonome sans dépendance externe, navigable au clavier (flèches, espace) et lisible hors-ligne avec images intégrées en base64. |
+| Export imprimable 16:9 | [`presentation.pdf`](./output/presentation.pdf) | `.pdf` | Rendu vectoriel paysage page par page, sans coupure de diapositive, généré par le moteur Chromium headless. |
+| Synthèse exécutive | [`summary.md`](./output/summary.md) | `.md` | Synthèse textuelle des constats essentiels, arbitrages et décisions, complétée par le bilan FinOps. |
+| Bilan FinOps | [`finops_report.json`](./output/finops_report.json) | `.json` | Rapport comptable détaillant les jetons consommés, les coûts d'API facturés en dollars et en euros, et les économies réalisées via l'inférence locale. |
+| Transcription intégrale | [`transcript.md`](./output/transcript.md) | `.md` | Transcription textuelle exhaustive horodatée seconde par seconde avec identification de la langue et de la durée. |
+| Captures clés (keyframes) | [`keyframes/`](./output/keyframes/) | `.jpg` | Sélection de 18 à 40 diapositives et moments stables extraits en résolution 1080p. |
 
----
+## Architecture technique (vue d'ensemble)
 
-## Architecture Technique (Schema Vue d'ensemble)
-
-Le pipeline repose sur 5 couches interconnectees, conformement au schema d'architecture du dossier [`archi/`](../archi/) :
+Le pipeline repose sur 5 couches interconnectées, conformément au schéma du dossier [`archi/`](../archi/):
 
 ```mermaid
 flowchart LR
-    UI["1. Interface et Orchestration<br/><small>Menu, .bat, CLI → pipeline.py</small>"]
+    UI["1. Interface et Orchestration<br/><small>Menu, .bat, CLI -> pipeline.py</small>"]
     INGESTION["2. Multimédia et Calcul Local<br/><small>Audio, Whisper, scènes (hors-ligne)</small>"]
     LLM["3. Intelligence et FinOps<br/><small>LLM, Humanizer, coûts</small>"]
     GEN["4. Générateurs Documentaires<br/><small>Word, PowerPoint, HTML, PDF</small>"]
@@ -42,121 +38,113 @@ flowchart LR
     INGESTION -->|transcript| DELIV
 ```
 
-Le schema interactif complet est consultable directement dans [`archi/Vue d'ensemble.html`](../archi/Vue%20d'ensemble.html).
+Le schéma interactif complet est consultable dans [`archi/Vue d'ensemble.html`](../archi/Vue%20d'ensemble.html).
 
-### Les Composants des 5 Couches
+### Composants des cinq couches
 
-1. **Interface et Orchestration** :
-   - Point d'entree au clic droit Windows via le menu contextuel, lanceur `LANCER_PIPELINE.bat` et interface d'installation `install_gui.ps1`.
-   - Orchestrateur PowerShell `run_pipeline.ps1` assurant l'initialisation du runtime et la gestion des reprises.
-   - Script `pipeline.py` pilotant l'enchainement des operations.
+#### 1. Interface et orchestration
+- Point d'entrée au clic droit Windows via le menu contextuel, lanceur `LANCER_PIPELINE.bat` et interface graphique `install_gui.ps1`.
+- Orchestrateur PowerShell `run_pipeline.ps1` assurant l'initialisation du runtime et la reprise sur erreur.
+- Script `pipeline.py` pilotant l'enchaînement des étapes de traitement.
 
-2. **Multimedia et Calcul Local (100% hors-ligne)** :
-   - Extraction audio: separation du signal WAV mono a 16 000 Hz (`pcm_s16le`) via le binaire autonome `ffmpeg` (embarque par `imageio-ffmpeg`).
-   - Transcription Whisper: inference vocale locale par `faster-whisper` adossee a CTranslate2 en quantification int8 CPU ou CUDA float16. Progression en temps reel `tqdm` et ecriture continue sur disque dans `transcript.md`.
-   - Detection des scenes: analyse des flux visuels par `PySceneDetect` (`ContentDetector`) pour extraire 18 a 40 images cles stables en resolution 1080p.
+#### 2. Multimédia et calcul local (100% hors-ligne)
+- Extraction audio: séparation du signal WAV mono à 16 000 Hz (`pcm_s16le`) via le binaire autonome `ffmpeg` (embarqué par `imageio-ffmpeg`).
+- Transcription Whisper: inférence vocale locale par `faster-whisper` adossée à CTranslate2 en quantification int8 CPU ou CUDA float16. Progression en temps réel `tqdm` et écriture continue sur disque dans `transcript.md`.
+- Détection des scènes: analyse des flux visuels par `PySceneDetect` (`ContentDetector`) pour extraire 18 à 40 images clés stables en résolution 1080p.
 
-3. **Intelligence et FinOps** :
-   - Synthese LLM: envoi de la transcription vers les modeles de grande fenetre de contexte (OpenAI `gpt-4o-mini`, Google Gemini `gemini-2.0-flash` ou Mistral `mistral-large-latest`).
-   - Regles Humanizer: elimination systematique des tics d'ecriture d'IA, des accroches theatrales et des metaphores abstraites. Structuration d'enseignements cles, puces denses et notes d'orateur.
-   - Bilan FinOps: fonction `calculate_finops_cost` mesurant les jetons exacts et valorisant les couts d'API ainsi que les economies realisees en local.
+#### 3. Intelligence et FinOps
+- Synthèse LLM: envoi de la transcription vers les modèles à large fenêtre de contexte (OpenAI `gpt-4o-mini`, Google Gemini `gemini-2.0-flash` ou Mistral `mistral-large-latest`).
+- Règles d'humanisation: élimination systématique des tics d'écriture d'IA, des accroches théâtrales et des métaphores abstraites. Structuration d'enseignements clés, puces denses et notes d'orateur.
+- Bilan FinOps: fonction `calculate_finops_cost` mesurant les jetons exacts et valorisant les coûts d'API ainsi que les économies réalisées en local.
 
-4. **Generateurs Documentaires** :
-   - Generateur Word: production de la note de cadrage et du mode d'emploi via `python-docx` avec encadres methodologiques et captures centrees.
-   - Generateur PowerPoint: creation de diaporamas 16:9 widescreen via `python-pptx`, incluant l'enseignement cle, cartes KPI et notes d'orateur natives.
-   - Generateur Web: compilation du deck interactif autonome en HTML5 et CSS3 Grid avec visuels embarques en Base64.
-   - Moteur PDF: conversion vectorielle 16:9 sans debordement de page via Chromium headless.
+#### 4. Générateurs documentaires
+- Générateur Word: production de la note de cadrage et du mode d'emploi via `python-docx` avec encadrés méthodologiques et captures centrées.
+- Générateur PowerPoint: création de diaporamas 16:9 widescreen via `python-pptx`, incluant l'enseignement clé, cartes KPI et notes d'orateur natives.
+- Générateur Web: compilation du deck interactif autonome en HTML5 et CSS3 Grid avec visuels embarqués en Base64.
+- Moteur PDF: conversion vectorielle 16:9 sans débordement de page via Chromium headless.
 
-5. **Pack de Livrables** :
-   - Centralisation des 7 livrables directement exploitables (`.docx`, `.pptx`, `.html`, `.pdf`, `.md`, `.json`, `keyframes/`) dans le sous-dossier de destination.
+#### 5. Pack de livrables
+- Centralisation des 7 livrables directement exploitables (`.docx`, `.pptx`, `.html`, `.pdf`, `.md`, `.json`, `keyframes/`) dans le sous-dossier de destination.
 
----
+## Évaluation FinOps et suivi des dépenses
 
-## Evaluation FinOps et Suivi des Depenses
+La fonction `calculate_finops_cost` détaille la consommation de chaque traitement:
 
-La fonction `calculate_finops_cost` detaille la consommation de chaque traitement:
+### Mesure des coûts d'API au jeton
+- Décompte des jetons d'entrée et de sortie.
+- Application des grilles officielles par million de jetons.
+- Conversion en dollars et en euros (taux de change retenu: 0.92 € / $).
 
-1. Mesure des couts d'API au jeton:
-   - Decompte des jetons d'entree et de sortie.
-   - Application des grilles officielles par million de jetons.
-   - Conversion en dollars et en euros (taux de change retenu: 0.92 € / $).
+### Évaluation des gains liés au calcul local
+- Comparaison avec le tarif standard des services cloud de transcription audio (0.006 $ par minute).
+- Sur un atelier de 7 minutes: gain de 0.042 $.
+- Sur une réunion de 1 heure 10 minutes: gain de 0.42 $.
 
-2. Evaluation des gains lies au calcul local:
-   - Comparaison avec le tarif standard des services cloud de transcription audio (0.006 $ par minute).
-   - Sur un atelier de 7 minutes: gain de 0.042 $.
-   - Sur une reunion de 1 heure 10 minutes: gain de 0.42 $.
+### Coûts d'API constatés
+- Une exécution courte de 7 à 10 minutes engendre environ 0.0015 € de requête LLM.
+- Une réunion d'une heure reste sous le seuil de 0.05 € d'API.
+- Le détail comptable est consigné dans [`output/finops_report.json`](./output/finops_report.json).
 
-3. Couts d'API constates:
-   - Une execution courte de 7 a 10 minutes engendre environ 0.0015 € de requete LLM.
-   - Une reunion d'une heure reste sous le seuil de 0.05 € d'API.
-   - Le detail comptable est consigne dans [`output/finops_report.json`](./output/finops_report.json).
+## Guide d'utilisation
 
----
-
-## Guide d'Utilisation
-
-### Methode Windows en interface graphique
+### Interface graphique sous Windows
 
 1. Installation:
-   Double-cliquez sur `INSTALLER_WINDOWS.bat`. Selectionnez votre fournisseur d'IA, renseignez votre cle d'acces puis cliquez sur "Installer & Configurer".
+   Double-cliquez sur `INSTALLER_WINDOWS.bat`. Sélectionnez votre fournisseur d'IA, renseignez votre clé d'accès puis cliquez sur "Installer & Configurer".
 
 2. Conversion via le menu contextuel:
    Sur un fichier `.mp4`:
-   - Sous Windows 11: clic droit sur la video, selectionnez "Afficher d'autres options" (ou utilisez le raccourci `Maj + F10`), puis cliquez sur "Convertir avec Video2PowerPoint (IA)".
-   - Sous Windows 10: clic droit sur la video puis cliquez sur "Convertir avec Video2PowerPoint (IA)".
+   - Sous Windows 11: clic droit sur la vidéo, sélectionnez "Afficher d'autres options" (ou utilisez le raccourci `Maj + F10`), puis cliquez sur "Convertir avec Video2PowerPoint (IA)".
+   - Sous Windows 10: clic droit sur la vidéo puis cliquez sur "Convertir avec Video2PowerPoint (IA)".
 
 3. Conversion via le lanceur:
    Double-cliquez sur `LANCER_PIPELINE.bat` (ou sur le raccourci du Bureau):
-   - Appuyez sur Entree pour traiter la video de test integree (7 minutes).
-   - Tapez 2 pour selectionner un fichier video sur votre disque via l'explorateur.
+   - Appuyez sur Entrée pour traiter la vidéo de test intégrée (7 minutes).
+   - Tapez 2 pour sélectionner un fichier vidéo sur votre disque via l'explorateur.
    - Tapez 3 pour indiquer une URL Google Drive.
 
-A l'issue de l'operation, le repertoire contenant les 7 livrables s'ouvre avec un message de confirmation.
+À l'issue de l'opération, le répertoire contenant les 7 livrables s'ouvre avec un message de confirmation.
 
----
+### Ligne de commande (CLI)
 
-### Methode Ligne de Commande (CLI)
-
-Le moteur s'execute via PowerShell ou directement avec l'interpreteur Python:
+Le moteur s'exécute via PowerShell ou directement avec l'interpréteur Python:
 
 ```powershell
-# 1. Execution via l'orchestrateur PowerShell
+# 1. Exécution via l'orchestrateur PowerShell
 .\run_pipeline.ps1 -VideoPath "C:\Videos\session.mp4" -Provider openai -ModelSize medium
 
-# 2. Execution via l'interpreteur Python
+# 2. Exécution via l'interpréteur Python
 .\.venv\Scripts\python.exe pipeline.py --video "C:\Videos\session.mp4" --output "C:\Livrables" --provider openai --slides 20
 
 # 3. Traitement d'un lien Google Drive
 .\.venv\Scripts\python.exe pipeline.py --video "https://drive.google.com/file/d/1pbT3kRivzOONa3B1bRP1nIhbFdkt3ef2/view?usp=sharing" --provider gemini
 
-# 4. Regeneration documentaire a partir d'une transcription existante
+# 4. Régénération documentaire à partir d'une transcription existante
 .\.venv\Scripts\python.exe pipeline.py --video "C:\Videos\session.mp4" --skip-transcription
 ```
 
-### Parametres du script `pipeline.py`
+### Paramètres du script pipeline.py
 
-| Parametre | Type | Valeur par defaut | Description |
+| Paramètre | Type | Valeur par défaut | Description |
 | :--- | :---: | :---: | :--- |
 | `--video` | `str` | Requis | Chemin local vers le fichier `.mp4` ou URL Google Drive. |
 | `--output` | `str` | `output` | Dossier de destination des livrables. |
-| `--model` | `str` | `medium` | Taille du modele Whisper (`tiny`, `base`, `small`, `medium`, `large-v3-turbo`). |
-| `--provider` | `str` | `gemini` | Fournisseur de synthese (`openai`, `gemini`, `mistral`). |
-| `--api-key` | `str` | Variable d'environnement | Cle d'API pour le fournisseur selectionne. |
-| `--slides` | `int` | `0` (automatique) | Nombre cible de diapositives (0 pour calcul automatique selon la duree). |
-| `--skip-transcription` | `flag` | `False` | Reutilise le fichier `transcript.md` existant sans relancer l'inference vocale. |
+| `--model` | `str` | `medium` | Taille du modèle Whisper (`tiny`, `base`, `small`, `medium`, `large-v3-turbo`). |
+| `--provider` | `str` | `gemini` | Fournisseur de synthèse (`openai`, `gemini`, `mistral`). |
+| `--api-key` | `str` | Variable d'environnement | Clé d'API pour le fournisseur sélectionné. |
+| `--slides` | `int` | `0` (automatique) | Nombre cible de diapositives (0 pour calcul automatique selon la durée). |
+| `--skip-transcription` | `flag` | `False` | Réutilise le fichier `transcript.md` existant sans relancer l'inférence vocale. |
 
----
+## Banc d'essai et tests automatisés (tests/)
 
-## Banc d'Essai et Tests Automatises (`tests/`)
+Une suite de 23 tests automatisés validée par `pytest` vérifie le bon fonctionnement du moteur:
 
-Une suite de 23 tests automatises validee par `pytest` verifie le bon fonctionnement du moteur:
-
-- `test_environment_sanity.py` (2 tests): controle la presence du binaire `ffmpeg` et l'import des bibliotheques obligatoires (`faster-whisper`, `scenedetect`, `docx`, `pptx`, `PIL`).
-- `test_units.py` (16 tests): valide les horodatages, l'extraction des identifiants Google Drive, les filtres lexicaux anti-cliches et les formules FinOps pour OpenAI, Gemini et Whisper.
+- `test_environment_sanity.py` (2 tests): contrôle la présence du binaire `ffmpeg` et l'import des bibliothèques obligatoires (`faster-whisper`, `scenedetect`, `docx`, `pptx`, `PIL`).
+- `test_units.py` (16 tests): valide les horodatages, l'extraction des identifiants Google Drive, les filtres lexicaux anti-clichés et les formules FinOps pour OpenAI, Gemini et Whisper.
 - `test_generators.py` (4 tests): valide la structure du document Word, du fichier PowerPoint 16:9, du deck HTML et de la conversion PDF.
-- `test_pipeline_e2e.py` (1 test): test d'integration global verifiant la production conjointe des 7 livrables.
+- `test_pipeline_e2e.py` (1 test): test d'intégration global vérifiant la production conjointe des 7 livrables.
 
-Pour executer la suite de tests:
+Pour exécuter la suite de tests:
 ```cmd
 LANCER_TESTS.bat
 ```
@@ -165,52 +153,48 @@ Ou via la commande:
 .\.venv\Scripts\python.exe -m pytest tests -s -v
 ```
 
----
-
-## Structure du Repertoire `demo/`
+## Structure du répertoire demo/
 
 ```text
 demo/
 ├── assets/
-│   ├── app_icon.ico           # Icone multi-resolution (16x16 a 256x256) pour Windows
+│   ├── app_icon.ico           # Icône multi-résolution (16x16 à 256x256) pour Windows
 │   └── app_icon.png           # Fichier image source du logo
-├── output/                    # Repertoire des livrables de la video de demonstration
-│   ├── keyframes/             # Captures d'ecran extraites (slide_keyframe_XX.jpg)
-│   ├── transcript.md          # Transcription textuelle complete horodatee
-│   ├── summary.md             # Synthese executive et section FinOps
-│   ├── finops_report.json     # Rapport comptable de l'execution
-│   ├── article_mode_d_emploi.docx # Document Word operationnel
+├── output/                    # Répertoire des livrables de la vidéo de démonstration
+│   ├── keyframes/             # Captures d'écran extraites (slide_keyframe_XX.jpg)
+│   ├── transcript.md          # Transcription textuelle complète horodatée
+│   ├── summary.md             # Synthèse exécutive et section FinOps
+│   ├── finops_report.json     # Rapport comptable de l'exécution
+│   ├── article_mode_d_emploi.docx # Document Word opérationnel
 │   ├── presentation.pptx      # Diaporama PowerPoint 16:9
-│   ├── presentation.html      # Support web interactif plein ecran
+│   ├── presentation.html      # Support web interactif plein écran
 │   ├── presentation.pdf       # Export PDF paysage 16:9
-│   └── deck_structure.json    # Schema JSON intermediaire de la presentation
-├── tests/                     # Suite de tests automatises (23 tests)
-│   ├── conftest.py            # Donnees de test et bouchons partages
-│   ├── test_environment_sanity.py # Verification de l'environnement d'execution
-│   ├── test_units.py          # Tests unitaires: Drive, FinOps, regles de filtrage
-│   ├── test_generators.py     # Verification des formats de sortie
-│   └── test_pipeline_e2e.py   # Test d'integration de bout en bout
+│   └── deck_structure.json    # Schéma JSON intermédiaire de la présentation
+├── tests/                     # Suite de tests automatisés (23 tests)
+│   ├── conftest.py            # Données de test et bouchons partagés
+│   ├── test_environment_sanity.py # Vérification de l'environnement d'exécution
+│   ├── test_units.py          # Tests unitaires: Drive, FinOps, règles de filtrage
+│   ├── test_generators.py     # Vérification des formats de sortie
+│   └── test_pipeline_e2e.py   # Test d'intégration de bout en bout
 ├── pipeline.py                # Moteur d'orchestration (Whisper, Drive, LLM, exports)
-├── run_pipeline.ps1           # Wrapper d'execution PowerShell
+├── run_pipeline.ps1           # Wrapper d'exécution PowerShell
 ├── install_gui.ps1            # Assistant graphique d'installation Windows
 ├── INSTALLER_WINDOWS.bat      # Lanceur d'installation rapide
-├── LANCER_PIPELINE.bat        # Lanceur de traitement avec menu de selection
+├── LANCER_PIPELINE.bat        # Lanceur de traitement avec menu de sélection
 ├── LANCER_TESTS.bat           # Lanceur de la suite de tests unitaires
 ├── pytest.ini                 # Options de configuration de pytest (-s -v)
-├── requirements.txt           # Dependances Python figees
-├── brief.md                    # Expression du besoin initial du projet
-├── prd.md                     # Cahier des charges fonctionnel detaille (PRD)
+├── requirements.txt           # Dépendances Python figées
+├── brief.md                   # Expression du besoin initial du projet
+├── prd.md                     # Cahier des charges fonctionnel détaillé (PRD)
 ├── addendum.md                # Note d'arbitrage et d'architecture technique
 └── README.md                  # Documentation technique du module
 ```
 
----
+## Documents de référence et spécifications
 
-## Documents de Reference et Specifications
+L'ensemble des documents de cadrage du projet est directement accessible dans ce dossier et dans le répertoire racine:
 
-L'ensemble des documents de cadrage du projet est directement accessible dans ce dossier et dans le repertoire racine:
-
-- [`demo/prd.md`](./prd.md) : Cahier des charges et specifications fonctionnelles completes (PRD).
-- [`demo/brief.md`](./brief.md) : Brief initial du projet.
-- [`demo/addendum.md`](./addendum.md) : Decisions d'architecture technique et matrice de dimensionnement.
-- [`archi/Vue d'ensemble.html`](../archi/Vue%20d'ensemble.html) : Schema interactif des 5 couches d'architecture et de leurs flux.
+- [`demo/prd.md`](./prd.md): Cahier des charges et spécifications fonctionnelles complètes (PRD).
+- [`demo/brief.md`](./brief.md): Brief initial du projet.
+- [`demo/addendum.md`](./addendum.md): Décisions d'architecture technique et matrice de dimensionnement.
+- [`archi/Vue d'ensemble.html`](../archi/Vue%20d'ensemble.html): Schéma interactif des 5 couches d'architecture et de leurs flux.
