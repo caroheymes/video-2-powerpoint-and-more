@@ -66,7 +66,7 @@ Le schéma interactif complet est consultable dans [`archi/Vue d'ensemble.html`]
 #### 5. Pack de livrables
 - Centralisation des 7 livrables directement exploitables (`.docx`, `.pptx`, `.html`, `.pdf`, `.md`, `.json`, `keyframes/`) dans le sous-dossier de destination.
 
-## Évaluation FinOps et suivi des dépenses
+## Evaluation FinOps et suivi des dépenses
 
 La fonction `calculate_finops_cost` détaille la consommation de chaque traitement:
 
@@ -75,7 +75,7 @@ La fonction `calculate_finops_cost` détaille la consommation de chaque traiteme
 - Application des grilles officielles par million de jetons.
 - Conversion en dollars et en euros (taux de change retenu: 0.92 € / $).
 
-### Évaluation des gains liés au calcul local
+### Evaluation des gains liés au calcul local
 - Comparaison avec le tarif standard des services cloud de transcription audio (0.006 $ par minute).
 - Sur un atelier de 7 minutes: gain de 0.042 $.
 - Sur une réunion de 1 heure 10 minutes: gain de 0.42 $.
@@ -103,7 +103,7 @@ La fonction `calculate_finops_cost` détaille la consommation de chaque traiteme
    - Tapez 2 pour sélectionner un fichier vidéo sur votre disque via l'explorateur.
    - Tapez 3 pour indiquer une URL Google Drive.
 
-À l'issue de l'opération, le répertoire contenant les 7 livrables s'ouvre avec un message de confirmation.
+A l'issue de l'opération, le répertoire contenant les 7 livrables s'ouvre avec un message de confirmation.
 
 ### Ligne de commande (CLI)
 

@@ -95,7 +95,7 @@ Double-cliquez sur `LANCER_PIPELINE.bat` (ou le raccourci Bureau):
 
 ### Suivi d'exécution et volumétrie adaptative
 - Progression console: la transcription Whisper affiche une barre dynamique indiquant le temps écoulé, le pourcentage et l'estimation de fin.
-- Écriture continue: le fichier `transcript.md` est créé dès le lancement et alimenté au fur et à mesure du décodage audio.
+- Ecriture continue: le fichier `transcript.md` est créé dès le lancement et alimenté au fur et à mesure du décodage audio.
 - Diaporama calibré selon la durée: le nombre de diapositives s'adapte automatiquement (10 pour moins de 10 minutes, 18 pour 30 minutes, 25 à 35 pour les enregistrements supérieurs à une heure). L'argument `--slides` permet de forcer une valeur fixe.
 
 ### Emplacement des livrables
@@ -122,7 +122,7 @@ Livrables disponibles dans [`demo/output/`](./demo/output/):
 | Transcription brute | [`transcript.md`](./demo/output/transcript.md) | Retranscription intégrale horodatée via Whisper. |
 | Captures vidéo | [`keyframes/`](./demo/output/keyframes/) | 18 images des plans stables de la vidéo. |
 
-## Évaluation FinOps et maîtrise des dépenses
+## Evaluation FinOps et maîtrise des dépenses
 
 L'architecture réduit les coûts d'infrastructure et d'API:
 
