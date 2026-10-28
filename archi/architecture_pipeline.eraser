@@ -1,0 +1,26 @@
+// Architecture pipeline demo (Video to PowerPoint & More)
+// Standard Eraser Diagram Syntax
+
+direction right
+
+// 1. Interface et Orchestration
+UI [icon: mouse-pointer-click, color: blue, label: "1. Interface et Orchestration\nMenu, .bat, CLI -> pipeline.py"]
+
+// 2. Multimédia et Calcul Local
+INGESTION [icon: cpu, color: blue, label: "2. Multimédia et Calcul Local\nAudio, Whisper, scènes (hors-ligne)"]
+
+// 3. Intelligence et FinOps
+LLM [icon: brain, color: blue, label: "3. Intelligence et FinOps\nLLM, Humanizer, coûts"]
+
+// 4. Générateurs Documentaires
+GEN [icon: file-cog, color: blue, label: "4. Générateurs Documentaires\nWord, PowerPoint, HTML, PDF"]
+
+// 5. Pack de Livrables
+DELIV [icon: folder, color: green, label: "5. Pack de Livrables\ndocx, pptx, html, pdf, md, json"]
+
+// Flux de données
+UI > INGESTION: "vidéo"
+INGESTION > LLM: "texte + images"
+LLM > GEN: "deck_structure"
+GEN > DELIV: "documents"
+INGESTION > DELIV: "transcript"

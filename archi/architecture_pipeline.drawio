@@ -1,0 +1,57 @@
+<mxfile host="Electron" agent="Mozilla/5.0" type="device">
+  <diagram id="pipeline-archi" name="Architecture Pipeline">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Couche 1: UI -->
+        <mxCell id="UI" value="&lt;b&gt;1. Interface et Orchestration&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px;&quot; color=&quot;#4b5563&quot;&gt;Menu contextuel, .bat, CLI &amp;rarr; pipeline.py&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dbeafe;strokeColor=#2563eb;strokeWidth=2;arcSize=14;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="40" y="60" width="260" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Couche 2: Ingestion locale -->
+        <mxCell id="INGESTION" value="&lt;b&gt;2. Multimédia et Calcul Local&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px;&quot; color=&quot;#4b5563&quot;&gt;Audio WAV, Whisper int8, scènes 1080p&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dbeafe;strokeColor=#2563eb;strokeWidth=2;arcSize=14;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="380" y="60" width="260" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Couche 3: Intelligence & FinOps -->
+        <mxCell id="LLM" value="&lt;b&gt;3. Intelligence et FinOps&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px;&quot; color=&quot;#4b5563&quot;&gt;LLM (OpenAI/Gemini/Mistral), Humanizer, coûts&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dbeafe;strokeColor=#2563eb;strokeWidth=2;arcSize=14;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="720" y="60" width="280" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Couche 4: Générateurs Documentaires -->
+        <mxCell id="GEN" value="&lt;b&gt;4. Générateurs Documentaires&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px;&quot; color=&quot;#4b5563&quot;&gt;Word (.docx), PowerPoint (.pptx), HTML5, PDF&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dbeafe;strokeColor=#2563eb;strokeWidth=2;arcSize=14;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="720" y="220" width="280" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Couche 5: Pack Livrables -->
+        <mxCell id="DELIV" value="&lt;b&gt;5. Pack de Livrables&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 11px;&quot; color=&quot;#166534&quot;&gt;docx, pptx, html, pdf, md, json, keyframes&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dcfce7;strokeColor=#16a34a;strokeWidth=2;arcSize=14;spacing=8;" vertex="1" parent="1">
+          <mxGeometry x="380" y="220" width="260" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Connecteurs -->
+        <mxCell id="e1" value="vidéo" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1e293b;strokeWidth=2;labelBackgroundColor=none;fontColor=#0f172a;fontSize=11;" edge="1" parent="1" source="UI" target="INGESTION">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e2" value="texte + images" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1e293b;strokeWidth=2;labelBackgroundColor=none;fontColor=#0f172a;fontSize=11;" edge="1" parent="1" source="INGESTION" target="LLM">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e3" value="deck_structure" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1e293b;strokeWidth=2;labelBackgroundColor=none;fontColor=#0f172a;fontSize=11;" edge="1" parent="1" source="LLM" target="GEN">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e4" value="documents" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1e293b;strokeWidth=2;labelBackgroundColor=none;fontColor=#0f172a;fontSize=11;" edge="1" parent="1" source="GEN" target="DELIV">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e5" value="transcript" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#1e293b;strokeWidth=2;labelBackgroundColor=none;fontColor=#0f172a;fontSize=11;" edge="1" parent="1" source="INGESTION" target="DELIV">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
