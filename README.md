@@ -12,6 +12,55 @@ Ce projet convertit un enregistrement video (reunion, formation, atelier ou conf
 
 ---
 
+## Architecture Technique (Schema Vue d'ensemble)
+
+Le pipeline repose sur 5 couches interconnectees, conformement au schema d'architecture du dossier [`archi/`](./archi/) :
+
+```mermaid
+flowchart LR
+    UI["1. Interface et Orchestration<br/><small>Menu, .bat, CLI → pipeline.py</small>"]
+    INGESTION["2. Multimédia et Calcul Local<br/><small>Audio, Whisper, scènes (hors-ligne)</small>"]
+    LLM["3. Intelligence et FinOps<br/><small>LLM, Humanizer, coûts</small>"]
+    GEN["4. Générateurs Documentaires<br/><small>Word, PowerPoint, HTML, PDF</small>"]
+    DELIV["5. Pack de Livrables<br/><small>docx, pptx, html, pdf, md, json</small>"]
+
+    UI -->|vidéo| INGESTION
+    INGESTION -->|texte + images| LLM
+    LLM -->|deck_structure| GEN
+    GEN -->|documents| DELIV
+    INGESTION -->|transcript| DELIV
+```
+
+Le schema interactif complet est consultable directement dans [`archi/Vue d'ensemble.html`](./archi/Vue%20d'ensemble.html).
+
+### Les Composants des 5 Couches
+
+1. **Interface et Orchestration** :
+   - Point d'entree au clic droit Windows via le menu contextuel, lanceur `LANCER_PIPELINE.bat` et interface d'installation `install_gui.ps1`.
+   - Orchestrateur PowerShell `run_pipeline.ps1` assurant l'initialisation du runtime et la gestion des reprises.
+   - Script `pipeline.py` pilotant l'enchainement des operations.
+
+2. **Multimedia et Calcul Local (100% hors-ligne)** :
+   - Extraction audio: separation du signal WAV mono a 16 000 Hz (`pcm_s16le`) via le binaire autonome `ffmpeg` (embarque par `imageio-ffmpeg`).
+   - Transcription Whisper: inference vocale locale par `faster-whisper` adossee a CTranslate2 en quantification int8 CPU ou CUDA float16. Progression en temps reel `tqdm` et ecriture continue sur disque dans `transcript.md`.
+   - Detection des scenes: analyse des flux visuels par `PySceneDetect` (`ContentDetector`) pour extraire 18 a 40 images cles stables en resolution 1080p.
+
+3. **Intelligence et FinOps** :
+   - Synthese LLM: envoi de la transcription vers les modeles de grande fenetre de contexte (OpenAI `gpt-4o-mini`, Google Gemini `gemini-2.0-flash` ou Mistral `mistral-large-latest`).
+   - Regles Humanizer: elimination systematique des tics d'ecriture d'IA, des accroches theatrales et des metaphores abstraites. Structuration d'enseignements cles, puces denses et notes d'orateur.
+   - Bilan FinOps: fonction `calculate_finops_cost` mesurant les jetons exacts et valorisant les couts d'API ainsi que les economies realisees en local.
+
+4. **Generateurs Documentaires** :
+   - Generateur Word: production de la note de cadrage et du mode d'emploi via `python-docx` avec encadres methodologiques et captures centrees.
+   - Generateur PowerPoint: creation de diaporamas 16:9 widescreen via `python-pptx`, incluant l'enseignement cle, cartes KPI et notes d'orateur natives.
+   - Generateur Web: compilation du deck interactif autonome en HTML5 et CSS3 Grid avec visuels embarques en Base64.
+   - Moteur PDF: conversion vectorielle 16:9 sans debordement de page via Chromium headless.
+
+5. **Pack de Livrables** :
+   - Centralisation des 7 livrables directement exploitables (`.docx`, `.pptx`, `.html`, `.pdf`, `.md`, `.json`, `keyframes/`) dans le sous-dossier de destination.
+
+---
+
 ## Installation sous Windows
 
 L'assistant configure l'environnement sans installation prealable de Python ou de Git:
@@ -99,8 +148,20 @@ L'architecture reduit les couts d'infrastructure et d'API:
 - `INSTALLER_WINDOWS.bat`: assistant d'installation pour Windows (racine).
 - `LANCER_PIPELINE.bat`: lanceur principal du pipeline (racine).
 - `LANCER_TESTS.bat`: banc de test automatise de 23 tests (racine).
+- `archi/`: schema interactif d'architecture et description des flux (`Vue d'ensemble.html`).
 - `demo/`: code source, dependances virtuelles, tests et sorties.
 - `scripts_historiques/`: scripts d'exploration initiaux.
+
+---
+
+## Documents de Reference et Specifications
+
+L'ensemble des documents de cadrage du projet est directement accessible:
+
+- [`demo/prd.md`](./demo/prd.md) : Cahier des charges et specifications fonctionnelles completes (PRD).
+- [`demo/brief.md`](./demo/brief.md) : Brief initial du projet.
+- [`demo/addendum.md`](./demo/addendum.md) : Decisions d'architecture technique et matrice de dimensionnement.
+- [`archi/Vue d'ensemble.html`](./archi/Vue%20d'ensemble.html) : Schema interactif des 5 couches d'architecture et de leurs flux.
 
 ---
 

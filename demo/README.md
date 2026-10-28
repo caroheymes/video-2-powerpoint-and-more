@@ -23,63 +23,52 @@ Chaque execution produit un ensemble de documents dans le repertoire cible (un s
 
 ---
 
-## Architecture Technique du Pipeline (5 Etapes)
+## Architecture Technique (Schema Vue d'ensemble)
 
-Le traitement enchaine cinq modules autonomes:
+Le pipeline repose sur 5 couches interconnectees, conformement au schema d'architecture du dossier [`archi/`](../archi/) :
 
-```text
-Video MP4 (locale ou lien Google Drive)
-   │
-   ├─► [Etape 1] Extraction audio (ffmpeg 16 kHz WAV mono)
-   │
-   ├─► [Etape 2] Transcription locale Whisper (faster-whisper int8 CPU/CUDA)
-   │      └─► Progression dynamique (tqdm) et ecriture continue sur disque
-   │
-   ├─► [Etape 3] Detection des scenes (PySceneDetect + OpenCV)
-   │      └─► Extraction selective de keyframes 1080p
-   │
-   ├─► [Etape 4] Synthese et structuration LLM (OpenAI / Gemini / Mistral)
-   │      ├─► Directives de cadrage factuel sans tics d'IA
-   │      ├─► Nombre de diapositives adapte a la duree (10 a 35)
-   │      └─► Calculateur de consommation et rapport FinOps
-   │
-   └─► [Etape 5] Production multi-formats des livrables
-          ├─► 5A. Document Word operationnel (python-docx)
-          ├─► 5B. Diaporama PowerPoint 16:9 (python-pptx)
-          ├─► 5C. Support web interactif (HTML5 / CSS3 Grid)
-          └─► 5D. Export PDF 16:9 vectoriel (Chromium headless)
+```mermaid
+flowchart LR
+    UI["1. Interface et Orchestration<br/><small>Menu, .bat, CLI → pipeline.py</small>"]
+    INGESTION["2. Multimédia et Calcul Local<br/><small>Audio, Whisper, scènes (hors-ligne)</small>"]
+    LLM["3. Intelligence et FinOps<br/><small>LLM, Humanizer, coûts</small>"]
+    GEN["4. Générateurs Documentaires<br/><small>Word, PowerPoint, HTML, PDF</small>"]
+    DELIV["5. Pack de Livrables<br/><small>docx, pptx, html, pdf, md, json</small>"]
+
+    UI -->|vidéo| INGESTION
+    INGESTION -->|texte + images| LLM
+    LLM -->|deck_structure| GEN
+    GEN -->|documents| DELIV
+    INGESTION -->|transcript| DELIV
 ```
 
-### 1. Extraction audio (`extract_audio`)
-Le flux sonore est extrait via le binaire `ffmpeg` embarque par la bibliotheque `imageio-ffmpeg`, sans prerequis d'installation systeme.
-Le signal est normalise en canal mono a 16 000 Hz sous encodage PCM 16 bits lineaire (`pcm_s16le`), format optimal pour l'inference vocale neuronale.
+Le schema interactif complet est consultable directement dans [`archi/Vue d'ensemble.html`](../archi/Vue%20d'ensemble.html).
 
-### 2. Transcription locale Whisper (`transcribe_audio`)
-La transcription s'appuie sur `faster-whisper` couple au runtime CTranslate2 pour accelerer la vitesse de calcul.
-L'execution s'effectue en local sans transfert de donnees vers un serveur externe, preservant la confidentialite des reunions internes.
-Le chargeur tente d'abord une acceleration GPU Nvidia (CUDA float16), puis bascule sur le CPU multi-coeurs en quantification int8 si aucun accelerateur compatible n'est detecte.
-Une barre de progression `tqdm` affiche la duree audio decodee, le pourcentage traite et la cadence de transcription.
-Les segments textuels sont ecrits au fur et a mesure dans `transcript.md` des leur decodage.
+### Les Composants des 5 Couches
 
-### 3. Detection des scenes et keyframes (`extract_scenes`)
-Le decoupage temporel s'appuie sur `scenedetect.detect` avec le detecteur adaptatif `ContentDetector`.
-L'algorithme filtre les mouvements transitoires pour cibler les bascules reelles de diapositives ou de sujets.
-Le volume de captures varie entre 18 et 40 images 1080p selon la longueur de la video.
+1. **Interface et Orchestration** :
+   - Point d'entree au clic droit Windows via le menu contextuel, lanceur `LANCER_PIPELINE.bat` et interface d'installation `install_gui.ps1`.
+   - Orchestrateur PowerShell `run_pipeline.ps1` assurant l'initialisation du runtime et la gestion des reprises.
+   - Script `pipeline.py` pilotant l'enchainement des operations.
 
-### 4. Synthese et structuration factuelle (`analyze_with_llm`)
-Le module interroge au choix l'API OpenAI (`gpt-4o-mini`), Google Gemini (`gemini-2.0-flash`) ou Mistral AI (`mistral-large-latest`).
-Le prompt applique des regles d'humanisation rigoureuses:
-- Suppression des formules creuses ("Dans un monde en constante evolution", "A l'ere du numerique").
-- Elimination des metaphores abstraites ("catalyseur", "pierre angulaire", "riche mosaique").
-- Rejet du formatage systematique en gras sur chaque puce.
-- Filtrage programmatique de cloture via `clean_humanizer_text`.
-Le nombre de diapositives s'ajuste a la densite de l'enregistrement: 10 pour moins de 10 minutes, 18 pour 30 minutes, 25 a 35 au-dela d'une heure.
+2. **Multimedia et Calcul Local (100% hors-ligne)** :
+   - Extraction audio: separation du signal WAV mono a 16 000 Hz (`pcm_s16le`) via le binaire autonome `ffmpeg` (embarque par `imageio-ffmpeg`).
+   - Transcription Whisper: inference vocale locale par `faster-whisper` adossee a CTranslate2 en quantification int8 CPU ou CUDA float16. Progression en temps reel `tqdm` et ecriture continue sur disque dans `transcript.md`.
+   - Detection des scenes: analyse des flux visuels par `PySceneDetect` (`ContentDetector`) pour extraire 18 a 40 images cles stables en resolution 1080p.
 
-### 5. Generation des documents
-- Word (`.docx`): mise en page structuree avec typographies d'entreprise, hierarchie visuelle nette et insertion des captures en pleine largeur.
-- PowerPoint (`.pptx`): matrice 16:9 widescreen (13.33 x 7.5 pouces), fond ardoise (`#0B0F19`), contrastes et blocs d'indicateurs.
-- Deck HTML: presentation autonome a fichier unique, navigable aux touches flechees, sans framework externe.
-- PDF 16:9: compilation via Chromium headless garantissant un rendu vectoriel sans saut de page intempestif.
+3. **Intelligence et FinOps** :
+   - Synthese LLM: envoi de la transcription vers les modeles de grande fenetre de contexte (OpenAI `gpt-4o-mini`, Google Gemini `gemini-2.0-flash` ou Mistral `mistral-large-latest`).
+   - Regles Humanizer: elimination systematique des tics d'ecriture d'IA, des accroches theatrales et des metaphores abstraites. Structuration d'enseignements cles, puces denses et notes d'orateur.
+   - Bilan FinOps: fonction `calculate_finops_cost` mesurant les jetons exacts et valorisant les couts d'API ainsi que les economies realisees en local.
+
+4. **Generateurs Documentaires** :
+   - Generateur Word: production de la note de cadrage et du mode d'emploi via `python-docx` avec encadres methodologiques et captures centrees.
+   - Generateur PowerPoint: creation de diaporamas 16:9 widescreen via `python-pptx`, incluant l'enseignement cle, cartes KPI et notes d'orateur natives.
+   - Generateur Web: compilation du deck interactif autonome en HTML5 et CSS3 Grid avec visuels embarques en Base64.
+   - Moteur PDF: conversion vectorielle 16:9 sans debordement de page via Chromium headless.
+
+5. **Pack de Livrables** :
+   - Centralisation des 7 livrables directement exploitables (`.docx`, `.pptx`, `.html`, `.pdf`, `.md`, `.json`, `keyframes/`) dans le sous-dossier de destination.
 
 ---
 
@@ -209,7 +198,19 @@ demo/
 ├── LANCER_TESTS.bat           # Lanceur de la suite de tests unitaires
 ├── pytest.ini                 # Options de configuration de pytest (-s -v)
 ├── requirements.txt           # Dependances Python figees
-├── prd.md                     # Cahier des charges fonctionnel
-├── addendum.md                # Note d'architecture technique
+├── brief.md                    # Expression du besoin initial du projet
+├── prd.md                     # Cahier des charges fonctionnel detaille (PRD)
+├── addendum.md                # Note d'arbitrage et d'architecture technique
 └── README.md                  # Documentation technique du module
 ```
+
+---
+
+## Documents de Reference et Specifications
+
+L'ensemble des documents de cadrage du projet est directement accessible dans ce dossier et dans le repertoire racine:
+
+- [`demo/prd.md`](./prd.md) : Cahier des charges et specifications fonctionnelles completes (PRD).
+- [`demo/brief.md`](./brief.md) : Brief initial du projet.
+- [`demo/addendum.md`](./addendum.md) : Decisions d'architecture technique et matrice de dimensionnement.
+- [`archi/Vue d'ensemble.html`](../archi/Vue%20d'ensemble.html) : Schema interactif des 5 couches d'architecture et de leurs flux.
